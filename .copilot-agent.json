@@ -1,0 +1,71 @@
+{
+  "name": "frontend-agent",
+  "description": "Copilot guidelines for generating code in the Next.js 15 frontend repository of the Email Summarizer SaaS project. The backend is separate and handled by NestJS.",
+  "context": {
+    "framework": "Next.js 15 (App Router)",
+    "language": "TypeScript",
+    "styling": ["TailwindCSS", "shadcn/ui", "Radix UI"],
+    "stateManagement": ["React Query (TanStack)", "Zustand if needed"],
+    "auth": "JWT tokens from backend via cookies or Authorization headers",
+    "packageManager": "Yarn"
+  },
+  "guidelines": {
+    "architecture": [
+      "Use Next.js App Router with /app folder",
+      "Use server components by default, client components only when necessary",
+      "Organize code as src/components, src/hooks, src/lib, src/providers, src/app/(routes)"
+    ],
+    "styling": [
+      "Use TailwindCSS utility classes for layout and styling",
+      "Use shadcn/ui for prebuilt components (Button, Card, Dialog, Toast, etc.)",
+      "Maintain consistent responsive design"
+    ],
+    "uiDesign": [
+      "Create modern, soft, minimalistic UI components with smooth rounded corners and subtle shadows",
+      "Use a clean, airy layout with good spacing and visual hierarchy",
+      "Favor soft background colors and gentle contrast for a pleasant user experience",
+      "Use shadcn/ui and Radix primitives as base components when possible",
+      "Include hover and focus states with soft transitions and animations",
+      "Ensure accessibility: readable contrast, focus indicators, keyboard navigation",
+      "Components should be reusable and customizable via props (size, color, variant)"
+    ],
+    "coding": [
+      "Always use TypeScript for type safety",
+      "Use async/await for async operations",
+      "Write reusable components in /components",
+      "Follow accessibility best practices"
+    ],
+    "api": [
+      "Abstract API calls in /lib/api with proper typing, ignore this one as I will my own /api folder",
+      "Handle errors gracefully (toasts, redirects for 401)",
+      "Use React Query hooks for caching and revalidation"
+    ],
+    "auth": [
+      "Protect private routes with middleware.ts or route-level guards",
+      "Redirect to /login if JWT token is missing or expired",
+      "Store JWT access/refresh tokens securely (HttpOnly cookies if possible)"
+    ],
+    "testing": [
+      "Use Jest + React Testing Library for unit tests",
+      "Optionally add Playwright for E2E tests"
+    ]
+  },
+  "branding": {
+    "primary": "#4F46E5",
+    "secondary": "#6366F1",
+    "accent": "#FBBF24",
+    "background": "#F9FAFB",
+    "surface": "#FFFFFF",
+    "textPrimary": "#111827",
+    "textSecondary": "#6B7280",
+    "success": "#10B981",
+    "error": "#EF4444",
+    "info": "#3B82F6"
+  },
+  "reminders": [
+    "This repo is frontend-only; backend code should not be generated here",
+    "Always use Yarn for dependencies",
+    "Follow Next.js 15 best practices and App Router conventions",
+    "Generate only reusable and maintainable components and pages"
+  ]
+}

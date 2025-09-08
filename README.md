@@ -1,36 +1,194 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Email Summarizer Frontend
 
-## Getting Started
+A modern Next.js 15 frontend application for the Email Summarizer SaaS platform, built with TypeScript, TailwindCSS, and shadcn/ui components.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Modern UI/UX**: Built with shadcn/ui and TailwindCSS for a clean, professional interface
+- **Authentication**: Complete auth flow with login/register pages and JWT token management
+- **Type Safety**: Full TypeScript implementation with strict type checking
+- **State Management**: Zustand for client-side state with persistence
+- **API Integration**: React Query for server state management and caching
+- **Responsive Design**: Mobile-first responsive design with modern gradients and animations
+- **Route Protection**: Middleware-based authentication guards
+- **Toast Notifications**: User feedback with toast notifications
+- **Form Validation**: Client-side form validation with proper error handling
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: TailwindCSS + shadcn/ui
+- **State Management**: React Query (TanStack) + Zustand
+- **Icons**: Lucide React
+- **Authentication**: JWT tokens
+- **Package Manager**: Yarn
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── (auth)/            # Auth-related pages (login, register)
+│   ├── (dashboard)/       # Protected dashboard pages
+│   ├── globals.css        # Global styles with design system
+│   ├── layout.tsx         # Root layout with providers
+│   └── page.tsx          # Homepage
+├── components/            # Reusable React components
+│   └── ui/               # shadcn/ui components (Button, Card, etc.)
+├── hooks/                 # Custom React hooks
+│   └── use-toast.ts      # Toast notification hook
+├── lib/                   # Utility functions and configurations
+│   ├── api.ts            # API client and auth endpoints
+│   ├── auth-store.ts     # Zustand auth store
+│   └── utils.ts          # Utility functions (cn helper)
+└── providers/             # React context providers
+    └── query-provider.tsx # React Query provider
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Design System
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application follows a modern, minimalistic design approach with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Primary Color**: #4F46E5 (Indigo)
+- **Secondary Color**: #6366F1 (Indigo variant)
+- **Accent Color**: #FBBF24 (Amber)
+- **Background**: #F9FAFB (Light gray)
+- **Surface**: #FFFFFF (White)
+- **Success**: #10B981 (Emerald)
+- **Error**: #EF4444 (Red)
 
-## Learn More
+## 🚦 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+1. **Install dependencies**:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   yarn install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Environment setup**:
 
-## Deploy on Vercel
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your backend API URL
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Start development server**:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   yarn dev
+   ```
+
+4. **Build for production**:
+   ```bash
+   yarn build
+   yarn start
+   ```
+
+## 🔗 API Integration
+
+The frontend connects to a NestJS backend API. Configure the API URL in your environment variables:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+### Available API Endpoints
+
+- `POST /auth/login` - User authentication
+- `POST /auth/register` - User registration
+- `POST /auth/logout` - User logout
+- `GET /auth/me` - Get current user profile
+
+## 🛡 Authentication
+
+The app implements JWT-based authentication with:
+
+- Protected routes using Next.js middleware
+- Persistent auth state with Zustand
+- Automatic token management
+- Redirect handling for auth flows
+
+### Protected Routes
+
+- `/dashboard` - Main dashboard (requires auth)
+- `/profile` - User profile (requires auth)
+- `/settings` - App settings (requires auth)
+
+### Public Routes
+
+- `/` - Homepage
+- `/login` - Sign in page
+- `/register` - Sign up page
+
+## 📱 Pages Overview
+
+### Homepage (`/`)
+
+- Hero section with compelling copy
+- Feature showcase with icons and descriptions
+- Call-to-action sections
+- Professional footer
+
+### Authentication Pages
+
+- **Login** (`/login`): Email/password login with form validation
+- **Register** (`/register`): Account creation with password confirmation
+
+### Dashboard (`/dashboard`)
+
+- Statistics cards showing email metrics
+- Recent activity feed
+- Quick action buttons
+- User profile display
+
+## 🎯 Components
+
+### UI Components (shadcn/ui)
+
+- `Button` - Various button variants and sizes
+- `Card` - Content containers with headers and descriptions
+- `Input` - Form input fields with validation styles
+- `Label` - Form labels with consistent styling
+- `Toast` - Notification system with success/error variants
+
+### Custom Components
+
+- Toast notification system with multiple variants
+- Protected route middleware
+- API client with error handling
+- Auth store with persistence
+
+## 🎨 Styling Guidelines
+
+- Use utility-first approach with TailwindCSS
+- Implement consistent spacing and typography
+- Follow mobile-first responsive design
+- Use subtle animations and transitions
+- Maintain accessibility standards
+
+## 🔧 Development Guidelines
+
+1. **TypeScript**: All components and functions must be properly typed
+2. **Component Structure**: Use functional components with hooks
+3. **Error Handling**: Implement proper error boundaries and user feedback
+4. **Performance**: Use React Query for caching and Zustand for state
+5. **Accessibility**: Follow WCAG guidelines for inclusive design
+
+## 📦 Scripts
+
+- `yarn dev` - Start development server with Turbopack
+- `yarn build` - Build for production
+- `yarn start` - Start production server
+- `yarn lint` - Run ESLint
+
+## 🤝 Contributing
+
+1. Follow the established code style and patterns
+2. Ensure TypeScript compliance
+3. Test components thoroughly
+4. Update documentation as needed
+
+## 📄 License
+
+This project is part of the Email Summarizer SaaS platform.
