@@ -10,32 +10,7 @@ import { Mail, Zap, Clock, Shield } from "lucide-react";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="border-b bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Mail className="h-8 w-8 text-indigo-600" />
-              <span className="text-xl font-bold text-gray-900">
-                EmailSummarizer
-              </span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                className="text-gray-700 hover:text-indigo-600"
-              >
-                Sign In
-              </Button>
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                Get Started
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-white">
         <div className="text-center">
@@ -149,23 +124,6 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <Mail className="h-6 w-6 text-indigo-600" />
-              <span className="font-semibold text-gray-900">
-                EmailSummarizer
-              </span>
-            </div>
-            <div className="text-sm text-gray-600">
-              © 2025 EmailSummarizer. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -12,38 +12,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "#E5E7EB",
+        input: "#E5E7EB",
+        ring: "#4F46E5",
+        background: "#F9FAFB",
+        foreground: "#111827",
         primary: {
           DEFAULT: "#4F46E5",
-          foreground: "hsl(var(--primary-foreground))",
+          foreground: "#FFFFFF",
         },
         secondary: {
           DEFAULT: "#6366F1",
-          foreground: "hsl(var(--secondary-foreground))",
+          foreground: "#FFFFFF",
         },
         accent: {
           DEFAULT: "#FBBF24",
-          foreground: "hsl(var(--accent-foreground))",
+          foreground: "#111827",
         },
         destructive: {
           DEFAULT: "#EF4444",
-          foreground: "hsl(var(--destructive-foreground))",
+          foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#F3F4F6",
+          foreground: "#6B7280",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#FFFFFF",
+          foreground: "#111827",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#FFFFFF",
+          foreground: "#111827",
         },
         success: "#10B981",
         error: "#EF4444",

@@ -33,7 +33,12 @@
       "Always use TypeScript for type safety",
       "Use async/await for async operations",
       "Write reusable components in /components",
-      "Follow accessibility best practices"
+      "Follow accessibility best practices",
+      "Prefer arrow functions for all functional components and hooks",
+      "Use named exports for modules; default exports only if necessary",
+      "Each module or folder should have an index.ts file to centralize exports",
+      "Keep code modular and organized, avoid long files",
+      "Use import aliases for src folders to simplify and shorten imports"
     ],
     "api": [
       "Abstract API calls in /lib/api with proper typing, ignore this one as I will my own /api folder",
@@ -66,6 +71,8 @@
     "This repo is frontend-only; backend code should not be generated here",
     "Always use Yarn for dependencies",
     "Follow Next.js 15 best practices and App Router conventions",
-    "Generate only reusable and maintainable components and pages"
+    "Generate only reusable and maintainable components and pages",
+    "Use index.ts in each folder/module for central exports",
+    "Use import aliases (@components, @hooks, @lib, etc.) wherever possible for cleaner imports"
   ]
 }

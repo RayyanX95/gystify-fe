@@ -3,59 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* --background: 249 250 251;  #F9FAFB - Light gray background */
-    --foreground: 17 24 39; /* #111827 - Dark gray text */
-    --card: 255 255 255; /* #FFFFFF - White cards */
-    --card-foreground: 17 24 39; /* #111827 - Dark text on cards */
-    --popover: 255 255 255; /* #FFFFFF */
-    --popover-foreground: 17 24 39; /* #111827 */
-    --primary: 79 70 229; /* #4F46E5 - Indigo primary */
-    --primary-foreground: 255 255 255; /* White text on primary */
-    --secondary: 99 102 241; /* #6366F1 - Indigo secondary */
-    --secondary-foreground: 255 255 255; /* White text on secondary */
-    --muted: 243 244 246; /* #F3F4F6 - Light gray muted */
-    --muted-foreground: 107 114 128; /* #6B7280 - Medium gray text */
-    --accent: 251 191 36; /* #FBBF24 - Amber accent (only for highlights) */
-    --accent-foreground: 17 24 39; /* Dark text on accent */
-    --destructive: 239 68 68; /* #EF4444 - Red for errors */
-    --destructive-foreground: 255 255 255; /* White text on destructive */
-    --border: 229 231 235; /* #E5E7EB - Light gray borders */
-    --input: 229 231 235; /* #E5E7EB - Input borders */
-    --ring: 79 70 229; /* #4F46E5 - Focus ring color */
-    --radius: 0.5rem; /* Border radius */
-  }
-  }
-
-  .dark {
-    --background: 10 10 10;
-    --foreground: 237 237 237;
-    --card: 10 10 10;
-    --card-foreground: 237 237 237;
-    --popover: 10 10 10;
-    --popover-foreground: 237 237 237;
-    --primary: 79 70 229;
-    --primary-foreground: 255 255 255;
-    --secondary: 99 102 241;
-    --secondary-foreground: 255 255 255;
-    --muted: 38 38 38;
-    --muted-foreground: 163 163 163;
-    --accent: 251 191 36;
-    --accent-foreground: 10 10 10;
-    --destructive: 239 68 68;
-    --destructive-foreground: 255 255 255;
-    --border: 38 38 38;
-    --input: 38 38 38;
-    --ring: 79 70 229;
-  
-}
-
-@layer base {
   * {
-    @apply border-border;
+    border-color: #E5E7EB;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: #F9FAFB;
+    color: #111827;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
