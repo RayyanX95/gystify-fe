@@ -48,7 +48,7 @@ export default function HomePage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gray-50">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Why Choose EmailSummarizer?
+            Why Choose Summa?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Powerful features designed to streamline your email management and
@@ -113,8 +113,7 @@ export default function HomePage() {
           </h2>
           <p className="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
             Join thousands of professionals who have already revolutionized
-            their email workflow with EmailSummarizer. Start your free trial
-            today.
+            their email workflow with Summa. Start your free trial today.
           </p>
           <Button
             size="lg"

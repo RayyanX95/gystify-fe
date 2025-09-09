@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GoogleOAuthButton } from "@/components/ui/google-oauth-button";
 import { Eye, EyeOff, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { auth } from "@/lib/api";
@@ -51,7 +52,7 @@ export default function RegisterPage() {
       if (response.data) {
         login(response.data.token, response.data.user);
         toast({
-          title: "Welcome to EmailSummarizer!",
+          title: "Welcome to Summa!",
           description: "Your account has been created successfully.",
         });
         router.push("/dashboard");
@@ -78,7 +79,7 @@ export default function RegisterPage() {
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
           <CardDescription>
-            Join EmailSummarizer and start organizing your emails
+            Join Summa and start organizing your emails
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -165,6 +166,22 @@ export default function RegisterPage() {
               {isLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          {/* Google OAuth Button */}
+          <GoogleOAuthButton>Sign up with Gmail</GoogleOAuthButton>
+
           <div className="mt-6 text-center text-sm">
             <span className="text-muted-foreground">
               Already have an account?{" "}

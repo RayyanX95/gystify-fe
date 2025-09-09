@@ -8,10 +8,10 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <Link href="/" className="flex items-center space-x-2 mb-4 md:mb-0">
             <Mail className="h-6 w-6 text-indigo-600" />
-            <span className="font-semibold text-gray-900">EmailSummarizer</span>
+            <span className="font-semibold text-gray-900">Summa</span>
           </Link>
           <div className="text-sm text-gray-600">
-            © 2025 EmailSummarizer. All rights reserved.
+            © 2025 Summa. All rights reserved.
           </div>
         </div>
       </div>

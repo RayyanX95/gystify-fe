@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EmailSummarizer - AI-Powered Email Intelligence",
+  title: "Summa - AI-Powered Email Intelligence",
   description:
     "Transform your email overload into actionable insights with AI-powered summaries",
 };

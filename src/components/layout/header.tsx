@@ -14,9 +14,7 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
             <Mail className="h-8 w-8 text-indigo-600" />
-            <span className="text-xl font-bold text-gray-900">
-              EmailSummarizer
-            </span>
+            <span className="text-xl font-bold text-gray-900">Summa</span>
           </Link>
           <div className="flex items-center space-x-4">
             <Button

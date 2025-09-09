@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GoogleOAuthButton } from "@/components/ui/google-oauth-button";
 import { Mail, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { auth } from "@/lib/api";
@@ -64,9 +65,7 @@ export default function LoginPage() {
             </div>
           </div>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>
-            Sign in to your EmailSummarizer account
-          </CardDescription>
+          <CardDescription>Sign in to your Summa account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -112,6 +111,22 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          {/* Google OAuth Button */}
+          <GoogleOAuthButton>Connect Gmail Account</GoogleOAuthButton>
+
           <div className="mt-6 text-center text-sm">
             <span className="text-muted-foreground">
               Don&apos;t have an account?{" "}
