@@ -157,7 +157,8 @@ Update your `.env.local`:
 
 ```bash
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id_here
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_HOSTNAME
+=http://localhost:3000
 ```
 
 ## Flow Summary
