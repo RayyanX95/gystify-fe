@@ -74,16 +74,10 @@ export default function GoogleCallbackPage() {
           | GoogleExchangeNew
           | Record<string, unknown>;
 
-        // The backend may return two possible shapes:
-        // Old: { success: boolean, token?: string, user?: { id,email,name,picture? }, message? }
-        // New: { accessToken: string, user: { id, email, firstName, lastName, profilePicture } }
-        // Support both shapes for a smooth migration.
-
         // Normalize into token and user for the auth store
         let token: string | undefined;
         let normalizedUser: NormalizedUser | undefined;
 
-        // New shape
         if ((res as GoogleExchangeNew).accessToken) {
           token = (res as GoogleExchangeNew).accessToken;
           const u = (res as GoogleExchangeNew).user;
@@ -98,8 +92,6 @@ export default function GoogleCallbackPage() {
             };
           }
         }
-
-        // No old-shape fallback: expect the new backend shape only
 
         if (token && normalizedUser) {
           setStatus("success");
