@@ -35,13 +35,23 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
           isLoading: false,
         }),
-      logout: () =>
+      logout: () => {
+        // Clear zustand store
         set({
           token: null,
           user: null,
           isAuthenticated: false,
           isLoading: false,
-        }),
+        });
+
+        // Clear localStorage
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("auth_token");
+          // Clear cookie by setting expired date
+          document.cookie =
+            "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        }
+      },
       setLoading: (loading: boolean) => set({ isLoading: loading }),
     }),
     {

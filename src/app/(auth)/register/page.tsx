@@ -50,7 +50,19 @@ export default function RegisterPage() {
       const response = await auth.register({ name, email, password });
 
       if (response.data) {
-        login(response.data.token, response.data.user);
+        const { token, user } = response.data;
+
+        // Set token in zustand store
+        login(token, user);
+
+        // Set token in localStorage for API calls
+        localStorage.setItem("auth_token", token);
+
+        // Set token in cookie for middleware
+        document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Secure=${
+          window.location.protocol === "https:"
+        };`;
+
         toast({
           title: "Welcome to Summa!",
           description: "Your account has been created successfully.",

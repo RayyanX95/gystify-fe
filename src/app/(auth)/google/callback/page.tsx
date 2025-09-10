@@ -97,6 +97,14 @@ export default function GoogleCallbackPage() {
           setStatus("success");
           setMessage("Google account connected successfully!");
 
+          // Set token in localStorage for API calls
+          localStorage.setItem("auth_token", token);
+
+          // Set token in cookie for middleware
+          document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Secure=${
+            window.location.protocol === "https:"
+          };`;
+
           // Update auth store with user info (auth store expects {id,email,name})
           login(token, {
             id: normalizedUser.id,
