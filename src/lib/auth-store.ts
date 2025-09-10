@@ -14,6 +14,7 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  hasHydrated: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
   setLoading: (loading: boolean) => void;
@@ -26,6 +27,7 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isAuthenticated: false,
       isLoading: false,
+      hasHydrated: false,
       login: (token: string, user: User) =>
         set({
           token,
@@ -49,6 +51,15 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
+      // called when rehydration starts/finishes; set hasHydrated when done
+      onRehydrateStorage: () => () => {
+        // ensure the store knows rehydration has completed
+        // we use a microtask to ensure set is available
+        Promise.resolve().then(() => {
+          // set hasHydrated to true without overwriting other fields
+          useAuthStore.setState({ hasHydrated: true } as Partial<AuthState>);
+        });
+      },
     }
   )
 );
