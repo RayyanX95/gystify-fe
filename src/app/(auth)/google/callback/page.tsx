@@ -8,6 +8,25 @@ import { useAuthStore } from "@/lib/auth-store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 
+// Exchange response shapes (moved to top and using interfaces)
+interface GoogleExchangeNew {
+  accessToken: string;
+  user: {
+    id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    profilePicture?: string;
+  };
+}
+
+interface NormalizedUser {
+  id: string;
+  email: string;
+  name: string;
+  picture?: string;
+}
+
 type AuthStatus = "loading" | "success" | "error";
 
 export default function GoogleCallbackPage() {
@@ -51,12 +70,47 @@ export default function GoogleCallbackPage() {
           state || undefined
         );
 
-        if (result.success && result.user) {
+        const res = result as unknown as
+          | GoogleExchangeNew
+          | Record<string, unknown>;
+
+        // The backend may return two possible shapes:
+        // Old: { success: boolean, token?: string, user?: { id,email,name,picture? }, message? }
+        // New: { accessToken: string, user: { id, email, firstName, lastName, profilePicture } }
+        // Support both shapes for a smooth migration.
+
+        // Normalize into token and user for the auth store
+        let token: string | undefined;
+        let normalizedUser: NormalizedUser | undefined;
+
+        // New shape
+        if ((res as GoogleExchangeNew).accessToken) {
+          token = (res as GoogleExchangeNew).accessToken;
+          const u = (res as GoogleExchangeNew).user;
+          if (u) {
+            normalizedUser = {
+              id: u.id,
+              email: u.email,
+              name: `${u.firstName || ""}${
+                u.lastName ? " " + u.lastName : ""
+              }`.trim(),
+              picture: u.profilePicture,
+            };
+          }
+        }
+
+        // No old-shape fallback: expect the new backend shape only
+
+        if (token && normalizedUser) {
           setStatus("success");
           setMessage("Google account connected successfully!");
 
-          // Update auth store with user info
-          login(result.token || "temp-token", result.user);
+          // Update auth store with user info (auth store expects {id,email,name})
+          login(token, {
+            id: normalizedUser.id,
+            email: normalizedUser.email,
+            name: normalizedUser.name,
+          });
 
           toast({
             title: "Success!",
@@ -69,11 +123,19 @@ export default function GoogleCallbackPage() {
           }, 2000);
         } else {
           setStatus("error");
-          setMessage(result.message || "Failed to connect Google account.");
+          // Prefer a message from the response, otherwise a generic one
+          const rawMessage =
+            (res as Record<string, unknown>).message ??
+            (res as Record<string, unknown>).error;
+          const messageFromResp =
+            typeof rawMessage === "string"
+              ? rawMessage
+              : JSON.stringify(rawMessage || "");
+          setMessage(messageFromResp || "Failed to connect Google account.");
           toast({
             title: "Connection Failed",
             description:
-              result.message || "Failed to connect your Google account.",
+              messageFromResp || "Failed to connect your Google account.",
             variant: "destructive",
           });
         }
