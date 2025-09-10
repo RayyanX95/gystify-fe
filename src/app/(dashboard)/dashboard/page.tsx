@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthStore } from "@/lib/auth-store";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,50 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Mail, Settings, LogOut, BarChart3, Clock, Zap } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { Mail, Settings, BarChart3, Clock, Zap } from "lucide-react";
 
 export default function DashboardPage() {
-  const { user, logout } = useAuthStore();
-  const router = useRouter();
-  const { toast } = useToast();
-
-  const handleLogout = () => {
-    logout();
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-    router.push("/");
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
-      <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Mail className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">Summa</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">
-                Welcome, {user?.name}
-              </span>
-              <Button variant="ghost" size="sm">
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
-              </Button>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
