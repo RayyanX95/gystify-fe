@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Mail, Settings, BarChart3, Clock, Zap } from "lucide-react";
+import { MotionDiv } from "@/lib/motion";
 
 export default function DashboardPage() {
   return (
@@ -18,7 +19,12 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <MotionDiv
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ staggerChildren: 0.1 }}
+        >
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -59,10 +65,15 @@ export default function DashboardPage() {
               </p>
             </CardContent>
           </Card>
-        </div>
+        </MotionDiv>
 
         {/* Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <MotionDiv
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, staggerChildren: 0.1 }}
+        >
           <Card>
             <CardHeader>
               <CardTitle>Recent Summaries</CardTitle>
@@ -147,7 +158,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </MotionDiv>
       </main>
     </div>
   );

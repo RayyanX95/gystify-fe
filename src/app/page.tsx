@@ -7,26 +7,47 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Mail, Zap, Clock, Shield } from "lucide-react";
+import { MotionDiv, MotionMain, MotionSpan } from "@/lib/motion";
 
 export default function HomePage() {
   return (
     <div className="bg-gray-50">
       {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-white">
+      <MotionMain
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-white"
+      >
         <div className="text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
+          <MotionSpan
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6"
+          >
             Summarize Your{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-500">
               Emails
             </span>{" "}
             Instantly
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+          </MotionSpan>
+          <MotionSpan
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.12 }}
+            className="text-xl text-gray-600 max-w-3xl mx-auto mb-10"
+          >
             Transform your email overload into clear, actionable insights with
             AI-powered summarization. Save time, stay organized, and never miss
             what matters.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          </MotionSpan>
+          <MotionDiv
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, staggerChildren: 0.1 }}
+          >
             <Button
               size="lg"
               className="text-lg px-8 py-6 bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -40,13 +61,18 @@ export default function HomePage() {
             >
               Watch Demo
             </Button>
-          </div>
+          </MotionDiv>
         </div>
-      </section>
+      </MotionMain>
 
       {/* Features Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gray-50">
-        <div className="text-center mb-16">
+        <MotionDiv
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Why Choose Summa?
           </h2>
@@ -54,9 +80,14 @@ export default function HomePage() {
             Powerful features designed to streamline your email management and
             boost your productivity.
           </p>
-        </div>
+        </MotionDiv>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <MotionDiv
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ staggerChildren: 0.06 }}
+        >
           {[
             {
               icon: <Zap className="h-8 w-8 text-indigo-600" />,
@@ -85,7 +116,7 @@ export default function HomePage() {
           ].map((feature, index) => (
             <Card
               key={index}
-              className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white"
+              className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white"
             >
               <CardHeader className="text-center pb-4">
                 <div className="mx-auto mb-4 p-3 bg-indigo-50 rounded-full w-fit">
@@ -102,12 +133,17 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ))}
-        </div>
+        </MotionDiv>
       </section>
 
       {/* CTA Section */}
       <section className="bg-white border-t">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <MotionDiv
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
             Ready to Transform Your Email Experience?
           </h2>
@@ -121,7 +157,7 @@ export default function HomePage() {
           >
             Get Started for Free
           </Button>
-        </div>
+        </MotionDiv>
       </section>
     </div>
   );

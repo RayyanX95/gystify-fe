@@ -1,4 +1,5 @@
 import * as React from "react";
+import { MotionDiv } from "@/lib/motion";
 
 import { cn } from "@/lib/utils";
 
@@ -6,8 +7,12 @@ const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <MotionDiv
     ref={ref}
+    initial={{ opacity: 0, y: 6 }}
+    animate={{ opacity: 1, y: 0 }}
+    whileHover={{ translateY: -6 }}
+    transition={{ type: "spring", stiffness: 250, damping: 25 }}
     className={cn(
       "rounded-xl border bg-card text-card-foreground shadow",
       className

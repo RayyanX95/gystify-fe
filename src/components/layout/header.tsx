@@ -1,5 +1,6 @@
 "use client";
 
+import { MotionSpan, MotionDiv } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
 import { useAuthStore } from "@/lib/auth-store";
@@ -22,7 +23,12 @@ export function Header() {
   };
 
   return (
-    <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+    <MotionDiv
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
@@ -32,9 +38,14 @@ export function Header() {
           {hasHydrated ? (
             isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-muted-foreground">
+                <MotionSpan
+                  className="text-sm text-muted-foreground"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                >
                   Welcome, {user?.name}
-                </span>
+                </MotionSpan>
                 <Button variant="ghost" size="sm">
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -70,7 +81,7 @@ export function Header() {
           )}
         </div>
       </div>
-    </header>
+    </MotionDiv>
   );
 }
 
