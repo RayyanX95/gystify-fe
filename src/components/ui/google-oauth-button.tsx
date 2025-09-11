@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GoogleOAuthService } from "@/lib/google-oauth";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lib/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 interface GoogleOAuthButtonProps {

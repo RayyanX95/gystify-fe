@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lib/hooks/use-toast";
 import { useAuthStore } from "@/lib/auth-store";
 import { LogOut, Mail, Settings } from "lucide-react";
 

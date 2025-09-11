@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GoogleOAuthButton } from "@/components/ui/google-oauth-button";
 import { Mail, Eye, EyeOff } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lib/hooks/use-toast";
 import { auth } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 

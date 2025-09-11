@@ -13,7 +13,8 @@
     "architecture": [
       "Use Next.js App Router with /app folder",
       "Use server components by default, client components only when necessary",
-      "Organize code as src/components, src/hooks, src/lib, src/providers, src/app/(routes)"
+      "Organize code as src/components, src/hooks, src/lib, src/providers, src/app/(routes)",
+      "File Naming Convention: All files in `utils`, `hooks`, and `store` directories should use **camelCase**."
     ],
     "styling": [
       "Use TailwindCSS utility classes for layout and styling",
