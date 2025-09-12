@@ -25,8 +25,6 @@ export default function DashboardPage() {
     queryFn: () => ApiService.send<EmailSummary>('POST', 'summaryGenerate'),
   });
 
-  console.log('summary', data);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -79,29 +77,45 @@ export default function DashboardPage() {
         {/* Features Section */}
         <motion.section className="mb-8" {...scrollFadeInUp}>
           <motion.div
-            className=" max-w-3xl mx-auto"
+            className="max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card>
-              <CardHeader>
-                <CardTitle>Today’s Summary</CardTitle>
-                <CardDescription>Your latest today emails summary</CardDescription>
+            <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
+              <CardHeader className="pb-0">
+                <CardTitle className="text-2xl font-bold text-primary">
+                  Daily Email Summary
+                </CardTitle>
+                <CardDescription className="text-base text-muted-foreground">
+                  View and update your summary for today. Only one summary is kept per day.
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  Summary
-                  <p className="text-sm text-muted-foreground">{data?.summary}</p>
-                  Key Insights:
-                  <ul className="list-disc list-inside text-sm text-muted-foreground">
-                    {data?.keyInsights
-                      ?.split(/\d+\.\s?/)
-                      .filter((insight: string) => insight.trim() !== '')
-                      .map((insight: string, index: number) => (
-                        <li key={index}>{insight.trim()}</li>
-                      ))}
-                  </ul>
+                <div className="space-y-6">
+                  <div>
+                    <span className="block text-lg font-semibold text-foreground mb-1">
+                      Today&apos;s Overview
+                    </span>
+                    <p className="text-base text-muted-foreground bg-muted/30 rounded-md p-3 shadow-sm">
+                      {data?.summary}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="block text-lg font-semibold text-foreground mb-1">
+                      Key Insights & Highlights
+                    </span>
+                    <ul className="list-disc list-inside text-base text-muted-foreground pl-4">
+                      {data?.keyInsights
+                        ?.split(/\d+\.\s?/)
+                        .filter((insight: string) => insight.trim() !== '')
+                        .map((insight: string, index: number) => (
+                          <li key={index} className="mb-2 leading-relaxed">
+                            {insight.trim()}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
                 </div>
               </CardContent>
             </Card>
