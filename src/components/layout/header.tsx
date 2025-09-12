@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionSpan, MotionDiv } from "@/lib/motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
 import { useAuthStore } from "@/lib/auth-store";
@@ -23,7 +23,7 @@ export function Header() {
   };
 
   return (
-    <MotionDiv
+    <motion.div
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -38,14 +38,14 @@ export function Header() {
           {hasHydrated ? (
             isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <MotionSpan
+                <motion.span
                   className="text-sm text-muted-foreground"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.15 }}
                 >
                   Welcome, {user?.name}
-                </MotionSpan>
+                </motion.span>
                 <Button variant="ghost" size="sm">
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -81,7 +81,7 @@ export function Header() {
           )}
         </div>
       </div>
-    </MotionDiv>
+    </motion.div>
   );
 }
 

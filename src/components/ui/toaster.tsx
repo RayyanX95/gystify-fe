@@ -9,7 +9,7 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 import { useToast } from "@/lib/hooks/use-toast";
-import { MotionDiv } from "@/lib/motion";
+import { motion } from "framer-motion";
 
 export function Toaster() {
   const { toasts } = useToast();
@@ -19,7 +19,7 @@ export function Toaster() {
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
-            <MotionDiv
+            <motion.div
               initial={{ opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 8 }}
@@ -30,7 +30,7 @@ export function Toaster() {
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}
-            </MotionDiv>
+            </motion.div>
             {action}
             <ToastClose />
           </Toast>

@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Mail, Settings, BarChart3, Clock, Zap } from "lucide-react";
 import {
-  MotionDiv,
   scrollFadeInUp,
   scrollStaggerContainer,
   scrollStaggerChild,
 } from "@/lib/motion";
+import { motion } from "framer-motion";
 
 export default function DashboardPage() {
   return (
@@ -24,11 +24,11 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <MotionDiv
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
           {...scrollStaggerContainer}
         >
-          <MotionDiv {...scrollStaggerChild}>
+          <motion.div {...scrollStaggerChild}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -43,8 +43,8 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-          </MotionDiv>
-          <MotionDiv {...scrollStaggerChild}>
+          </motion.div>
+          <motion.div {...scrollStaggerChild}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -59,8 +59,8 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-          </MotionDiv>
-          <MotionDiv {...scrollStaggerChild}>
+          </motion.div>
+          <motion.div {...scrollStaggerChild}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -75,11 +75,11 @@ export default function DashboardPage() {
                 </p>
               </CardContent>
             </Card>
-          </MotionDiv>
-        </MotionDiv>
+          </motion.div>
+        </motion.div>
 
         {/* Recent Activity */}
-        <MotionDiv
+        <motion.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-6"
           {...scrollFadeInUp}
         >
@@ -167,7 +167,7 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </MotionDiv>
+        </motion.div>
       </main>
     </div>
   );

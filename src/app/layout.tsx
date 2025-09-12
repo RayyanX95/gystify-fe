@@ -5,7 +5,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { AppAnimator } from "@/components/layout/AppAnimator";
+import { AppAnimator } from "@/providers/AppAnimator";
 
 const inter = Inter({
   variable: "--font-inter",

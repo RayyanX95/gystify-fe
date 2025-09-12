@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { GoogleOAuthService } from "@/lib/google-oauth";
 import { useToast } from "@/lib/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { MotionDiv } from "@/lib/motion";
+import { motion } from "framer-motion";
 
 interface GoogleOAuthButtonProps {
   variant?: "default" | "outline" | "secondary" | "ghost" | "destructive";
@@ -53,7 +53,7 @@ export const GoogleOAuthButton = ({
   };
 
   return (
-    <MotionDiv
+    <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -94,6 +94,6 @@ export const GoogleOAuthButton = ({
           </>
         )}
       </Button>
-    </MotionDiv>
+    </motion.div>
   );
 };

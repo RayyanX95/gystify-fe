@@ -1,10 +1,11 @@
+"use client";
 import { Mail } from "lucide-react";
 import Link from "next/link";
-import { MotionDiv, MotionSpan } from "@/lib/motion";
+import { motion } from "framer-motion";
 
 export function Footer() {
   return (
-    <MotionDiv
+    <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -14,18 +15,18 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <Link href="/" className="flex items-center space-x-2 mb-4 md:mb-0">
             <Mail className="h-6 w-6 text-indigo-600" />
-            <MotionSpan
+            <motion.span
               whileHover={{ x: 4 }}
               className="font-semibold text-gray-900"
             >
               Summa
-            </MotionSpan>
+            </motion.span>
           </Link>
           <div className="text-sm text-gray-600">
             © 2025 Summa. All rights reserved.
           </div>
         </div>
       </div>
-    </MotionDiv>
+    </motion.div>
   );
 }
