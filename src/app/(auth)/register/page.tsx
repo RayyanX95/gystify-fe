@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GoogleOAuthButton } from '@/components/ui/GoogleOauthButton';
+import { GoogleOAuthButton } from '@/components';
 import { Eye, EyeOff, User } from 'lucide-react';
 import { useToast } from '@/lib/hooks/useToast';
 import { auth } from '@/lib/api';

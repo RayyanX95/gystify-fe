@@ -1,19 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { GoogleOAuthButton } from '@/components/ui/GoogleOauthButton';
 import { Mail, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/lib/hooks/useToast';
 import { auth } from '@/lib/api';
 import { useAuthStore } from '@/lib/authStore';
+import { GoogleOAuthButton } from '@/components';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -25,7 +24,7 @@ export default function LoginPage() {
   const { toast } = useToast();
   const { login } = useAuthStore();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 

@@ -3,8 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { QueryProvider } from './QueryProvider';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
+import { Footer, Header } from '@/components';
 
 // Dynamically import components with no SSR to prevent hydration issues
 const Toaster = dynamic(() => import('@/components/ui/toaster').then((m) => m.Toaster), {

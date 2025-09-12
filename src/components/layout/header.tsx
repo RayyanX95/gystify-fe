@@ -7,6 +7,7 @@ import { useAuthStore } from '@/lib/authStore';
 import { LogOut, Mail, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export function Header() {
   const { user, logout, isAuthenticated, hasHydrated } = useAuthStore();
@@ -30,10 +31,14 @@ export function Header() {
   const headerContent = (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
-        <div className="flex items-center space-x-2">
-          <Mail className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-foreground">Summa</span>
-        </div>
+        <Link href="/">
+          <div className="flex items-center space-x-2">
+            <Mail className="h-8 w-8 text-primary" />
+            <motion.span whileHover={{ x: 4 }} className="font-bold text-foreground text-2xl">
+              Summa
+            </motion.span>
+          </div>
+        </Link>
         {hasHydrated ? (
           isAuthenticated ? (
             <div className="flex items-center space-x-4">

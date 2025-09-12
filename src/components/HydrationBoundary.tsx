@@ -7,7 +7,7 @@ interface HydrationBoundaryProps {
   fallback?: React.ReactNode;
 }
 
-export function HydrationBoundary({ children, fallback = null }: HydrationBoundaryProps) {
+export const HydrationBoundary = ({ children, fallback = null }: HydrationBoundaryProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -19,4 +19,4 @@ export function HydrationBoundary({ children, fallback = null }: HydrationBounda
   }
 
   return <>{children}</>;
-}
+};

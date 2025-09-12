@@ -11,7 +11,7 @@ export default function HeroSection() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+      className="section-layout"
     >
       <div className="text-center">
         <motion.h1
