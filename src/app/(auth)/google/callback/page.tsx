@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { GoogleOAuthService } from "@/lib/google-oauth";
-import { useToast } from "@/lib/hooks/use-toast";
-import { useAuthStore } from "@/lib/auth-store";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { GoogleOAuthService } from '@/lib/googleOauth';
+import { useToast } from '@/lib/hooks/useToast';
+import { useAuthStore } from '@/lib/authStore';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 
 // Exchange response shapes (moved to top and using interfaces)
 interface GoogleExchangeNew {
@@ -27,11 +27,11 @@ interface NormalizedUser {
   picture?: string;
 }
 
-type AuthStatus = "loading" | "success" | "error";
+type AuthStatus = 'loading' | 'success' | 'error';
 
 export default function GoogleCallbackPage() {
-  const [status, setStatus] = useState<AuthStatus>("loading");
-  const [message, setMessage] = useState<string>("");
+  const [status, setStatus] = useState<AuthStatus>('loading');
+  const [message, setMessage] = useState<string>('');
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,38 +41,33 @@ export default function GoogleCallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        const code = searchParams.get("code");
-        const state = searchParams.get("state");
-        const error = searchParams.get("error");
+        const code = searchParams.get('code');
+        const state = searchParams.get('state');
+        const error = searchParams.get('error');
 
         if (error) {
-          setStatus("error");
+          setStatus('error');
           setMessage(`Authentication failed: ${error}`);
           toast({
-            title: "Authentication Failed",
-            description: "Google authentication was cancelled or failed.",
-            variant: "destructive",
+            title: 'Authentication Failed',
+            description: 'Google authentication was cancelled or failed.',
+            variant: 'destructive',
           });
           return;
         }
 
         if (!code) {
-          setStatus("error");
-          setMessage("No authorization code received from Google.");
+          setStatus('error');
+          setMessage('No authorization code received from Google.');
           return;
         }
 
-        setMessage("Exchanging authorization code...");
+        setMessage('Exchanging authorization code...');
 
         const googleOAuth = new GoogleOAuthService();
-        const result = await googleOAuth.exchangeCodeForTokens(
-          code,
-          state || undefined
-        );
+        const result = await googleOAuth.exchangeCodeForTokens(code, state || undefined);
 
-        const res = result as unknown as
-          | GoogleExchangeNew
-          | Record<string, unknown>;
+        const res = result as unknown as GoogleExchangeNew | Record<string, unknown>;
 
         // Normalize into token and user for the auth store
         let token: string | undefined;
@@ -85,24 +80,22 @@ export default function GoogleCallbackPage() {
             normalizedUser = {
               id: u.id,
               email: u.email,
-              name: `${u.firstName || ""}${
-                u.lastName ? " " + u.lastName : ""
-              }`.trim(),
+              name: `${u.firstName || ''}${u.lastName ? ' ' + u.lastName : ''}`.trim(),
               picture: u.profilePicture,
             };
           }
         }
 
         if (token && normalizedUser) {
-          setStatus("success");
-          setMessage("Google account connected successfully!");
+          setStatus('success');
+          setMessage('Google account connected successfully!');
 
           // Set token in localStorage for API calls
-          localStorage.setItem("auth_token", token);
+          localStorage.setItem('auth_token', token);
 
           // Set token in cookie for middleware
           document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Secure=${
-            window.location.protocol === "https:"
+            window.location.protocol === 'https:'
           };`;
 
           // Update auth store with user info (auth store expects {id,email,name})
@@ -113,40 +106,36 @@ export default function GoogleCallbackPage() {
           });
 
           toast({
-            title: "Success!",
-            description: "Your Google account has been connected successfully.",
+            title: 'Success!',
+            description: 'Your Google account has been connected successfully.',
           });
 
           // Redirect to dashboard after success
           setTimeout(() => {
-            router.push("/dashboard");
+            router.push('/dashboard');
           }, 2000);
         } else {
-          setStatus("error");
+          setStatus('error');
           // Prefer a message from the response, otherwise a generic one
           const rawMessage =
-            (res as Record<string, unknown>).message ??
-            (res as Record<string, unknown>).error;
+            (res as Record<string, unknown>).message ?? (res as Record<string, unknown>).error;
           const messageFromResp =
-            typeof rawMessage === "string"
-              ? rawMessage
-              : JSON.stringify(rawMessage || "");
-          setMessage(messageFromResp || "Failed to connect Google account.");
+            typeof rawMessage === 'string' ? rawMessage : JSON.stringify(rawMessage || '');
+          setMessage(messageFromResp || 'Failed to connect Google account.');
           toast({
-            title: "Connection Failed",
-            description:
-              messageFromResp || "Failed to connect your Google account.",
-            variant: "destructive",
+            title: 'Connection Failed',
+            description: messageFromResp || 'Failed to connect your Google account.',
+            variant: 'destructive',
           });
         }
       } catch (error) {
-        setStatus("error");
-        setMessage("An unexpected error occurred.");
-        console.error("Google OAuth callback error:", error);
+        setStatus('error');
+        setMessage('An unexpected error occurred.');
+        console.error('Google OAuth callback error:', error);
         toast({
-          title: "Error",
-          description: "An unexpected error occurred during authentication.",
-          variant: "destructive",
+          title: 'Error',
+          description: 'An unexpected error occurred during authentication.',
+          variant: 'destructive',
         });
       }
     };
@@ -155,10 +144,10 @@ export default function GoogleCallbackPage() {
   }, [searchParams, router, toast, login]);
 
   const handleRedirect = () => {
-    if (status === "success") {
-      router.push("/dashboard");
+    if (status === 'success') {
+      router.push('/dashboard');
     } else {
-      router.push("/login");
+      router.push('/login');
     }
   };
 
@@ -167,31 +156,25 @@ export default function GoogleCallbackPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            {status === "loading" && (
-              <Loader2 className="h-12 w-12 text-primary animate-spin" />
-            )}
-            {status === "success" && (
-              <CheckCircle className="h-12 w-12 text-success" />
-            )}
-            {status === "error" && (
-              <XCircle className="h-12 w-12 text-destructive" />
-            )}
+            {status === 'loading' && <Loader2 className="h-12 w-12 text-primary animate-spin" />}
+            {status === 'success' && <CheckCircle className="h-12 w-12 text-success" />}
+            {status === 'error' && <XCircle className="h-12 w-12 text-destructive" />}
           </div>
           <CardTitle className="text-2xl">
-            {status === "loading" && "Connecting your account..."}
-            {status === "success" && "Account Connected!"}
-            {status === "error" && "Connection Failed"}
+            {status === 'loading' && 'Connecting your account...'}
+            {status === 'success' && 'Account Connected!'}
+            {status === 'error' && 'Connection Failed'}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center">
           <p className="text-muted-foreground mb-6">{message}</p>
 
-          {status !== "loading" && (
+          {status !== 'loading' && (
             <button
               onClick={handleRedirect}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
             >
-              {status === "success" ? "Go to Dashboard" : "Back to Login"}
+              {status === 'success' ? 'Go to Dashboard' : 'Back to Login'}
             </button>
           )}
         </CardContent>

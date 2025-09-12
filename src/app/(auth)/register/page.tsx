@@ -1,30 +1,24 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { GoogleOAuthButton } from "@/components/ui/google-oauth-button";
-import { Eye, EyeOff, User } from "lucide-react";
-import { useToast } from "@/lib/hooks/use-toast";
-import { auth } from "@/lib/api";
-import { useAuthStore } from "@/lib/auth-store";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { GoogleOAuthButton } from '@/components/ui/GoogleOauthButton';
+import { Eye, EyeOff, User } from 'lucide-react';
+import { useToast } from '@/lib/hooks/useToast';
+import { auth } from '@/lib/api';
+import { useAuthStore } from '@/lib/authStore';
 
 export default function RegisterPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,9 +32,9 @@ export default function RegisterPage() {
 
     if (password !== confirmPassword) {
       toast({
-        title: "Password mismatch",
-        description: "Passwords do not match. Please try again.",
-        variant: "destructive",
+        title: 'Password mismatch',
+        description: 'Passwords do not match. Please try again.',
+        variant: 'destructive',
       });
       return;
     }
@@ -57,24 +51,24 @@ export default function RegisterPage() {
         login(token, user);
 
         // Set token in localStorage for API calls
-        localStorage.setItem("auth_token", token);
+        localStorage.setItem('auth_token', token);
 
         // Set token in cookie for middleware
         document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Secure=${
-          window.location.protocol === "https:"
+          window.location.protocol === 'https:'
         };`;
 
         toast({
-          title: "Welcome to Summa!",
-          description: "Your account has been created successfully.",
+          title: 'Welcome to Summa!',
+          description: 'Your account has been created successfully.',
         });
-        router.push("/dashboard");
+        router.push('/dashboard');
       }
     } catch {
       toast({
-        title: "Registration failed",
-        description: "Unable to create account. Please try again.",
-        variant: "destructive",
+        title: 'Registration failed',
+        description: 'Unable to create account. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -91,9 +85,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>
-            Join Summa and start organizing your emails
-          </CardDescription>
+          <CardDescription>Join Summa and start organizing your emails</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -126,7 +118,7 @@ export default function RegisterPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -140,11 +132,7 @@ export default function RegisterPage() {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   disabled={isLoading}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
@@ -153,7 +141,7 @@ export default function RegisterPage() {
               <div className="relative">
                 <Input
                   id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -176,7 +164,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Create account"}
+              {isLoading ? 'Creating account...' : 'Create account'}
             </Button>
           </form>
 
@@ -186,9 +174,7 @@ export default function RegisterPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
@@ -196,9 +182,7 @@ export default function RegisterPage() {
           <GoogleOAuthButton>Sign up with Gmail</GoogleOAuthButton>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">
-              Already have an account?{" "}
-            </span>
+            <span className="text-muted-foreground">Already have an account? </span>
             <Link href="/login" className="text-primary hover:underline">
               Sign in
             </Link>

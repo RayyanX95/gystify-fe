@@ -1,29 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { GoogleOAuthButton } from "@/components/ui/google-oauth-button";
-import { Mail, Eye, EyeOff } from "lucide-react";
-import { useToast } from "@/lib/hooks/use-toast";
-import { auth } from "@/lib/api";
-import { useAuthStore } from "@/lib/auth-store";
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { GoogleOAuthButton } from '@/components/ui/GoogleOauthButton';
+import { Mail, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/lib/hooks/useToast';
+import { auth } from '@/lib/api';
+import { useAuthStore } from '@/lib/authStore';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,24 +39,24 @@ export default function LoginPage() {
         login(token, user);
 
         // Set token in localStorage for API calls
-        localStorage.setItem("auth_token", token);
+        localStorage.setItem('auth_token', token);
 
         // Set token in cookie for middleware
         document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Secure=${
-          window.location.protocol === "https:"
+          window.location.protocol === 'https:'
         };`;
 
         toast({
-          title: "Welcome back!",
-          description: "You have been successfully logged in.",
+          title: 'Welcome back!',
+          description: 'You have been successfully logged in.',
         });
-        router.push("/dashboard");
+        router.push('/dashboard');
       }
     } catch {
       toast({
-        title: "Login failed",
-        description: "Invalid email or password. Please try again.",
-        variant: "destructive",
+        title: 'Login failed',
+        description: 'Invalid email or password. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -100,7 +94,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -113,16 +107,12 @@ export default function LoginPage() {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   disabled={isLoading}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
 
@@ -132,9 +122,7 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
 
@@ -142,9 +130,7 @@ export default function LoginPage() {
           <GoogleOAuthButton>Connect Gmail Account</GoogleOAuthButton>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">
-              Don&apos;t have an account?{" "}
-            </span>
+            <span className="text-muted-foreground">Don&apos;t have an account? </span>
             <Link href="/register" className="text-primary hover:underline">
               Sign up
             </Link>

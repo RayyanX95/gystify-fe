@@ -37,13 +37,13 @@ src/
 ├── components/            # Reusable React components
 │   └── ui/               # shadcn/ui components (Button, Card, etc.)
 ├── hooks/                 # Custom React hooks
-│   └── use-toast.ts      # Toast notification hook
+│   └── useToast.ts       # Toast notification hook
 ├── lib/                   # Utility functions and configurations
 │   ├── api.ts            # API client and auth endpoints
-│   ├── auth-store.ts     # Zustand auth store
+│   ├── authStore.ts      # Zustand auth store
 │   └── utils.ts          # Utility functions (cn helper)
 └── providers/             # React context providers
-    └── query-provider.tsx # React Query provider
+    └── QueryProvider.tsx  # React Query provider
 ```
 
 ## 🎨 Design System

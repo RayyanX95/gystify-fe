@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { GoogleOAuthService } from "@/lib/google-oauth";
-import { useToast } from "@/lib/hooks/use-toast";
-import { Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { GoogleOAuthService } from '@/lib/googleOauth';
+import { useToast } from '@/lib/hooks/useToast';
+import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface GoogleOAuthButtonProps {
-  variant?: "default" | "outline" | "secondary" | "ghost" | "destructive";
-  size?: "default" | "sm" | "lg" | "icon";
+  variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'destructive';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
   className?: string;
   children?: React.ReactNode;
 }
 
 export const GoogleOAuthButton = ({
-  variant = "outline",
-  size = "default",
-  className = "",
+  variant = 'outline',
+  size = 'default',
+  className = '',
   children,
 }: GoogleOAuthButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,9 +32,9 @@ export const GoogleOAuthButton = ({
       // Check if Google Client ID is configured
       if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
         toast({
-          title: "Configuration Error",
-          description: "Google OAuth is not properly configured.",
-          variant: "destructive",
+          title: 'Configuration Error',
+          description: 'Google OAuth is not properly configured.',
+          variant: 'destructive',
         });
         return;
       }
@@ -42,11 +42,11 @@ export const GoogleOAuthButton = ({
       // Initiate OAuth flow
       googleOAuth.initiateAuth();
     } catch (error) {
-      console.error("Google OAuth initiation error:", error);
+      console.error('Google OAuth initiation error:', error);
       toast({
-        title: "Authentication Error",
-        description: "Failed to initiate Google authentication.",
-        variant: "destructive",
+        title: 'Authentication Error',
+        description: 'Failed to initiate Google authentication.',
+        variant: 'destructive',
       });
       setIsLoading(false);
     }
@@ -56,7 +56,7 @@ export const GoogleOAuthButton = ({
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
     >
       <Button
         variant={variant}
@@ -90,7 +90,7 @@ export const GoogleOAuthButton = ({
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            {children || "Continue with Google"}
+            {children || 'Continue with Google'}
           </>
         )}
       </Button>

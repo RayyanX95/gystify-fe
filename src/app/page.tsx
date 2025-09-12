@@ -1,29 +1,16 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Mail, Zap, Clock, Shield } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Mail, Zap, Clock, Shield } from 'lucide-react';
 
-import { motion } from "framer-motion";
-import { useEffect } from "react";
-import { useToast } from "@/lib/hooks/use-toast";
+import { motion } from 'framer-motion';
+
+import { useToast } from '@/lib/hooks/useToast';
 
 export default function HomePage() {
   const { toast } = useToast();
-  useEffect(() => {
-    toast({
-      title: "Welcome to Summa!",
-      description: "Your AI-powered email summarization assistant.",
-      duration: 4000,
-      variant: "destructive",
-    });
-  }, []);
+
   return (
     <div className="bg-gray-50">
       {/* Hero Section */}
@@ -40,10 +27,10 @@ export default function HomePage() {
             transition={{ delay: 0.05 }}
             className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6"
           >
-            Summarize Your{" "}
+            Summarize Your{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">
               Emails
-            </span>{" "}
+            </span>{' '}
             Instantly
           </motion.h1>
           <motion.p
@@ -52,9 +39,8 @@ export default function HomePage() {
             transition={{ delay: 0.12 }}
             className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10"
           >
-            Transform your email overload into clear, actionable insights with
-            AI-powered summarization. Save time, stay organized, and never miss
-            what matters.
+            Transform your email overload into clear, actionable insights with AI-powered
+            summarization. Save time, stay organized, and never miss what matters.
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -67,10 +53,10 @@ export default function HomePage() {
               className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white"
               onClick={() =>
                 toast({
-                  title: "Get Started",
-                  description: "Sign up for a free trial to start using Summa.",
+                  title: 'Get Started',
+                  description: 'Sign up for a free trial to start using Summa.',
                   duration: 4000,
-                  variant: "destructive",
+                  variant: 'destructive',
                 })
               }
             >
@@ -90,12 +76,10 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <motion.div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Why Choose Summa?
-          </h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Why Choose Summa?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Powerful features designed to streamline your email management and
-            boost your productivity.
+            Powerful features designed to streamline your email management and boost your
+            productivity.
           </p>
         </motion.div>
 
@@ -106,27 +90,27 @@ export default function HomePage() {
           {[
             {
               icon: <Zap className="h-8 w-8 text-primary" />,
-              title: "AI-Powered",
+              title: 'AI-Powered',
               description:
-                "Advanced AI technology provides accurate and contextual email summaries in seconds.",
+                'Advanced AI technology provides accurate and contextual email summaries in seconds.',
             },
             {
               icon: <Clock className="h-8 w-8 text-primary" />,
-              title: "Save Time",
+              title: 'Save Time',
               description:
-                "Reduce email processing time by up to 80% with intelligent summarization.",
+                'Reduce email processing time by up to 80% with intelligent summarization.',
             },
             {
               icon: <Shield className="h-8 w-8 text-primary" />,
-              title: "Secure & Private",
+              title: 'Secure & Private',
               description:
-                "Enterprise-grade security ensures your email data remains private and protected.",
+                'Enterprise-grade security ensures your email data remains private and protected.',
             },
             {
               icon: <Mail className="h-8 w-8 text-primary" />,
-              title: "Easy Integration",
+              title: 'Easy Integration',
               description:
-                "Seamlessly connects with all major email providers including Gmail, Outlook, and more.",
+                'Seamlessly connects with all major email providers including Gmail, Outlook, and more.',
             },
           ].map((feature, index) => (
             <motion.div key={index} /*{...scrollStaggerChild} */>
@@ -158,13 +142,10 @@ export default function HomePage() {
             Ready to Transform Your Email Experience?
           </h2>
           <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Join thousands of professionals who have already revolutionized
-            their email workflow with Summa. Start your free trial today.
+            Join thousands of professionals who have already revolutionized their email workflow
+            with Summa. Start your free trial today.
           </p>
-          <Button
-            size="lg"
-            className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white"
-          >
+          <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white">
             Get Started for Free
           </Button>
         </motion.div>

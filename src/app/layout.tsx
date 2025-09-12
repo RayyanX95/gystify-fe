@@ -1,49 +1,39 @@
-import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
-import "./globals.css";
-import { QueryProvider } from "@/providers/query-provider";
-import { Toaster } from "@/components/ui/toaster";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { AppAnimator } from "@/providers/AppAnimator";
+import type { Metadata } from 'next';
+import { Inter, Poppins } from 'next/font/google';
+import './globals.css';
+import { Providers } from '@/providers';
+import { ReactNode } from 'react';
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 const poppins = Poppins({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
+  weight: ['400', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
 });
-
-export const metadata: Metadata = {
-  title: "Summa - AI-Powered Email Intelligence",
-  description:
-    "Transform your email overload into actionable insights with AI-powered summaries",
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${poppins.className} antialiased font-sans`}
+        suppressHydrationWarning
       >
-        <QueryProvider>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <AppAnimator>{children}</AppAnimator>
-            <Footer />
-          </div>
-          <Toaster />
-        </QueryProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'Summa - AI-Powered Email Intelligence',
+  description: 'Transform your email overload into actionable insights with AI-powered summaries',
+};

@@ -1,12 +1,11 @@
-import { endPoints } from "./endpoints";
-import { throwIfResNotOk } from "./throwIfResNotOk";
+import { endPoints } from './endpoints';
+import { throwIfResNotOk } from './throwIfResNotOk';
 
-import type { EndPoints } from "./endpoints";
-import type { ApiServiceOptions, HTTPMethod, SendOptions } from "./types";
-import { useAuthStore } from "../auth-store";
+import type { EndPoints } from './endpoints';
+import type { ApiServiceOptions, HTTPMethod, SendOptions } from './types';
+import { useAuthStore } from '../authStore';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
 class ApiServiceClass {
   private baseUrl: string;
@@ -17,15 +16,12 @@ class ApiServiceClass {
   private refreshingPromise: Promise<void> | null = null;
 
   constructor(options?: ApiServiceOptions) {
-    this.baseUrl = options?.baseUrl || "";
+    this.baseUrl = options?.baseUrl || '';
     this.getHeaders = options?.getHeaders || (() => ({}));
     this.onError = options?.onError;
   }
 
-  private buildUrl(
-    endpoint: string,
-    queryParams?: Record<string, string>
-  ): string {
+  private buildUrl(endpoint: string, queryParams?: Record<string, string>): string {
     let url = this.baseUrl + endpoint;
     if (queryParams && Object.keys(queryParams).length > 0) {
       const params = new URLSearchParams(queryParams).toString();
@@ -37,10 +33,7 @@ class ApiServiceClass {
   /**
    * Replace params in endpoint string, e.g. /posts/:id -> /posts/123
    */
-  private static fillParams(
-    endpoint: string,
-    params?: Record<string, string | number>
-  ): string {
+  private static fillParams(endpoint: string, params?: Record<string, string | number>): string {
     if (!params) return endpoint;
     return endpoint.replaceAll(/{(\w+)}/g, (_, key) => {
       if (params[key] === undefined) {
@@ -94,20 +87,21 @@ class ApiServiceClass {
   }
 
   private makeRequest = async (
-    withAuth: boolean,
     method: HTTPMethod,
     serviceName: EndPoints,
-    payload?: Record<string, unknown>,
-    queryParams?: Record<string, string>,
-    pathParams?: Record<string, string | number>
+    options: SendOptions = {}
   ): Promise<Response> => {
+    const { payload, queryParams, pathParams, withAuth } = options;
     let headers: Record<string, string> = {
       ...this.getHeaders(),
-      ...(payload ? { "Content-Type": "application/json" } : {}),
+      ...(payload ? { 'Content-Type': 'application/json' } : {}),
     };
+
+    console.log('withAuth', withAuth);
 
     if (withAuth) {
       const { token } = useAuthStore.getState();
+      console.log('token', token);
       if (token) {
         headers = {
           ...headers,
@@ -117,17 +111,14 @@ class ApiServiceClass {
     }
 
     // Fill dynamic params in endpoint if needed
-    const endpointWithParams = ApiServiceClass.fillParams(
-      endPoints[serviceName],
-      pathParams
-    );
+    const endpointWithParams = ApiServiceClass.fillParams(endPoints[serviceName], pathParams);
     const url = this.buildUrl(endpointWithParams, queryParams);
 
     return fetch(url, {
       method,
       headers,
       body: payload ? JSON.stringify(payload) : undefined,
-      credentials: "include",
+      credentials: 'include',
     });
   };
 
@@ -136,29 +127,17 @@ class ApiServiceClass {
     serviceName: EndPoints,
     options: SendOptions = {}
   ): Promise<T> {
-    const { payload, queryParams, pathParams, withAuth = true } = options;
+    const { withAuth = true } = options;
+
     try {
-      let res = await this.makeRequest(
-        withAuth,
-        method,
-        serviceName,
-        payload,
-        queryParams,
-        pathParams
-      );
+      let res = await this.makeRequest(method, serviceName, { ...options, withAuth });
+
       // If unauthorized and we used auth, try refresh once
       if (res.status === 401 && withAuth) {
         try {
           await this.refreshTokenIfNeeded();
           // retry the request once after refresh
-          res = await this.makeRequest(
-            withAuth,
-            method,
-            serviceName,
-            payload,
-            queryParams,
-            pathParams
-          );
+          res = await this.makeRequest(method, serviceName, options);
         } catch (error) {
           // refresh failed -> propagate original 401-like error
           if (this.onError && error instanceof Error) this.onError(error);
