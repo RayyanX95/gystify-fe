@@ -7,7 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Mail, Zap, Clock, Shield } from "lucide-react";
-import { MotionDiv, MotionMain, MotionSpan } from "@/lib/motion";
+import {
+  MotionDiv,
+  MotionMain,
+  MotionSpan,
+  scrollFadeInUp,
+  scrollStaggerContainer,
+  scrollStaggerChild,
+} from "@/lib/motion";
 
 export default function HomePage() {
   return (
@@ -67,12 +74,7 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gray-50">
-        <MotionDiv
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <MotionDiv className="text-center mb-16" {...scrollFadeInUp}>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
             Why Choose Summa?
           </h2>
@@ -84,9 +86,7 @@ export default function HomePage() {
 
         <MotionDiv
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ staggerChildren: 0.06 }}
+          {...scrollStaggerContainer}
         >
           {[
             {
@@ -114,24 +114,23 @@ export default function HomePage() {
                 "Seamlessly connects with all major email providers including Gmail, Outlook, and more.",
             },
           ].map((feature, index) => (
-            <Card
-              key={index}
-              className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white"
-            >
-              <CardHeader className="text-center pb-4">
-                <div className="mx-auto mb-4 p-3 bg-indigo-50 rounded-full w-fit">
-                  {feature.icon}
-                </div>
-                <CardTitle className="text-xl text-gray-900">
-                  {feature.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <CardDescription className="text-base leading-relaxed text-gray-600">
-                  {feature.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <MotionDiv key={index} {...scrollStaggerChild}>
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
+                <CardHeader className="text-center pb-4">
+                  <div className="mx-auto mb-4 p-3 bg-indigo-50 rounded-full w-fit">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-xl text-gray-900">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <CardDescription className="text-base leading-relaxed text-gray-600">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </MotionDiv>
           ))}
         </MotionDiv>
       </section>
@@ -140,9 +139,7 @@ export default function HomePage() {
       <section className="bg-white border-t">
         <MotionDiv
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          {...scrollFadeInUp}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
             Ready to Transform Your Email Experience?

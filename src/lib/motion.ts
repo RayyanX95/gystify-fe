@@ -34,4 +34,40 @@ export const scaleOnTap = {
   whileTap: { scale: 0.98 },
 };
 
-export default motion;
+// Scroll-triggered animation variants
+export const scrollFadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: "easeOut" },
+};
+
+export const scrollFadeInLeft = {
+  initial: { opacity: 0, x: -60 },
+  whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: "easeOut" },
+};
+
+export const scrollFadeInRight = {
+  initial: { opacity: 0, x: 60 },
+  whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: "easeOut" },
+};
+
+export const scrollStaggerContainer = {
+  initial: {},
+  whileInView: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+  viewport: { once: true, margin: "-50px" },
+};
+
+export const scrollStaggerChild = {
+  initial: { opacity: 0, y: 40 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: "easeOut" },
+};

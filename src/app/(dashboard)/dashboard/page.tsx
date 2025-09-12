@@ -9,7 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Mail, Settings, BarChart3, Clock, Zap } from "lucide-react";
-import { MotionDiv } from "@/lib/motion";
+import {
+  MotionDiv,
+  scrollFadeInUp,
+  scrollStaggerContainer,
+  scrollStaggerChild,
+} from "@/lib/motion";
 
 export default function DashboardPage() {
   return (
@@ -21,58 +26,62 @@ export default function DashboardPage() {
         {/* Stats Cards */}
         <MotionDiv
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ staggerChildren: 0.1 }}
+          {...scrollStaggerContainer}
         >
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Emails Summarized
-              </CardTitle>
-              <Mail className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1,234</div>
-              <p className="text-xs text-muted-foreground">
-                +20.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Time Saved</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">45.2h</div>
-              <p className="text-xs text-muted-foreground">
-                +15.3% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Processing Speed
-              </CardTitle>
-              <Zap className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">2.4s</div>
-              <p className="text-xs text-muted-foreground">
-                Average processing time
-              </p>
-            </CardContent>
-          </Card>
+          <MotionDiv {...scrollStaggerChild}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Emails Summarized
+                </CardTitle>
+                <Mail className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">1,234</div>
+                <p className="text-xs text-muted-foreground">
+                  +20.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+          </MotionDiv>
+          <MotionDiv {...scrollStaggerChild}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Time Saved
+                </CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">45.2h</div>
+                <p className="text-xs text-muted-foreground">
+                  +15.3% from last month
+                </p>
+              </CardContent>
+            </Card>
+          </MotionDiv>
+          <MotionDiv {...scrollStaggerChild}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Processing Speed
+                </CardTitle>
+                <Zap className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">2.4s</div>
+                <p className="text-xs text-muted-foreground">
+                  Average processing time
+                </p>
+              </CardContent>
+            </Card>
+          </MotionDiv>
         </MotionDiv>
 
         {/* Recent Activity */}
         <MotionDiv
           className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, staggerChildren: 0.1 }}
+          {...scrollFadeInUp}
         >
           <Card>
             <CardHeader>
