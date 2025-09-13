@@ -42,8 +42,10 @@ export function Header() {
             <div className="flex items-center space-x-4">
               <span className="text-sm text-muted-foreground">Welcome, {user?.name}</span>
               <Button variant="ghost" size="sm">
-                <Settings className="h-4 w-4 mr-2" />
-                Settings
+                <Link href="/dashboard" className="flex items-center">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </Link>
               </Button>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />

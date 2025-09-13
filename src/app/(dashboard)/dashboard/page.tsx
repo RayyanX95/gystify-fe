@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Settings, BarChart3, Clock, Zap } from 'lucide-react';
 import { RefreshCcw } from 'lucide-react';
-import { FeatureSectionLoader } from './sections';
+import { FeatureSectionLoader } from '../_components';
 import { scrollFadeInUp, scrollStaggerContainer, scrollStaggerChild } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
+import Link from 'next/link';
 
 export interface EmailSummary {
   id: string;
@@ -158,13 +159,13 @@ export default function DashboardPage() {
                       </ul>
                     </div>
                     <div className="flex justify-end gap-2 pt-2">
-                      <a
+                      <Link
                         href={data?.id ? `/dashboard/emails/${data.id}` : '#'}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium shadow hover:bg-primary/90 transition text-sm"
                       >
                         <Mail className="h-4 w-4" />
                         View Mail Details
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </CardContent>
