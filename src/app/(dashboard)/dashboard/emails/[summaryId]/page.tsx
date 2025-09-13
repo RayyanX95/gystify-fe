@@ -16,6 +16,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ApiService } from '@/lib/api/ApiService';
 
 interface SummaryDetail {
   rawSummary: string;
@@ -29,14 +30,6 @@ interface SummaryDetail {
   notes: string;
 }
 
-const fetchSummaryDetail = async (summaryId: string): Promise<SummaryDetail> => {
-  const response = await fetch(`/api/summaries/${summaryId}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch summary detail');
-  }
-  return response.json();
-};
-
 export default function SummaryDetailPage() {
   const params = useParams();
   const summaryId = params.summaryId as string;
@@ -46,8 +39,12 @@ export default function SummaryDetailPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['summary', summaryId],
-    queryFn: () => fetchSummaryDetail(summaryId),
+    queryKey: ['summaryExpandById', summaryId],
+    queryFn: () =>
+      ApiService.send<SummaryDetail>('POST', 'summaryExpandById', {
+        pathParams: { id: summaryId },
+        payload: { context: 'Focus on action items and replies' },
+      }),
   });
 
   if (isLoading) {
@@ -138,9 +135,16 @@ export default function SummaryDetailPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-foreground leading-relaxed whitespace-pre-line">
-                {summary.highlights}
-              </p>
+              <ul className="list-disc list-inside text-base text-muted-foreground pl-4">
+                {summary?.highlights
+                  ?.split(/\d+\.\s?/)
+                  .filter((insight: string) => insight.trim() !== '')
+                  .map((insight: string, index: number) => (
+                    <li key={index} className="mb-2 leading-relaxed">
+                      {insight.trim()}
+                    </li>
+                  ))}
+              </ul>
             </CardContent>
           </Card>
         </motion.div>

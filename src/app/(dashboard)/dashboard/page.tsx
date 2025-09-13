@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Settings, BarChart3, Clock, Zap } from 'lucide-react';
 import { RefreshCcw } from 'lucide-react';
+import { FeatureSectionLoader } from './sections';
 import { scrollFadeInUp, scrollStaggerContainer, scrollStaggerChild } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -21,7 +22,7 @@ export interface EmailSummary {
 }
 
 export default function DashboardPage() {
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isFetching } = useQuery({
     queryKey: ['summary-stats'],
     queryFn: () => ApiService.send<EmailSummary>('POST', 'summaryGenerate'),
   });
@@ -49,116 +50,127 @@ export default function DashboardPage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
           {...scrollStaggerContainer}
         >
-          <motion.div {...scrollStaggerChild}>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Emails Summarized</CardTitle>
-                <Mail className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">1,234</div>
-                <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div {...scrollStaggerChild}>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Time Saved</CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">45.2h</div>
-                <p className="text-xs text-muted-foreground">+15.3% from last month</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-          <motion.div {...scrollStaggerChild}>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Processing Speed</CardTitle>
-                <Zap className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">2.4s</div>
-                <p className="text-xs text-muted-foreground">Average processing time</p>
-              </CardContent>
-            </Card>
-          </motion.div>
+          {[
+            {
+              title: 'Emails Summarized',
+              value: '1,234',
+              description: '+20.1% from last month',
+              icon: <Mail className="h-4 w-4 text-muted-foreground" />,
+              color: 'text-primary',
+            },
+            {
+              title: 'Time Saved',
+              value: '45.2h',
+              description: '+15.3% from last month',
+              icon: <Clock className="h-4 w-4 text-muted-foreground" />,
+              color: 'text-primary',
+            },
+            {
+              title: 'Processing Speed',
+              value: '2.4s',
+              description: 'Average processing time',
+              icon: <Zap className="h-4 w-4 text-muted-foreground" />,
+              color: 'text-primary',
+            },
+          ].map((stat, idx) => (
+            <motion.div key={stat.title} {...scrollStaggerChild}>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                  {stat.icon}
+                </CardHeader>
+                <CardContent>
+                  <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
+                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
 
         {/* Features Section */}
         <motion.section className="mb-8" {...scrollFadeInUp}>
-          <motion.div
-            className="max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
-              <CardHeader className="pb-0 flex flex-col gap-2">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-2xl font-bold text-primary">
-                      Daily Email Summary
-                    </CardTitle>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
-                        Last updated: {data?.updatedAt ? getHoursAgo(data.updatedAt) : '--'}
+          {isLoading || isFetching ? (
+            <motion.div
+              className="max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <FeatureSectionLoader />
+            </motion.div>
+          ) : (
+            <motion.div
+              className="max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
+                <CardHeader className="pb-0 flex flex-col gap-2">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-2xl font-bold text-primary">
+                        Daily Email Summary
+                      </CardTitle>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          Last updated: {data?.updatedAt ? getHoursAgo(data.updatedAt) : '--'}
+                        </span>
+                        <Button
+                          className="inline-flex items-center justify-center rounded-md p-2 hover:bg-primary/10 transition"
+                          title="Refresh summary"
+                          variant="ghost"
+                          onClick={() => refetch()}
+                        >
+                          <RefreshCcw className="h-5 w-5 text-primary" />
+                        </Button>
+                      </div>
+                    </div>
+                    <CardDescription className="text-base text-muted-foreground">
+                      View and update your summary for today. Only one summary is kept per day.
+                    </CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <span className="block text-lg font-semibold text-foreground mb-1">
+                        Today&apos;s Overview
                       </span>
-                      <Button
-                        className="inline-flex items-center justify-center rounded-md p-2 hover:bg-primary/10 transition"
-                        title="Refresh summary"
-                        variant="ghost"
-                        onClick={() => refetch()}
+                      <p className="text-base text-muted-foreground bg-muted/30 rounded-md p-3 shadow-sm">
+                        {data?.summary}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="block text-lg font-semibold text-foreground mb-1">
+                        Key Insights & Highlights
+                      </span>
+                      <ul className="list-disc list-inside text-base text-muted-foreground pl-4">
+                        {data?.keyInsights
+                          ?.split(/\d+\.\s?/)
+                          .filter((insight: string) => insight.trim() !== '')
+                          .map((insight: string, index: number) => (
+                            <li key={index} className="mb-2 leading-relaxed">
+                              {insight.trim()}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-2">
+                      <a
+                        href={data?.id ? `/dashboard/emails/${data.id}` : '#'}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium shadow hover:bg-primary/90 transition text-sm"
                       >
-                        <RefreshCcw className="h-5 w-5 text-primary" />
-                      </Button>
+                        <Mail className="h-4 w-4" />
+                        View Mail Details
+                      </a>
                     </div>
                   </div>
-                  <CardDescription className="text-base text-muted-foreground">
-                    View and update your summary for today. Only one summary is kept per day.
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <span className="block text-lg font-semibold text-foreground mb-1">
-                      Today&apos;s Overview
-                    </span>
-                    <p className="text-base text-muted-foreground bg-muted/30 rounded-md p-3 shadow-sm">
-                      {data?.summary}
-                    </p>
-                  </div>
-                  <div>
-                    <span className="block text-lg font-semibold text-foreground mb-1">
-                      Key Insights & Highlights
-                    </span>
-                    <ul className="list-disc list-inside text-base text-muted-foreground pl-4">
-                      {data?.keyInsights
-                        ?.split(/\d+\.\s?/)
-                        .filter((insight: string) => insight.trim() !== '')
-                        .map((insight: string, index: number) => (
-                          <li key={index} className="mb-2 leading-relaxed">
-                            {insight.trim()}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  <div className="flex justify-end gap-2 pt-2">
-                    <a
-                      href={data?.id ? `/dashboard/emails/${data.id}` : '#'}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium shadow hover:bg-primary/90 transition text-sm"
-                    >
-                      <Mail className="h-4 w-4" />
-                      View Mail Details
-                    </a>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
         </motion.section>
 
         {/* Recent Activity */}
