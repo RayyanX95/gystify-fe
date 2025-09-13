@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Settings, BarChart3, Clock, Zap } from 'lucide-react';
+import { RefreshCcw } from 'lucide-react';
 import { scrollFadeInUp, scrollStaggerContainer, scrollStaggerChild } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -20,10 +21,22 @@ export interface EmailSummary {
 }
 
 export default function DashboardPage() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['summary-stats'],
     queryFn: () => ApiService.send<EmailSummary>('POST', 'summaryGenerate'),
   });
+
+  const getHoursAgo = (dateString: string) => {
+    const now = new Date();
+    const updated = new Date(dateString);
+    const diffMs = now.getTime() - updated.getTime();
+    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+    if (diffHrs < 1) {
+      const diffMin = Math.floor(diffMs / (1000 * 60));
+      return `${diffMin} min ago`;
+    }
+    return `${diffHrs} hr${diffHrs > 1 ? 's' : ''} ago`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -83,13 +96,30 @@ export default function DashboardPage() {
             transition={{ delay: 0.1 }}
           >
             <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
-              <CardHeader className="pb-0">
-                <CardTitle className="text-2xl font-bold text-primary">
-                  Daily Email Summary
-                </CardTitle>
-                <CardDescription className="text-base text-muted-foreground">
-                  View and update your summary for today. Only one summary is kept per day.
-                </CardDescription>
+              <CardHeader className="pb-0 flex flex-col gap-2">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-2xl font-bold text-primary">
+                      Daily Email Summary
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">
+                        Last updated: {data?.updatedAt ? getHoursAgo(data.updatedAt) : '--'}
+                      </span>
+                      <Button
+                        className="inline-flex items-center justify-center rounded-md p-2 hover:bg-primary/10 transition"
+                        title="Refresh summary"
+                        variant="ghost"
+                        onClick={() => refetch()}
+                      >
+                        <RefreshCcw className="h-5 w-5 text-primary" />
+                      </Button>
+                    </div>
+                  </div>
+                  <CardDescription className="text-base text-muted-foreground">
+                    View and update your summary for today. Only one summary is kept per day.
+                  </CardDescription>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
@@ -115,6 +145,15 @@ export default function DashboardPage() {
                           </li>
                         ))}
                     </ul>
+                  </div>
+                  <div className="flex justify-end gap-2 pt-2">
+                    <a
+                      href={data?.id ? `/dashboard/emails/${data.id}` : '#'}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium shadow hover:bg-primary/90 transition text-sm"
+                    >
+                      <Mail className="h-4 w-4" />
+                      View Mail Details
+                    </a>
                   </div>
                 </div>
               </CardContent>

@@ -31,13 +31,11 @@ export function Header() {
   const headerContent = (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
-        <Link href="/">
-          <div className="flex items-center space-x-2">
-            <Mail className="h-8 w-8 text-primary" />
-            <motion.span whileHover={{ x: 4 }} className="font-bold text-foreground text-2xl">
-              Summa
-            </motion.span>
-          </div>
+        <Link href="/" className="flex items-center space-x-1">
+          <Mail className="h-8 w-8 text-primary" />
+          <motion.span whileHover={{ x: 4 }} className="font-bold text-foreground text-2xl">
+            Summa
+          </motion.span>
         </Link>
         {hasHydrated ? (
           isAuthenticated ? (
