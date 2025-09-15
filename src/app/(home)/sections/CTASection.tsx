@@ -12,7 +12,7 @@ export default function CTASection() {
         </h2>
         <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
           Join thousands of professionals who have already revolutionized their email workflow with
-          Summa. Start your free trial today.
+          Gystify. Start your free trial today.
         </p>
         <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white">
           Get Started for Free

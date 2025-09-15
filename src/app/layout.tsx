@@ -34,6 +34,6 @@ export default function RootLayout({
 }
 
 export const metadata: Metadata = {
-  title: 'Summa - AI-Powered Email Intelligence',
+  title: 'Gystify - AI-Powered Email Intelligence',
   description: 'Transform your email overload into actionable insights with AI-powered summaries',
 };

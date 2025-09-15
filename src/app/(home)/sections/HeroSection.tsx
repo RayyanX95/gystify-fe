@@ -47,7 +47,7 @@ export default function HeroSection() {
             onClick={() =>
               toast({
                 title: 'Get Started',
-                description: 'Sign up for a free trial to start using Summa.',
+                description: 'Sign up for a free trial to start using Gystify.',
                 duration: 4000,
                 variant: 'destructive',
               })

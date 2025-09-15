@@ -8,7 +8,7 @@ export default function FeaturesSection() {
   return (
     <section className="section-layout">
       <motion.div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Why Choose Summa?</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Why Choose Gystify?</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Powerful features designed to streamline your email management and boost your
           productivity.

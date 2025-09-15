@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
 import Link from 'next/link';
+import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 
 export interface EmailSummary {
   id: string;
@@ -26,18 +27,20 @@ export default function DashboardPage() {
   const { data, isLoading, refetch, isFetching } = useQuery({
     queryKey: ['summary-stats'],
     queryFn: () => ApiService.send<EmailSummary>('POST', 'summaryGenerate'),
+
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const getHoursAgo = (dateString: string) => {
-    const now = new Date();
-    const updated = new Date(dateString);
-    const diffMs = now.getTime() - updated.getTime();
-    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-    if (diffHrs < 1) {
-      const diffMin = Math.floor(diffMs / (1000 * 60));
-      return `${diffMin} min ago`;
+    if (!dateString) {
+      return '--';
     }
-    return `${diffHrs} hr${diffHrs > 1 ? 's' : ''} ago`;
+    try {
+      return formatDistanceToNowStrict(parseISO(dateString), { addSuffix: true });
+    } catch {
+      return '--';
+    }
   };
 
   return (

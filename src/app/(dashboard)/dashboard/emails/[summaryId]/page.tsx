@@ -44,6 +44,9 @@ export default function SummaryDetailPage() {
         pathParams: { id: summaryId },
         payload: { context: 'Focus on action items and replies' },
       }),
+
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   if (isLoading) {

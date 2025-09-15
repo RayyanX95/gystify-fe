@@ -10,7 +10,7 @@ export default function HowItWorksSection() {
       <motion.div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">How It Works</h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          See how Summa transforms your emails into actionable summaries in just a few steps.
+          See how Gystify transforms your emails into actionable summaries in just a few steps.
         </p>
       </motion.div>
       <motion.div
@@ -24,7 +24,7 @@ export default function HowItWorksSection() {
             icon: <MailOpen className="h-10 w-10 text-primary" />,
             title: 'Connect Your Email',
             description:
-              'Securely link your email account with Summa. We support Gmail, Outlook, and more.',
+              'Securely link your email account with Gystify. We support Gmail, Outlook, and more.',
           },
           {
             icon: <Zap className="h-10 w-10 text-primary" />,

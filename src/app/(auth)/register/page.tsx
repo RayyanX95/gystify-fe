@@ -59,7 +59,7 @@ export default function RegisterPage() {
         };`;
 
         toast({
-          title: 'Welcome to Summa!',
+          title: 'Welcome to Gystify!',
           description: 'Your account has been created successfully.',
         });
         router.push('/dashboard');
@@ -85,7 +85,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>Join Summa and start organizing your emails</CardDescription>
+          <CardDescription>Join Gystify and start organizing your emails</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

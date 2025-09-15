@@ -31,10 +31,13 @@ export function Header() {
   const headerContent = (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
-        <Link href="/" className="flex items-center space-x-1">
-          <Mail className="h-8 w-8 text-primary" />
-          <motion.span whileHover={{ x: 4 }} className="font-bold text-foreground text-2xl">
-            Summa
+        <Link href="/" className="flex items-center  text-foreground text-3xl">
+          <strong className="text-primary font-[900] italic">G</strong>
+          <motion.span
+            whileHover={{ x: 4 }}
+            className="text-2xl border-b-2 border-primary font-medium border-spacing-4"
+          >
+            ystify
           </motion.span>
         </Link>
         {hasHydrated ? (
@@ -106,7 +109,7 @@ export function Header() {
     <div className="flex justify-between items-center h-16">
       <Link href="/" className="flex items-center space-x-2">
         <Mail className="h-8 w-8 text-indigo-600" />
-        <span className="text-xl font-bold text-gray-900">Summa</span>
+        <span className="text-xl font-bold text-gray-900">Gystify</span>
       </Link>
       <div className="flex items-center space-x-4">
         <Button

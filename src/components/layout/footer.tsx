@@ -17,10 +17,10 @@ export function Footer() {
           <Link href="/" className="flex items-center space-x-2 mb-4 md:mb-0">
             <Mail className="h-6 w-6 text-primary" />
             <motion.span whileHover={{ x: 4 }} className="font-bold text-gray-900">
-              Summa
+              <strong className="text-primary">G</strong>ystify
             </motion.span>
           </Link>
-          <div className="text-sm text-gray-600">© 2025 Summa. All rights reserved.</div>
+          <div className="text-sm text-gray-600">© 2025 Gystify. All rights reserved.</div>
         </div>
       </div>
     </motion.div>

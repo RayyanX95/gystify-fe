@@ -104,7 +104,7 @@ This document outlines the backend endpoints required for the Google OAuth integ
 1. Go to APIs & Services > OAuth consent screen
 2. Choose "External" (for public users)
 3. Fill required fields:
-   - App name: "Summa"
+   - App name: "Gystify"
    - User support email
    - Developer contact information
 4. Add scopes:
