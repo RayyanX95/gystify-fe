@@ -57,7 +57,7 @@ class ApiServiceClass {
     //     const res = await fetch(url, {
     //       method: "POST",
     //       headers: {
-    //         Authorization: "Basic ZnJvbnRlbmQtY2xpZW50OnNlY3JldA==",
+    //         Authorization: "Basic Z==",
     //         "Content-Type": "application/x-www-form-urlencoded",
     //         ...this.getHeaders(),
     //       },

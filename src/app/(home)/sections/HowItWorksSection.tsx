@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Zap, MailOpen, CheckCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { IconWithBackground } from '@/components';
 
 export default function HowItWorksSection() {
   return (
@@ -21,19 +22,19 @@ export default function HowItWorksSection() {
       >
         {[
           {
-            icon: <MailOpen className="h-10 w-10 text-primary" />,
+            icon: <MailOpen className="h-8 w-8 text-primary" />,
             title: 'Connect Your Email',
             description:
               'Securely link your email account with Gystify. We support Gmail, Outlook, and more.',
           },
           {
-            icon: <Zap className="h-10 w-10 text-primary" />,
+            icon: <Zap className="h-8 w-8 text-primary" />,
             title: 'AI Summarizes',
             description:
               'Our advanced AI instantly analyzes and summarizes your emails for clarity and action.',
           },
           {
-            icon: <CheckCircle className="h-10 w-10 text-primary" />,
+            icon: <CheckCircle className="h-8 w-8 text-primary" />,
             title: 'Review & Act',
             description:
               'Get concise summaries and take action faster—reply, archive, or follow up with ease.',
@@ -44,7 +45,7 @@ export default function HowItWorksSection() {
             className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white h-full"
           >
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">{step.icon}</div>
+              <IconWithBackground>{step.icon}</IconWithBackground>
               <CardTitle className="text-xl">{step.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center">

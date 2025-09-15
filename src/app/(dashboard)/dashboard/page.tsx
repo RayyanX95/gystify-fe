@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
 import Link from 'next/link';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { IconWithBackground } from '@/components';
 
 export interface EmailSummary {
   id: string;
@@ -59,33 +60,36 @@ export default function DashboardPage() {
               title: 'Emails Summarized',
               value: '1,234',
               description: '+20.1% from last month',
-              icon: <Mail className="h-4 w-4 text-muted-foreground" />,
+              icon: <Mail className="h-8 w-8 text-primary" />,
               color: 'text-primary',
             },
             {
               title: 'Time Saved',
               value: '45.2h',
               description: '+15.3% from last month',
-              icon: <Clock className="h-4 w-4 text-muted-foreground" />,
+              icon: <Clock className="h-8 w-8 text-primary" />,
               color: 'text-primary',
             },
             {
               title: 'Processing Speed',
               value: '2.4s',
               description: 'Average processing time',
-              icon: <Zap className="h-4 w-4 text-muted-foreground" />,
+              icon: <Zap className="h-8 w-8 text-primary" />,
               color: 'text-primary',
             },
           ].map((stat, idx) => (
             <motion.div key={stat.title} {...scrollStaggerChild}>
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                  {stat.icon}
+                <CardHeader className="text-center pb-4">
+                  <IconWithBackground>{stat.icon}</IconWithBackground>
+                  <CardTitle className="text-xl">{stat.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="text-center">
                   <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+
+                  <CardDescription className="text-base leading-relaxed text-muted-foreground">
+                    {stat.description}
+                  </CardDescription>
                 </CardContent>
               </Card>
             </motion.div>

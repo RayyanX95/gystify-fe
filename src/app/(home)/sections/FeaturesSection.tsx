@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Zap, Clock, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { IconWithBackground } from '@/components';
 
 export default function FeaturesSection() {
   return (
@@ -44,9 +45,7 @@ export default function FeaturesSection() {
           <motion.div key={index}>
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white h-full">
               <CardHeader className="text-center pb-4">
-                <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
-                  {feature.icon}
-                </div>
+                <IconWithBackground>{feature.icon}</IconWithBackground>
                 <CardTitle className="text-xl">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
