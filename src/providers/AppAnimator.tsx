@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { MotionMain } from '@/lib/motion';
+import { motion } from 'framer-motion';
 
 export function AppAnimator({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,7 +20,7 @@ export function AppAnimator({ children }: { children: React.ReactNode }) {
 
   return (
     <AnimatePresence mode="wait">
-      <MotionMain
+      <motion.main
         key={pathname}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -29,7 +29,7 @@ export function AppAnimator({ children }: { children: React.ReactNode }) {
         className="flex-1"
       >
         {children}
-      </MotionMain>
+      </motion.main>
     </AnimatePresence>
   );
 }

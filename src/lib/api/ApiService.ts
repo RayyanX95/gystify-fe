@@ -97,11 +97,8 @@ class ApiServiceClass {
       ...(payload ? { 'Content-Type': 'application/json' } : {}),
     };
 
-    console.log('withAuth', withAuth);
-
     if (withAuth) {
       const { token } = useAuthStore.getState();
-      console.log('token', token);
       if (token) {
         headers = {
           ...headers,
