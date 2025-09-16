@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Settings, BarChart3 } from 'lucide-react';
 import { RefreshCcw } from 'lucide-react';
-import { FeatureSectionLoader, MetricsCards } from '../_components';
+import { FeatureSectionLoader, MetricsCards, SummariesHistory } from '../_components';
 import { scrollFadeInUp, scrollStaggerContainer } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -14,6 +14,7 @@ import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 
 export interface EmailSummary {
   id: string;
+  title: string;
   summaryDate: string; // ISO date string (YYYY-MM-DD)
   totalEmails: number;
   importantEmails: number;
@@ -143,49 +144,10 @@ export default function DashboardPage() {
         </motion.section>
 
         {/* Recent Activity */}
-        <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-6" {...scrollFadeInUp}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Summaries</CardTitle>
-              <CardDescription>Your latest email summaries</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  {
-                    from: 'john@company.com',
-                    subject: 'Q4 Budget Review Meeting',
-                    summary:
-                      'Meeting scheduled for Thursday at 2 PM to discuss budget allocations...',
-                    time: '2 hours ago',
-                  },
-                  {
-                    from: 'sarah@client.com',
-                    subject: 'Project Update Required',
-                    summary: 'Client requesting status update on current project milestones...',
-                    time: '4 hours ago',
-                  },
-                  {
-                    from: 'marketing@company.com',
-                    subject: 'New Campaign Launch',
-                    summary: 'Marketing team announcing launch of new social media campaign...',
-                    time: '6 hours ago',
-                  },
-                ].map((item, index) => (
-                  <div key={index} className="flex space-x-4 p-3 rounded-lg bg-muted/50">
-                    <div className="flex-1 space-y-1">
-                      <p className="text-sm font-medium leading-none">{item.subject}</p>
-                      <p className="text-xs text-muted-foreground">From: {item.from}</p>
-                      <p className="text-sm text-muted-foreground">{item.summary}</p>
-                    </div>
-                    <div className="text-xs text-muted-foreground">{item.time}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <motion.div className="grid grid-cols-1 **lg:grid-cols-2 gap-6" {...scrollFadeInUp}>
+          <SummariesHistory />
 
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
               <CardDescription>Manage your email summarization</CardDescription>
@@ -206,7 +168,7 @@ export default function DashboardPage() {
                 </Button>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </motion.div>
       </main>
     </div>

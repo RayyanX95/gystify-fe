@@ -2,9 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/lib/hooks/useToast';
 import { useAuthStore } from '@/lib/authStore';
-import { LogOut, Mail, Settings } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -12,7 +11,6 @@ import Link from 'next/link';
 export function Header() {
   const { user, logout, isAuthenticated, hasHydrated } = useAuthStore();
   const router = useRouter();
-  const { toast } = useToast();
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -21,10 +19,6 @@ export function Header() {
 
   const handleLogout = () => {
     logout();
-    toast({
-      title: 'Logged out',
-      description: 'You have been successfully logged out.',
-    });
     router.push('/');
   };
 

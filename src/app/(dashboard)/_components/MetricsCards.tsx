@@ -18,9 +18,6 @@ export const MetricsCards = () => {
   const { data } = useQuery({
     queryKey: ['metrics-stats'],
     queryFn: () => ApiService.send<MetricsStats>('GET', 'metricsStats'),
-
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 
   return (

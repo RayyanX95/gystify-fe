@@ -14,6 +14,7 @@ export const endPoints = {
   summaryGenerate: '/summary/generate', // POST - Generate and persist a daily summary for the authenticated user
   summaryExpandById: '/summary/{id}/expand', // POST - Expand a summary into a detailed report
   summaryGetForUser: '/summary', // GET - Get daily Summary for user
+  summaryAll: '/summary/all', // GET - Get all daily Summaries
 
   // -------------------- Metrics endpoints --------------------
   metricsStats: '/metrics', // GET - Get user-based metrics

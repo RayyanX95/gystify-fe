@@ -105,11 +105,6 @@ export default function GoogleCallbackPage() {
             name: normalizedUser.name,
           });
 
-          toast({
-            title: 'Success!',
-            description: 'Your Google account has been connected successfully.',
-          });
-
           // Redirect to dashboard after success
           setTimeout(() => {
             router.push('/dashboard');
@@ -122,16 +117,10 @@ export default function GoogleCallbackPage() {
           const messageFromResp =
             typeof rawMessage === 'string' ? rawMessage : JSON.stringify(rawMessage || '');
           setMessage(messageFromResp || 'Failed to connect Google account.');
-          toast({
-            title: 'Connection Failed',
-            description: messageFromResp || 'Failed to connect your Google account.',
-            variant: 'destructive',
-          });
         }
-      } catch (error) {
+      } catch {
         setStatus('error');
         setMessage('An unexpected error occurred.');
-        console.error('Google OAuth callback error:', error);
         toast({
           title: 'Error',
           description: 'An unexpected error occurred during authentication.',
