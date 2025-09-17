@@ -4,7 +4,7 @@ import { Mail } from 'lucide-react';
 import React from 'react';
 
 interface Props {
-  createdAt: string; // ISO date string
+  createdAt: string; // ISO date string (YYYY-MM-DD)
   totalItems: number;
   deletedCount: number;
   retentionRate: number; // percentage
