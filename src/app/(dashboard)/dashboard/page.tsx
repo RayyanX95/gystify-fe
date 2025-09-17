@@ -8,8 +8,8 @@ import { scrollFadeInUp } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
-import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 
 export interface EmailSummary {
   id: string;
@@ -54,18 +54,6 @@ export default function DashboardPage() {
     queryKey: ['snapshots'],
     queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
   });
-
-  const formatSnapshotDate = (dateString: string) => {
-    try {
-      const date = parseISO(dateString);
-      return {
-        day: format(date, 'EEEE, MMM d'),
-        time: format(date, 'h:mm a'),
-      };
-    } catch {
-      return { day: 'Unknown date', time: '--' };
-    }
-  };
 
   // Mock calculation for percentage - you may want to adjust this based on your business logic
   const calculateDeletionPercentage = (totalItems: number, index: number) => {

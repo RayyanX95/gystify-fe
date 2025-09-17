@@ -2,12 +2,13 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@/components';
-import { Mail, Trash2, ExternalLink, Archive, Clock, BarChart3, ArrowLeft } from 'lucide-react';
+import { Card, CardContent, Badge, Button } from '@/components';
+import { Mail, Trash2, ExternalLink, Archive, Clock, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { format, parseISO } from 'date-fns';
-import { ApiService } from '@/lib/api/ApiService';
+import { ApiService } from '@/lib/api/';
+import { CategoriesTabs, SnapshotOverview, StatsCard } from '../../_components';
+import { formatTime } from '@/lib/utils/dateFormat';
 
 interface SnapshotItem {
   id: string;
@@ -41,7 +42,7 @@ interface SnapshotResponse {
   items: SnapshotItem[];
 }
 
-export default function SummaryDetailPage() {
+export default function SnapshotPage() {
   const params = useParams();
   const snapshotId = params.snapshotId as string;
 
@@ -66,22 +67,6 @@ export default function SummaryDetailPage() {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  };
-
-  const formatDate = (dateString: string) => {
-    try {
-      return format(parseISO(dateString), 'EEEE, MMMM d');
-    } catch {
-      return 'Unknown date';
-    }
-  };
-
-  const formatTime = (dateString: string) => {
-    try {
-      return format(parseISO(dateString), 'h:mm a');
-    } catch {
-      return 'Unknown time';
-    }
   };
 
   // Show loading state
@@ -170,104 +155,26 @@ export default function SummaryDetailPage() {
 
         {/* Email Client Header */}
         <motion.div variants={itemVariants}>
-          <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Mail className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-foreground">
-                      {formatDate(snapshot.snapshotDate)}
-                    </h1>
-                    <p className="text-muted-foreground">Email Snapshot Analysis</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">
-                      {snapshot.totalItems - deletedCount}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Inbox</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-foreground">{snapshot.totalItems}</div>
-                    <div className="text-sm text-muted-foreground">Total</div>
-                  </div>
-                  <div className="text-center">
-                    <Button
-                      size="sm"
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2"
-                    >
-                      Overview
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="w-full bg-muted rounded-full h-2 mb-2">
-                <div
-                  className="bg-primary h-2 rounded-full"
-                  style={{ width: `${100 - retentionRate}%` }}
-                ></div>
-              </div>
-              <p className="text-xs text-muted-foreground text-right">
-                {Math.round((deletedCount / snapshot.totalItems) * 100 || 0)}% deleted
-              </p>
-            </CardContent>
-          </Card>
+          <SnapshotOverview
+            createdAt={snapshot.createdAt}
+            totalItems={snapshot.totalItems}
+            deletedCount={deletedCount}
+            retentionRate={retentionRate}
+          />
         </motion.div>
 
         {/* Email Categories Sidebar */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
-            <Card className="shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-semibold text-foreground">Categories</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {Object.entries(emailCategories).map(([domain, count]) => (
-                  <div
-                    key={domain}
-                    className="flex items-center justify-between p-2 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer"
-                  >
-                    <span className="text-sm font-medium text-foreground capitalize">
-                      {domain.replace('.com', '').replace('.', ' ')}
-                    </span>
-                    <Badge variant="secondary" className="text-xs">
-                      {count}
-                    </Badge>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            <CategoriesTabs emailCategories={emailCategories} />
 
             {/* Stats Card */}
-            <Card className="shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-primary" />
-                  Stats
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Total Emails</span>
-                  <span className="font-semibold text-foreground">{snapshot.totalItems}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Deleted</span>
-                  <span className="font-semibold text-destructive">{deletedCount}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Retention Rate</span>
-                  <span className="font-semibold text-green-600">{retentionRate}%</span>
-                </div>
-              </CardContent>
-            </Card>
+            <StatsCard
+              totalItems={snapshot.totalItems}
+              deletedCount={deletedCount}
+              retentionRate={retentionRate}
+            />
           </div>
 
           {/* Main Email Content */}
@@ -361,7 +268,7 @@ export default function SummaryDetailPage() {
                       <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          <span>{formatTime(item.date)}</span>
+                          <span>Received at {formatTime(item.date)}</span>
                         </div>
                         {isDeleted && (
                           <Badge variant="destructive" className="text-xs">
