@@ -173,7 +173,7 @@ export default function DashboardPage() {
                 return (
                   <Card
                     key={snapshot.id}
-                    onClick={() => router.push('/dashboard/snapshots/' + snapshot.id)}
+                    onClick={() => router.push('/snapshots/' + snapshot.id)}
                     className="hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200"
                   >
                     <CardContent className="p-4">
