@@ -18,6 +18,9 @@ export const endPoints = {
 
   // -------------------- Metrics endpoints --------------------
   metricsStats: '/metrics', // GET - Get user-based metrics
+
+  snapshots: '/snapshots', // POST - Create a new snapshot, GET - Get all snapshots
+  snapshotById: '/snapshots/{id}', // GET - Get snapshot by ID, DELETE - Delete snapshot by ID
 };
 
 export type EndPoints = keyof typeof endPoints;

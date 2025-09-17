@@ -5,8 +5,11 @@ import { motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { animate?: boolean }
+>(({ className, animate = false, ...props }, ref) => {
+  if (animate) {
     <motion.div
       // initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
@@ -16,9 +19,19 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
       ref={ref}
     >
       {props.children}
-    </motion.div>
-  )
-);
+    </motion.div>;
+  }
+
+  return (
+    <div
+      className={cn('rounded-xl border bg-card text-card-foreground shadow', className)}
+      ref={ref}
+      {...props}
+    >
+      {props.children}
+    </div>
+  );
+});
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
