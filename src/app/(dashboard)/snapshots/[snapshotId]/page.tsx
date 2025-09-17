@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { ApiService } from '@/lib/api/';
 import { CategoriesTabs, SnapshotOverview, StatsCard } from '../../_components';
 import { formatTime } from '@/lib/utils/dateFormat';
+import { useState } from 'react';
 
 interface SnapshotItem {
   id: string;
@@ -45,6 +46,8 @@ interface SnapshotResponse {
 export default function SnapshotPage() {
   const params = useParams();
   const snapshotId = params.snapshotId as string;
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const { data: snapshot, isLoading } = useQuery({
     queryKey: ['snapshot', snapshotId],
@@ -135,6 +138,12 @@ export default function SnapshotPage() {
       ? Math.round(((snapshot.totalItems - deletedCount) / snapshot.totalItems) * 100)
       : 100;
 
+  // Filter emails based on selected category
+  const filteredItems =
+    selectedCategory === 'All'
+      ? snapshot.items
+      : snapshot.items.filter((item) => item.sender.domain === selectedCategory);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <motion.div
@@ -167,7 +176,11 @@ export default function SnapshotPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
-            <CategoriesTabs emailCategories={emailCategories} />
+            <CategoriesTabs
+              emailCategories={emailCategories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
 
             {/* Stats Card */}
             <StatsCard
@@ -179,7 +192,7 @@ export default function SnapshotPage() {
 
           {/* Main Email Content */}
           <div className="lg:col-span-3 space-y-4">
-            {snapshot.items.map((item, index) => {
+            {filteredItems.map((item, index) => {
               const isDeleted = item.isRemovedFromInbox;
               const summaryLines = item.summary.split('\n').filter((line) => line.trim() !== '');
 
@@ -192,7 +205,7 @@ export default function SnapshotPage() {
                   <Card className="shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-primary/20 hover:border-l-primary">
                     <CardContent className="p-6">
                       {/* Email Header */}
-                      <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start justify-between mb-2">
                         <div className="flex items-start gap-4 flex-1">
                           <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                             <Mail className="h-5 w-5 text-primary" />
@@ -209,7 +222,7 @@ export default function SnapshotPage() {
                             <h4 className="text-sm font-medium text-foreground mb-2 leading-tight">
                               {item.subject}
                             </h4>
-                            <p className="text-sm text-muted-foreground line-clamp-2">
+                            <p className="text-xs text-muted-foreground line-clamp-2">
                               {item.snippet}
                             </p>
                           </div>
@@ -248,20 +261,12 @@ export default function SnapshotPage() {
 
                       {/* Email Content Preview */}
                       <div className="bg-muted/30 rounded-lg p-4 space-y-2">
-                        {summaryLines.slice(0, 3).map((line, lineIndex) => (
+                        {summaryLines.map((line, lineIndex) => (
                           <div key={lineIndex} className="flex items-start gap-2">
                             <div className="w-1.5 h-1.5 bg-primary/80 rounded-full mt-2 flex-shrink-0" />
                             <p className="text-sm  leading-relaxed">{line.replace(/^\*\s*/, '')}</p>
                           </div>
                         ))}
-                        {summaryLines.length > 3 && (
-                          <div className="flex items-center gap-2 pt-2">
-                            <div className="w-1.5 h-1.5 bg-primary/80 rounded-full flex-shrink-0" />
-                            <p className="text-xs text-muted-foreground italic">
-                              +{summaryLines.length - 3} more points
-                            </p>
-                          </div>
-                        )}
                       </div>
 
                       {/* Timestamp */}
