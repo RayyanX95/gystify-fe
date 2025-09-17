@@ -12,7 +12,7 @@ interface Props {
 
 export const SnapshotOverview = ({ createdAt, totalItems, deletedCount, retentionRate }: Props) => {
   return (
-    <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
+    <Card className="elevated-card">
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">

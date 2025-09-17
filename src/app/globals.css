@@ -4,15 +4,21 @@
 
 @layer base {
   * {
-    border-color: #E5E7EB;
+    border-color: #e5e7eb;
   }
   body {
-    background-color: #F9FAFB;
+    background-color: #f9fafb;
     color: #111827;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
 
-.section-layout {
-  @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
-}
+
+  .elevated-card {
+    @apply shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80;
+  }
+
+  .section-layout {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+  }
+

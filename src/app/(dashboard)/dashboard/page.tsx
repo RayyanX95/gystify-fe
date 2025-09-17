@@ -82,7 +82,7 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold text-foreground mb-6">Dashboard</h1>
 
           {/* Trial Status Card */}
-          <Card className="shadow-lg border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background/80">
+          <Card className="elevated-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                   <Card
                     key={snapshot.id}
                     onClick={() => router.push('/snapshots/' + snapshot.id)}
-                    className="hover:shadow-md hover:border-primary/20 hover:bg-primary/5 transition-all duration-200"
+                    className="hover:shadow-md hover:border-primary hover:bg-primary/5 transition-all duration-200 cursor-pointer"
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
