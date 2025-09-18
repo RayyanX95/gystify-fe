@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, Badge, Button } from '@/components';
+import { Card, CardContent, Badge, Button, BadgeType } from '@/components';
 import { Mail, Trash2, ExternalLink, Archive, Clock, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -10,6 +10,8 @@ import { ApiService } from '@/lib/api/';
 import { CategoriesTabs, SnapshotOverview, StatsCard } from '../../_components';
 import { formatTime } from '@/lib/utils/dateFormat';
 import { useState } from 'react';
+
+type PriorityLabel = 'urgent' | 'high' | 'medium' | 'low';
 
 interface SnapshotItem {
   id: string;
@@ -24,7 +26,7 @@ interface SnapshotItem {
   attachmentsMeta: unknown[];
   categoryTags: string | null;
   priorityScore: number | null;
-  priorityLabel: string | null;
+  priorityLabel: PriorityLabel | null;
   sender: {
     id: string;
     name: string;
@@ -144,6 +146,21 @@ export default function SnapshotPage() {
       ? snapshot.items
       : snapshot.items.filter((item) => item.sender.domain === selectedCategory);
 
+  const priorityVariant = (label: PriorityLabel | null): BadgeType => {
+    switch (label) {
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'warning';
+      case 'medium':
+        return 'info';
+      case 'low':
+        return 'outline';
+      default:
+        return 'default';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <motion.div
@@ -215,9 +232,14 @@ export default function SnapshotPage() {
                               <h3 className="font-semibold text-foreground truncate">
                                 {item.sender.name}
                               </h3>
-                              <Badge variant="secondary" className="text-xs">
-                                {item.sender.domain.replace('.com', '').replace('.', ' ')}
-                              </Badge>
+                              {item.priorityLabel && (
+                                <Badge
+                                  variant={priorityVariant(item.priorityLabel)}
+                                  className="text-xs"
+                                >
+                                  {item.priorityLabel}
+                                </Badge>
+                              )}
                             </div>
                             <h4 className="text-sm font-medium text-foreground mb-2 leading-tight">
                               {item.subject}
