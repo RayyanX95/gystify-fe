@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -15,10 +15,10 @@ type ToasterToast = ToastProps & {
 };
 
 enum ActionTypes {
-  ADD_TOAST = "ADD_TOAST",
-  UPDATE_TOAST = "UPDATE_TOAST",
-  DISMISS_TOAST = "DISMISS_TOAST",
-  REMOVE_TOAST = "REMOVE_TOAST",
+  ADD_TOAST = 'ADD_TOAST',
+  UPDATE_TOAST = 'UPDATE_TOAST',
+  DISMISS_TOAST = 'DISMISS_TOAST',
+  REMOVE_TOAST = 'REMOVE_TOAST',
 }
 
 let count = 0;
@@ -39,11 +39,11 @@ type Action =
     }
   | {
       type: ActionTypes.DISMISS_TOAST;
-      toastId?: ToasterToast["id"];
+      toastId?: ToasterToast['id'];
     }
   | {
       type: ActionTypes.REMOVE_TOAST;
-      toastId?: ToasterToast["id"];
+      toastId?: ToasterToast['id'];
     };
 
 interface State {
@@ -79,9 +79,7 @@ export const reducer = (state: State, action: Action): State => {
     case ActionTypes.UPDATE_TOAST:
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === action.toast.id ? { ...t, ...action.toast } : t
-        ),
+        toasts: state.toasts.map((t) => (t.id === action.toast.id ? { ...t, ...action.toast } : t)),
       };
 
     case ActionTypes.DISMISS_TOAST: {
@@ -136,7 +134,7 @@ function dispatch(action: Action) {
   });
 }
 
-type Toast = Omit<ToasterToast, "id">;
+type Toast = Omit<ToasterToast, 'id'>;
 
 function toast({ ...props }: Toast) {
   const id = genId();
@@ -146,8 +144,7 @@ function toast({ ...props }: Toast) {
       type: ActionTypes.UPDATE_TOAST,
       toast: { ...props, id },
     });
-  const dismiss = () =>
-    dispatch({ type: ActionTypes.DISMISS_TOAST, toastId: id });
+  const dismiss = () => dispatch({ type: ActionTypes.DISMISS_TOAST, toastId: id });
 
   dispatch({
     type: ActionTypes.ADD_TOAST,
@@ -184,9 +181,17 @@ function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) =>
-      dispatch({ type: ActionTypes.DISMISS_TOAST, toastId }),
+    dismiss: (toastId?: string) => dispatch({ type: ActionTypes.DISMISS_TOAST, toastId }),
   };
 }
 
-export { useToast, toast };
+// Convenience methods for different toast variants
+const toastVariants = {
+  success: (props: Omit<Toast, 'variant'>) => toast({ ...props, variant: 'success' }),
+  error: (props: Omit<Toast, 'variant'>) => toast({ ...props, variant: 'error' }),
+  warning: (props: Omit<Toast, 'variant'>) => toast({ ...props, variant: 'warning' }),
+  info: (props: Omit<Toast, 'variant'>) => toast({ ...props, variant: 'info' }),
+  destructive: (props: Omit<Toast, 'variant'>) => toast({ ...props, variant: 'destructive' }),
+};
+
+export { useToast, toast, toastVariants };

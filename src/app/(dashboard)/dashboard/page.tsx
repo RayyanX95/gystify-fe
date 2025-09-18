@@ -10,6 +10,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
 import { useRouter } from 'next/navigation';
 import { formatSnapshotDate } from '@/lib/utils/dateFormat';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/lib/hooks/useToast';
 
 export interface EmailSummary {
   id: string;
@@ -23,6 +25,16 @@ export interface EmailSummary {
   updatedAt: string; // ISO datetime string
 }
 
+export interface CreateSnapshotResponseDto {
+  success: boolean;
+  message: string;
+  snapshot?: {
+    id: string;
+    totalItems: number;
+    newEmailsProcessed: number;
+  };
+}
+
 export interface Snapshot {
   id: string;
   snapshotDate: string; // ISO date string (YYYY-MM-DD)
@@ -33,12 +45,21 @@ export interface Snapshot {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['GenerateNewSnapshot'],
-    mutationFn: () => ApiService.send<EmailSummary>('POST', 'snapshots'),
-    onSuccess: () => {
-      // Handle success - maybe show a toast or refetch data
+    mutationFn: () => ApiService.send<CreateSnapshotResponseDto>('POST', 'snapshots'),
+    onSuccess: (data) => {
+      if (!data.success) {
+        toast({
+          title: 'Info',
+          description: data.message || 'No snapshot created.',
+          variant: 'info',
+        });
+
+        return;
+      }
       refetch(); // Refetch snapshots after creating a new one
     },
     onError: () => {
@@ -162,7 +183,10 @@ export default function DashboardPage() {
                   <Card
                     key={snapshot.id}
                     onClick={() => router.push('/snapshots/' + snapshot.id)}
-                    className="hover:shadow-md hover:border-primary hover:bg-primary/5 transition-all duration-200 cursor-pointer"
+                    className={cn(
+                      'hover:shadow-md hover:border-primary hover:bg-primary/5 transition-all duration-200 cursor-pointer',
+                      index === 0 ? 'border-2 border-primary/30' : 'border border-transparent'
+                    )}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
