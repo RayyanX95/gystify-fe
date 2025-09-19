@@ -1,8 +1,15 @@
-import { Badge, Card, CardContent, CardHeader, CardTitle } from '@/components';
+import { Badge, Card, CardContent } from '@/components';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
+
 interface Props {
+  setSelectedTab: (tab: 'sender' | 'priority') => void;
+  selectedTab: 'sender' | 'priority';
+  priorityCategories: Record<string, number>;
+  selectedPriority: string;
+  setSelectedPriority: (priority: string) => void;
   emailCategories: Record<string, number>;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
@@ -12,6 +19,10 @@ export const CategoriesTabs = ({
   emailCategories,
   selectedCategory,
   setSelectedCategory,
+  priorityCategories,
+  selectedPriority,
+  setSelectedPriority,
+  setSelectedTab,
 }: Props) => {
   const allCount = Object.values(emailCategories).reduce((sum, count) => sum + count, 0);
 
@@ -30,34 +41,66 @@ export const CategoriesTabs = ({
   // Function to map over categories
   const map = (fn: (item: [string, number]) => ReactNode) => sortedCategories.map(fn);
 
+  const tabs = [
+    { label: 'By Priority', value: 'priority' },
+    { label: 'By Sender', value: 'sender' },
+  ];
+
   return (
     <Card className="shadow-sm">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold text-foreground flex items-center justify-between pr-2">
-          Categories
-          <Badge variant="outline" className="ml-2 text-xs">
-            {sortedCategories.length - 1}
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {map(([domain, count]) => (
-          <div
-            key={domain}
-            className={cn(
-              'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
-              { 'bg-primary/10': selectedCategory === domain }
-            )}
-            onClick={() => setSelectedCategory(domain)}
-          >
-            <span className="text-sm font-medium text-foreground capitalize">
-              {domain.replace('.com', '').replace('.', ' ')}
-            </span>
-            <Badge variant="secondary" className="text-xs">
-              {count}
-            </Badge>
-          </div>
-        ))}
+      <CardContent className="space-y-2 mt-2">
+        <Tabs defaultValue="priority">
+          <TabsList className="grid w-full grid-cols-2">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                onClick={() => setSelectedTab(tab.value as 'sender' | 'priority')}
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <TabsContent value="priority" className="space-y-1">
+            {[
+              ['All', allCount] as [string, number],
+              ...(Object.entries(priorityCategories) as [string, number][]),
+            ].map(([priority, count]) => (
+              <div
+                key={priority}
+                className={cn(
+                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
+                  { 'bg-primary/10': selectedPriority === priority }
+                )}
+                onClick={() => setSelectedPriority(priority)}
+              >
+                <span className="text-sm font-medium text-foreground capitalize">{priority}</span>
+                <Badge variant="secondary" className="text-xs">
+                  {count}
+                </Badge>
+              </div>
+            ))}
+          </TabsContent>
+          <TabsContent value="sender" className="space-y-1">
+            {map(([domain, count]) => (
+              <div
+                key={domain}
+                className={cn(
+                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
+                  { 'bg-primary/10': selectedCategory === domain }
+                )}
+                onClick={() => setSelectedCategory(domain)}
+              >
+                <span className="text-sm font-medium text-foreground capitalize">
+                  {domain.replace('.com', '').replace('.', ' ')}
+                </span>
+                <Badge variant="secondary" className="text-xs">
+                  {count}
+                </Badge>
+              </div>
+            ))}
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

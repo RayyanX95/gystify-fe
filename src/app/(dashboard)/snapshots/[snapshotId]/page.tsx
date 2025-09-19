@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ApiService } from '@/lib/api/';
 import { CategoriesTabs, SnapshotOverview, StatsCard } from '../../_components';
 import { formatTime } from '@/lib/utils/dateFormat';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type PriorityLabel = 'urgent' | 'high' | 'medium' | 'low';
 
@@ -49,7 +49,9 @@ export default function SnapshotPage() {
   const params = useParams();
   const snapshotId = params.snapshotId as string;
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedTab, setSelectedTab] = useState<'sender' | 'priority'>('priority');
+  const [selectedSender, setSelectedCategory] = useState<string>('All');
+  const [selectedPriority, setSelectedPriority] = useState<string>('All');
 
   const { data: snapshot, isLoading } = useQuery({
     queryKey: ['snapshot', snapshotId],
@@ -73,6 +75,36 @@ export default function SnapshotPage() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  const priorityCategories = useMemo(() => {
+    if (!snapshot) {
+      return {};
+    }
+
+    // Count items by priority
+    const counts = snapshot.items.reduce((acc, item) => {
+      const priority = item.priorityLabel || 'unassigned';
+      acc[priority] = (acc[priority] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Define priority order
+    const priorityOrder: (PriorityLabel | 'unassigned')[] = [
+      'urgent',
+      'high',
+      'medium',
+      'low',
+      'unassigned',
+    ];
+
+    // Return ordered object respecting priority hierarchy
+    return priorityOrder.reduce((orderedAcc, priority) => {
+      if (counts[priority]) {
+        orderedAcc[priority] = counts[priority];
+      }
+      return orderedAcc;
+    }, {} as Record<string, number>);
+  }, [snapshot]);
 
   // Show loading state
   if (isLoading) {
@@ -141,10 +173,10 @@ export default function SnapshotPage() {
       : 100;
 
   // Filter emails based on selected category
-  const filteredItems =
-    selectedCategory === 'All'
+  const filteredItemsBySender =
+    selectedSender === 'All'
       ? snapshot.items
-      : snapshot.items.filter((item) => item.sender.domain === selectedCategory);
+      : snapshot.items.filter((item) => item.sender.domain === selectedSender);
 
   const priorityVariant = (label: PriorityLabel | null): BadgeType => {
     switch (label) {
@@ -160,6 +192,16 @@ export default function SnapshotPage() {
         return 'default';
     }
   };
+
+  const filteredItemsByPriority = snapshot.items.filter((item) => {
+    if (selectedPriority === 'All') {
+      return true;
+    }
+    const itemPriority = item.priorityLabel || 'unassigned';
+    return itemPriority === selectedPriority;
+  });
+
+  const snapshotItems = selectedTab === 'sender' ? filteredItemsBySender : filteredItemsByPriority;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -195,8 +237,13 @@ export default function SnapshotPage() {
           <div className="lg:col-span-1 space-y-4">
             <CategoriesTabs
               emailCategories={emailCategories}
-              selectedCategory={selectedCategory}
+              selectedCategory={selectedSender}
               setSelectedCategory={setSelectedCategory}
+              priorityCategories={priorityCategories}
+              selectedPriority={selectedPriority}
+              setSelectedPriority={setSelectedPriority}
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
             />
 
             {/* Stats Card */}
@@ -209,7 +256,7 @@ export default function SnapshotPage() {
 
           {/* Main Email Content */}
           <div className="lg:col-span-3 space-y-4">
-            {filteredItems.map((item, index) => {
+            {snapshotItems.map((item) => {
               const isDeleted = item.isRemovedFromInbox;
               const summaryLines = item.summary.split('\n').filter((line) => line.trim() !== '');
 
