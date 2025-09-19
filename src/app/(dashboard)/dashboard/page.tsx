@@ -13,36 +13,7 @@ import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/hooks/useToast';
 import { PriorityIndicator } from '../_components';
-
-export interface CreateSnapshotResponseDto {
-  success: boolean;
-  message: string;
-  snapshot?: {
-    id: string;
-    totalItems: number;
-    newEmailsProcessed: number;
-    priorityCounts?: {
-      urgent: number;
-      high: number;
-      medium: number;
-      low: number;
-    };
-  };
-}
-
-export interface Snapshot {
-  id: string;
-  snapshotDate: string; // ISO date string (YYYY-MM-DD)
-  totalItems: number;
-  retentionExpiresAt: string; // ISO datetime string
-  createdAt: string; // ISO datetime string
-  priorityCounts?: {
-    urgent: number;
-    high: number;
-    medium: number;
-    low: number;
-  };
-}
+import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
 
 export default function DashboardPage() {
   const router = useRouter();

@@ -49,7 +49,7 @@ export default function SnapshotPage() {
 
     // Count items by priority
     const counts = snapshot.items.reduce((acc, item) => {
-      const priority = item.priorityLabel || 'unassigned';
+      const priority = item.priorityLabel || 'medium';
       acc[priority] = (acc[priority] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
@@ -142,11 +142,17 @@ export default function SnapshotPage() {
     if (selectedPriority === 'All') {
       return true;
     }
-    const itemPriority = item.priorityLabel || 'unassigned';
+    const itemPriority = item.priorityLabel || 'medium';
     return itemPriority === selectedPriority;
   });
 
   const snapshotItems = selectedTab === 'sender' ? filteredItemsBySender : filteredItemsByPriority;
+
+  const priorityCounts: Record<string, number> = snapshotItems.reduce((acc, item) => {
+    const priority = item.priorityLabel || 'medium';
+    acc[priority] = (acc[priority] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -196,6 +202,7 @@ export default function SnapshotPage() {
               totalItems={snapshot.totalItems}
               deletedCount={deletedCount}
               retentionRate={retentionRate}
+              priorityCounts={priorityCounts}
             />
           </div>
 

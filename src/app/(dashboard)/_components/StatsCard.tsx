@@ -1,14 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components';
 import { BarChart3 } from 'lucide-react';
 import React from 'react';
+import { PriorityIndicator } from './PriorityIndicator';
 
 interface Props {
   totalItems: number;
   deletedCount: number;
   retentionRate: number; // percentage
+  priorityCounts: Record<string, number>;
 }
 
-export const StatsCard = ({ totalItems, deletedCount, retentionRate }: Props) => {
+export const StatsCard = ({ totalItems, deletedCount, retentionRate, priorityCounts }: Props) => {
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-3">
@@ -22,14 +24,20 @@ export const StatsCard = ({ totalItems, deletedCount, retentionRate }: Props) =>
           <span className="text-sm text-muted-foreground">Total Emails</span>
           <span className="font-semibold text-foreground">{totalItems}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Deleted</span>
-          <span className="font-semibold text-destructive">{deletedCount}</span>
+        <div>
+          <span className="text-sm text-muted-foreground mb-1">Priorities Distribution</span>
+          <div className="flex items-center gap-2">
+            {Object.entries(priorityCounts)
+              .filter(([_, count]) => count > 0)
+              .map(([priority, count]) => (
+                <PriorityIndicator key={priority} priority={priority} count={count} />
+              ))}
+          </div>
         </div>
-        <div className="flex justify-between items-center">
+        {/* <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">Retention Rate</span>
           <span className="font-semibold text-green-600">{retentionRate}%</span>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );
