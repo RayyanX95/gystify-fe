@@ -48,7 +48,7 @@ export const CategoriesTabs = ({
 
   return (
     <Card className="shadow-sm">
-      <CardContent className="space-y-2 mt-2">
+      <CardContent className="space-y-2 p-4">
         <Tabs defaultValue="priority">
           <TabsList className="grid w-full grid-cols-2">
             {tabs.map((tab) => (
@@ -82,17 +82,20 @@ export const CategoriesTabs = ({
             ))}
           </TabsContent>
           <TabsContent value="sender" className="space-y-1">
-            {map(([domain, count]) => (
+            {map(([name, count]) => (
               <div
-                key={domain}
+                key={name}
                 className={cn(
                   'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
-                  { 'bg-primary/10': selectedCategory === domain }
+                  { 'bg-primary/10': selectedCategory === name }
                 )}
-                onClick={() => setSelectedCategory(domain)}
+                onClick={() => setSelectedCategory(name)}
               >
-                <span className="text-sm font-medium text-foreground capitalize">
-                  {domain.replace('.com', '').replace('.', ' ')}
+                <span
+                  title={name}
+                  className="text-sm font-medium text-foreground capitalize truncate "
+                >
+                  {name}
                 </span>
                 <Badge variant="secondary" className="text-xs">
                   {count}

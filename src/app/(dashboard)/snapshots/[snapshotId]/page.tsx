@@ -119,10 +119,10 @@ export default function SnapshotPage() {
     );
   }
 
-  // Group emails by sender domain for categories
-  const emailCategories = snapshot.items.reduce((acc, item) => {
-    const domain = item.sender.domain;
-    acc[domain] = (acc[domain] || 0) + 1;
+  // Group emails by sender names for categories
+  const emailSenders = snapshot.items.reduce((acc, item) => {
+    const name = item.sender.name;
+    acc[name] = (acc[name] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
@@ -148,7 +148,7 @@ export default function SnapshotPage() {
 
   const snapshotItems = selectedTab === 'sender' ? filteredItemsBySender : filteredItemsByPriority;
 
-  const priorityCounts: Record<string, number> = snapshotItems.reduce((acc, item) => {
+  const priorityCounts: Record<string, number> = snapshot.items.reduce((acc, item) => {
     const priority = item.priorityLabel || 'medium';
     acc[priority] = (acc[priority] || 0) + 1;
     return acc;
@@ -187,7 +187,7 @@ export default function SnapshotPage() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
             <CategoriesTabs
-              emailCategories={emailCategories}
+              emailCategories={emailSenders}
               selectedCategory={selectedSender}
               setSelectedCategory={setSelectedCategory}
               priorityCategories={priorityCategories}
