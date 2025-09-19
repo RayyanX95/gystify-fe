@@ -268,16 +268,16 @@ export default function SnapshotPage() {
                   className={`transition-all duration-200 ${isDeleted ? 'opacity-60' : ''}`}
                 >
                   <Card className="shadow-sm hover:shadow-md transition-shadow border-l-4 border-l-primary/20 hover:border-l-primary">
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 md:p-6">
                       {/* Email Header */}
                       <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="flex items-start gap-2 md:gap-4 flex-1">
+                          <IconWithBackground size="lg">
                             <Mail className="h-5 w-5 text-primary" />
-                          </div>
+                          </IconWithBackground>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-foreground truncate">
+                            <div className="flex items-start gap-2 mb-1">
+                              <h3 className="font-semibold text-foreground truncate text-wrap">
                                 {item.sender.name}
                               </h3>
                               {item.priorityLabel && (
@@ -299,7 +299,7 @@ export default function SnapshotPage() {
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 ml-4">
+                        <div className="flex items-center gap-2 ml-4 md:flex">
                           <Button
                             variant="outline"
                             size="sm"
@@ -361,11 +361,12 @@ export default function SnapshotPage() {
                           <Clock className="h-3 w-3" />
                           <span>Received at {formatTime(item.date)}</span>
                         </div>
-                        {isDeleted && (
+
+                        {/* {isDeleted && (
                           <Badge variant="destructive" className="text-xs">
                             Scheduled for deletion
                           </Badge>
-                        )}
+                        )} */}
                       </div>
                     </CardContent>
                   </Card>

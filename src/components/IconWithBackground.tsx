@@ -16,5 +16,5 @@ export const IconWithBackground = ({ children, size = 'lg' }: Props) => {
 const sizeClasses = {
   sm: 'p-1.5',
   md: 'p-2.5',
-  lg: 'p-3.5',
+  lg: 'p-3',
 };
