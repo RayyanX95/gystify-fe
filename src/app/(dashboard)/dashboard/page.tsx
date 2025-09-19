@@ -12,18 +12,7 @@ import { useRouter } from 'next/navigation';
 import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/hooks/useToast';
-
-export interface EmailSummary {
-  id: string;
-  title: string;
-  summaryDate: string; // ISO date string (YYYY-MM-DD)
-  totalEmails: number;
-  importantEmails: number;
-  summary: string;
-  keyInsights: string;
-  createdAt: string; // ISO datetime string
-  updatedAt: string; // ISO datetime string
-}
+import { PriorityIndicator } from '../_components';
 
 export interface CreateSnapshotResponseDto {
   success: boolean;
@@ -32,6 +21,12 @@ export interface CreateSnapshotResponseDto {
     id: string;
     totalItems: number;
     newEmailsProcessed: number;
+    priorityCounts?: {
+      urgent: number;
+      high: number;
+      medium: number;
+      low: number;
+    };
   };
 }
 
@@ -41,6 +36,12 @@ export interface Snapshot {
   totalItems: number;
   retentionExpiresAt: string; // ISO datetime string
   createdAt: string; // ISO datetime string
+  priorityCounts?: {
+    urgent: number;
+    high: number;
+    medium: number;
+    low: number;
+  };
 }
 
 export default function DashboardPage() {
@@ -189,17 +190,42 @@ export default function DashboardPage() {
                     )}
                   >
                     <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium text-foreground">{day}</h3>
-                          <p className="text-sm text-muted-foreground">Created at {time}</p>
+                      <div className="space-y-3">
+                        {/* Header */}
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-medium text-foreground">{day}</h3>
+                            <p className="text-sm text-muted-foreground">Created at {time}</p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-foreground">{percentage}%</div>
+                            <p className="text-sm text-muted-foreground">
+                              {deletedEmails} / {snapshot.totalItems} emails deleted
+                            </p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-foreground">{percentage}%</div>
-                          <p className="text-sm text-muted-foreground">
-                            {deletedEmails} / {snapshot.totalItems} emails deleted
-                          </p>
-                        </div>
+
+                        {/* Priority Counts */}
+                        {snapshot.priorityCounts && (
+                          <div className="pt-2 border-t border-border/50">
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs text-muted-foreground font-medium">
+                                Priority Distribution
+                              </p>
+                              <div className="flex items-center gap-2">
+                                {Object.entries(snapshot.priorityCounts)
+                                  .filter(([_, count]) => count > 0)
+                                  .map(([priority, count]) => (
+                                    <PriorityIndicator
+                                      key={priority}
+                                      priority={priority}
+                                      count={count}
+                                    />
+                                  ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>

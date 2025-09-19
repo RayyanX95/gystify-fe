@@ -188,7 +188,7 @@ export default function SnapshotPage() {
       case 'medium':
         return 'info';
       case 'low':
-        return 'outline';
+        return 'success';
       default:
         return 'default';
     }

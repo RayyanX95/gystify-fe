@@ -2,9 +2,20 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api/ApiService';
-import { EmailSummary } from '../dashboard/page';
 import { IconWithBackground } from '@/components';
 import { Mail } from 'lucide-react';
+
+export interface EmailSummary {
+  id: string;
+  title: string;
+  summaryDate: string; // ISO date string (YYYY-MM-DD)
+  totalEmails: number;
+  importantEmails: number;
+  summary: string;
+  keyInsights: string;
+  createdAt: string; // ISO datetime string
+  updatedAt: string; // ISO datetime string
+}
 
 export const SummariesHistory = () => {
   const { data, isLoading } = useQuery({
