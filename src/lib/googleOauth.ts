@@ -32,11 +32,11 @@ export class GoogleOAuthService {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
       redirectUri: `${process.env.NEXT_PUBLIC_HOSTNAME}/google/callback`,
       scopes: [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "openid",
-        "https://www.googleapis.com/auth/gmail.readonly",
-        "https://www.googleapis.com/auth/gmail.modify",
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'openid',
+        // 'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/gmail.modify',
       ],
     };
   }
@@ -48,11 +48,11 @@ export class GoogleOAuthService {
     const params = new URLSearchParams({
       client_id: this.config.clientId,
       redirect_uri: this.config.redirectUri,
-      scope: this.config.scopes.join(" "),
-      response_type: "code",
-      access_type: "offline", // For refresh tokens
-      prompt: "consent", // Force consent screen to get refresh token
-      include_granted_scopes: "true",
+      scope: this.config.scopes.join(' '),
+      response_type: 'code',
+      access_type: 'offline', // For refresh tokens
+      prompt: 'consent', // Force consent screen to get refresh token
+      include_granted_scopes: 'true',
       state: this.generateState(), // CSRF protection
     });
 
@@ -79,26 +79,20 @@ export class GoogleOAuthService {
   /**
    * Exchange authorization code for tokens (via your backend)
    */
-  async exchangeCodeForTokens(
-    code: string,
-    state?: string
-  ): Promise<GoogleOAuthExchangeResponse> {
+  async exchangeCodeForTokens(code: string, state?: string): Promise<GoogleOAuthExchangeResponse> {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/google/exchange`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // Include cookies for session management
-          body: JSON.stringify({
-            code,
-            state,
-            redirectUri: this.config.redirectUri,
-          }),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/exchange`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include cookies for session management
+        body: JSON.stringify({
+          code,
+          state,
+          redirectUri: this.config.redirectUri,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`OAuth exchange failed: ${response.statusText}`);
@@ -106,7 +100,7 @@ export class GoogleOAuthService {
 
       return await response.json();
     } catch (error) {
-      console.error("Error exchanging OAuth code:", error);
+      console.error('Error exchanging OAuth code:', error);
       throw error;
     }
   }
@@ -116,13 +110,10 @@ export class GoogleOAuthService {
    */
   async checkGoogleConnection(): Promise<boolean> {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/google/status`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/status`, {
+        method: 'GET',
+        credentials: 'include',
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -130,7 +121,7 @@ export class GoogleOAuthService {
       }
       return false;
     } catch (error) {
-      console.error("Error checking Google connection:", error);
+      console.error('Error checking Google connection:', error);
       return false;
     }
   }
@@ -140,21 +131,16 @@ export class GoogleOAuthService {
    */
   async disconnectGoogle(): Promise<void> {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/google/disconnect`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/disconnect`, {
+        method: 'POST',
+        credentials: 'include',
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Failed to disconnect Google account: ${response.statusText}`
-        );
+        throw new Error(`Failed to disconnect Google account: ${response.statusText}`);
       }
     } catch (error) {
-      console.error("Error disconnecting Google account:", error);
+      console.error('Error disconnecting Google account:', error);
       throw error;
     }
   }

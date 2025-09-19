@@ -7,6 +7,7 @@ import { LogOut, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Header = () => {
   const { user, logout, isAuthenticated, hasHydrated } = useAuthStore();
@@ -26,13 +27,11 @@ export const Header = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center h-16">
         <Link href="/" className="flex items-center  text-foreground text-3xl">
-          <strong className="text-primary font-[900] italic">G</strong>
-          <motion.span
-            whileHover={{ x: 4 }}
-            className="text-2xl border-b-2 border-primary font-medium border-spacing-4"
-          >
-            ystify
+          <motion.span whileHover={{ x: 4 }}>
+            <Image src="/logo.svg" alt="Logo" width={40} height={40} className="mr-1" />
           </motion.span>
+
+          <span className="text-3xl  text-primary font-bold">Gystify</span>
         </Link>
         {hasHydrated ? (
           isAuthenticated ? (

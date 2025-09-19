@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" role="img"
+  aria-labelledby="title">
+  <title id="title">Gystify abstract G monogram logo</title>
+  <rect x="10" y="10" width="180" height="180" rx="40" ry="40" fill="#4F46E5" />
+  <circle cx="100" cy="100" r="70" stroke="white" stroke-width="15" fill="none" />
+  <path d="M100 170
+           A70 70 0 1 1 170 100
+           L125 100"
+    stroke="white" stroke-width="15" fill="none" stroke-linecap="round" />
+</svg>
