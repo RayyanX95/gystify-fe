@@ -1,5 +1,20 @@
 import React from 'react';
 
-export const IconWithBackground = ({ children }: { children: React.ReactNode }) => {
-  return <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">{children}</div>;
+interface Props {
+  children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const IconWithBackground = ({ children, size = 'lg' }: Props) => {
+  return (
+    <div className={`mx-auto  bg-primary/10 rounded-full w-fit ${sizeClasses[size]}`}>
+      {children}
+    </div>
+  );
+};
+
+const sizeClasses = {
+  sm: 'p-1.5',
+  md: 'p-2.5',
+  lg: 'p-3.5',
 };

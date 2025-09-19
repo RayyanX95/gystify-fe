@@ -2,8 +2,8 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, Badge, Button, BadgeType } from '@/components';
-import { Mail, Trash2, ExternalLink, Archive, Clock, ArrowLeft } from 'lucide-react';
+import { Card, CardContent, Badge, Button, BadgeType, IconWithBackground } from '@/components';
+import { Mail, Trash2, ExternalLink, Archive, Clock, ArrowLeft, InfoIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ApiService } from '@/lib/api/';
@@ -18,6 +18,7 @@ interface SnapshotItem {
   messageId: string;
   subject: string;
   summary: string;
+  finishReason: 'content_filter' | 'stop' | 'length';
   snippet: string;
   date: string;
   openUrl: string;
@@ -330,12 +331,28 @@ export default function SnapshotPage() {
 
                       {/* Email Content Preview */}
                       <div className="bg-muted/30 rounded-lg p-4 space-y-2">
-                        {summaryLines.map((line, lineIndex) => (
-                          <div key={lineIndex} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 bg-primary/80 rounded-full mt-2 flex-shrink-0" />
-                            <p className="text-sm  leading-relaxed">{line.replace(/^\*\s*/, '')}</p>
-                          </div>
-                        ))}
+                        {summaryLines.map((line, lineIndex) => {
+                          if (item.finishReason === 'content_filter') {
+                            return (
+                              <div key={lineIndex} className="flex items-start gap-2">
+                                <IconWithBackground size="sm">
+                                  <InfoIcon className="h-4 w-4 text-primary" />
+                                </IconWithBackground>
+                                <p className="text-sm leading-relaxed italic text-muted-foreground">
+                                  {line.replace(/^\*\s*/, '')}
+                                </p>
+                              </div>
+                            );
+                          }
+                          return (
+                            <div key={lineIndex} className="flex items-start gap-2">
+                              <div className="w-1.5 h-1.5 bg-primary/80 rounded-full mt-2 flex-shrink-0" />
+                              <p className="text-sm  leading-relaxed">
+                                {line.replace(/^\*\s*/, '')}
+                              </p>
+                            </div>
+                          );
+                        })}
                       </div>
 
                       {/* Timestamp */}
