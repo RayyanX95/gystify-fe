@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { GoogleOAuthService } from '@/lib/googleOauth';
 import { useToast } from '@/lib/hooks/useToast';
@@ -14,16 +14,23 @@ type AuthStatus = 'loading' | 'success' | 'error';
 export default function GoogleCallbackPage() {
   const [status, setStatus] = useState<AuthStatus>('loading');
   const [message, setMessage] = useState<string>('');
+  const hasProcessedRef = useRef(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { login, isAuthenticated } = useAuthStore();
+  const { login } = useAuthStore();
 
   useEffect(() => {
-    console.log('isAuthenticated', isAuthenticated);
+    // Prevent duplicate processing
+    if (hasProcessedRef.current) {
+      return;
+    }
+
     const handleCallback = async () => {
       try {
+        hasProcessedRef.current = true;
+
         const code = searchParams.get('code');
         const state = searchParams.get('state');
         const error = searchParams.get('error');
@@ -89,10 +96,10 @@ export default function GoogleCallbackPage() {
             profilePicture: normalizedUser.profilePicture,
           });
 
-          // TODO: Redirect to dashboard after success
-          // setTimeout(() => {
-          //   router.push('/dashboard');
-          // }, 2000);
+          // Redirect to dashboard after success
+          setTimeout(() => {
+            router.push('/dashboard');
+          }, 2000);
         } else {
           setStatus('error');
           // Prefer a message from the response, otherwise a generic one
@@ -103,19 +110,23 @@ export default function GoogleCallbackPage() {
           setMessage(messageFromResp || 'Failed to connect Google account.');
         }
       } catch {
-        setStatus('error');
-        setMessage('An unexpected error occurred.');
-        toast({
-          title: 'Error',
-          description: 'An unexpected error occurred during authentication.',
-          variant: 'destructive',
-        });
+        // Only show error if we haven't already processed successfully
+        if (!hasProcessedRef.current || status === 'loading') {
+          setStatus('error');
+          setMessage('An unexpected error occurred.');
+          toast({
+            title: 'Error',
+            description: 'An unexpected error occurred during authentication.',
+            variant: 'destructive',
+          });
+        }
       }
     };
 
     handleCallback();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- we only want to run this once on mount
+    // We only want to run this once, hasProcessedRef prevents duplicate calls
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRedirect = () => {
