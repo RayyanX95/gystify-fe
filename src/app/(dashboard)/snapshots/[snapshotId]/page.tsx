@@ -121,8 +121,8 @@ export default function SnapshotPage() {
 
   // Group emails by sender names for categories
   const emailSenders = snapshot.items.reduce((acc, item) => {
-    const name = item.sender.name;
-    acc[name] = (acc[name] || 0) + 1;
+    const domain = item.sender.domain;
+    acc[domain] = (acc[domain] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
