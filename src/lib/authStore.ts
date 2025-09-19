@@ -1,21 +1,16 @@
-"use client";
+'use client';
 
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { NormalizedUser } from './types';
 
 interface AuthState {
-  user: User | null;
+  user: NormalizedUser | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   hasHydrated: boolean;
-  login: (token: string, user: User) => void;
+  login: (token: string, user: NormalizedUser) => void;
   logout: () => void;
   setLoading: (loading: boolean) => void;
 }
@@ -28,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
       hasHydrated: false,
-      login: (token: string, user: User) =>
+      login: (token: string, user: NormalizedUser) =>
         set({
           token,
           user,
@@ -45,17 +40,16 @@ export const useAuthStore = create<AuthState>()(
         });
 
         // Clear localStorage
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("auth_token");
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('auth_token');
           // Clear cookie by setting expired date
-          document.cookie =
-            "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+          document.cookie = 'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         }
       },
       setLoading: (loading: boolean) => set({ isLoading: loading }),
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
       partialize: (state) => ({
         token: state.token,
         user: state.user,

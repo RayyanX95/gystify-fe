@@ -7,25 +7,7 @@ import { useToast } from '@/lib/hooks/useToast';
 import { useAuthStore } from '@/lib/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
-
-// Exchange response shapes (moved to top and using interfaces)
-interface GoogleExchangeNew {
-  accessToken: string;
-  user: {
-    id: string;
-    email: string;
-    firstName?: string;
-    lastName?: string;
-    profilePicture?: string;
-  };
-}
-
-interface NormalizedUser {
-  id: string;
-  email: string;
-  name: string;
-  picture?: string;
-}
+import { GoogleExchangeNew as GoogleAuthResponse, NormalizedUser } from '@/lib/types';
 
 type AuthStatus = 'loading' | 'success' | 'error';
 
@@ -36,9 +18,10 @@ export default function GoogleCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { login } = useAuthStore();
+  const { login, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
+    console.log('isAuthenticated', isAuthenticated);
     const handleCallback = async () => {
       try {
         const code = searchParams.get('code');
@@ -67,21 +50,21 @@ export default function GoogleCallbackPage() {
         const googleOAuth = new GoogleOAuthService();
         const result = await googleOAuth.exchangeCodeForTokens(code, state || undefined);
 
-        const res = result as unknown as GoogleExchangeNew | Record<string, unknown>;
+        const res = result as unknown as GoogleAuthResponse | Record<string, unknown>;
 
         // Normalize into token and user for the auth store
         let token: string | undefined;
         let normalizedUser: NormalizedUser | undefined;
 
-        if ((res as GoogleExchangeNew).accessToken) {
-          token = (res as GoogleExchangeNew).accessToken;
-          const u = (res as GoogleExchangeNew).user;
+        if ((res as GoogleAuthResponse).accessToken) {
+          token = (res as GoogleAuthResponse).accessToken;
+          const u = (res as GoogleAuthResponse).user;
           if (u) {
             normalizedUser = {
               id: u.id,
               email: u.email,
               name: `${u.firstName || ''}${u.lastName ? ' ' + u.lastName : ''}`.trim(),
-              picture: u.profilePicture,
+              profilePicture: u.profilePicture,
             };
           }
         }
@@ -103,12 +86,13 @@ export default function GoogleCallbackPage() {
             id: normalizedUser.id,
             email: normalizedUser.email,
             name: normalizedUser.name,
+            profilePicture: normalizedUser.profilePicture,
           });
 
-          // Redirect to dashboard after success
-          setTimeout(() => {
-            router.push('/dashboard');
-          }, 2000);
+          // TODO: Redirect to dashboard after success
+          // setTimeout(() => {
+          //   router.push('/dashboard');
+          // }, 2000);
         } else {
           setStatus('error');
           // Prefer a message from the response, otherwise a generic one
@@ -130,7 +114,9 @@ export default function GoogleCallbackPage() {
     };
 
     handleCallback();
-  }, [searchParams, router, toast, login]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- we only want to run this once on mount
+  }, []);
 
   const handleRedirect = () => {
     if (status === 'success') {
