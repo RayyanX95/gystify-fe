@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, Badge, Button, BadgeType, IconWithBackground } from '@/components';
-import { Mail, Trash2, ExternalLink, Archive, Clock, ArrowLeft, InfoIcon } from 'lucide-react';
+import { Mail, ExternalLink, Clock, ArrowLeft, InfoIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ApiService } from '@/lib/api/';
@@ -207,7 +207,7 @@ export default function SnapshotPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <motion.div
-        className="max-w-6xl mx-auto p-6 space-y-6"
+        className="max-w-6xl mx-auto p-3 md:p-6 space-y-6"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -310,7 +310,7 @@ export default function SnapshotPage() {
                             <ExternalLink className="h-4 w-4" />
                             Open
                           </Button>
-                          <Button
+                          {/* <Button
                             variant={isDeleted ? 'default' : 'outline'}
                             size="sm"
                             className={`gap-2 ${
@@ -325,7 +325,7 @@ export default function SnapshotPage() {
                               <Trash2 className="h-4 w-4" />
                             )}
                             {isDeleted ? 'Deleted' : 'Delete'}
-                          </Button>
+                          </Button> */}
                         </div>
                       </div>
 

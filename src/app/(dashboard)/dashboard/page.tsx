@@ -77,22 +77,6 @@ export default function DashboardPage() {
     queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
   });
 
-  // Mock calculation for percentage - you may want to adjust this based on your business logic
-  const calculateDeletionPercentage = (totalItems: number, index: number) => {
-    // This is just a mock calculation - replace with actual logic
-    if (totalItems === 1) {
-      return 0;
-    }
-    if (totalItems === 50) {
-      return 9;
-    }
-    return Math.floor(Math.random() * 20); // Fallback random percentage
-  };
-
-  const calculateDeletedEmails = (totalItems: number, percentage: number) => {
-    return Math.floor((percentage / 100) * totalItems);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -177,8 +161,6 @@ export default function DashboardPage() {
             ) : snapshots && snapshots.length > 0 ? (
               snapshots.map((snapshot, index) => {
                 const { day, time } = formatSnapshotDate(snapshot.createdAt);
-                const percentage = calculateDeletionPercentage(snapshot.totalItems, index);
-                const deletedEmails = calculateDeletedEmails(snapshot.totalItems, percentage);
 
                 return (
                   <Card
@@ -195,13 +177,15 @@ export default function DashboardPage() {
                         <div className="flex items-center justify-between">
                           <div>
                             <h3 className="font-medium text-foreground">{day}</h3>
-                            <p className="text-sm text-muted-foreground">Created at {time}</p>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold text-foreground">{percentage}%</div>
-                            <p className="text-sm text-muted-foreground">
-                              {deletedEmails} / {snapshot.totalItems} emails deleted
+                            <p className="text-xs text-muted-foreground font-medium">
+                              Created at {time}
                             </p>
+                          </div>
+                          <div className="text-center flex flex-col items-center">
+                            <strong className="text-2xl font-bold text-foreground">
+                              {snapshot.totalItems}
+                            </strong>
+                            <span className="text-sm text-muted-foreground">Emails</span>
                           </div>
                         </div>
 
