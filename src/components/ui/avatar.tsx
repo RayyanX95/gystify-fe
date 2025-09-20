@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 
@@ -20,13 +21,32 @@ Avatar.displayName = AvatarPrimitive.Root.displayName;
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn('aspect-square h-full w-full', className)}
-    {...props}
-  />
-));
+>(({ className, src, alt, ...props }, ref) => {
+  // For external URLs (like Google profile pictures), use Next.js Image
+  if (src && (src.startsWith('http://') || src.startsWith('https://'))) {
+    return (
+      <Image
+        src={src}
+        alt={alt || 'Avatar'}
+        width={40}
+        height={40}
+        className={cn('aspect-square h-full w-full object-cover', className)}
+        unoptimized={false}
+      />
+    );
+  }
+
+  // For local images, use the original AvatarPrimitive.Image
+  return (
+    <AvatarPrimitive.Image
+      ref={ref}
+      className={cn('aspect-square h-full w-full', className)}
+      src={src}
+      alt={alt}
+      {...props}
+    />
+  );
+});
 AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
 const AvatarFallback = React.forwardRef<
