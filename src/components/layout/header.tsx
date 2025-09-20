@@ -62,10 +62,7 @@ export const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                     <Avatar className="h-10 w-10 cursor-pointer ring-2 ring-transparent hover:ring-primary/20 transition-all">
-                      <AvatarImage
-                        src={user?.picture || user?.profilePicture}
-                        alt={user?.name || 'User'}
-                      />
+                      <AvatarImage src={user?.profilePicture} alt={user?.name || 'User'} />
                       <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                         {user?.name ? getUserInitials(user.name) : <User className="h-4 w-4" />}
                       </AvatarFallback>

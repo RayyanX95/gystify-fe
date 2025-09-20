@@ -22,13 +22,13 @@ const eslintConfig = [
     rules: {
       // Possible Errors
       'no-console': 'warn',
-      'no-debugger': 'warn',
+      'no-debugger': 'error',
       'no-empty': 'warn',
       'no-extra-semi': 'warn',
 
       // Best Practices
       'eqeqeq': ['warn', 'always'],
-      'curly': ['warn', 'all'],
+      // 'curly': ['warn', 'all'],
       'no-eval': 'warn',
       'no-implied-eval': 'warn',
       'no-param-reassign': 'warn',

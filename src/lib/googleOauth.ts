@@ -1,28 +1,4 @@
-export interface GoogleAuthConfig {
-  clientId: string;
-  redirectUri: string;
-  scopes: string[];
-}
-
-export interface GoogleAuthResponse {
-  access_token: string;
-  refresh_token?: string;
-  expires_in: number;
-  scope: string;
-  token_type: string;
-}
-
-export interface GoogleOAuthExchangeResponse {
-  success: boolean;
-  token?: string;
-  user?: {
-    id: string;
-    email: string;
-    name: string;
-    picture?: string;
-  };
-  message?: string;
-}
+import { GoogleAuthConfig, GoogleOAuthExchangeRes } from './types';
 
 export class GoogleOAuthService {
   private config: GoogleAuthConfig;
@@ -30,7 +6,7 @@ export class GoogleOAuthService {
   constructor() {
     this.config = {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      redirectUri: `${process.env.NEXT_PUBLIC_HOSTNAME}/google/callback`,
+      redirectUri: `${window.location.origin}/google/callback`,
       scopes: [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
@@ -79,7 +55,7 @@ export class GoogleOAuthService {
   /**
    * Exchange authorization code for tokens (via your backend)
    */
-  async exchangeCodeForTokens(code: string, state?: string): Promise<GoogleOAuthExchangeResponse> {
+  async exchangeCodeForTokens(code: string, state?: string): Promise<GoogleOAuthExchangeRes> {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/exchange`, {
         method: 'POST',

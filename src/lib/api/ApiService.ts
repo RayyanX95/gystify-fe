@@ -1,11 +1,13 @@
 import { endPoints } from './endpoints';
 import { throwIfResNotOk } from './throwIfResNotOk';
+import { getCookie } from '../utils';
 
 import type { EndPoints } from './endpoints';
 import type { ApiServiceOptions, HTTPMethod, SendOptions } from './types';
 import { useAuthStore } from '../authStore';
+import { Tokens } from '../types';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 class ApiServiceClass {
   private baseUrl: string;
@@ -45,45 +47,45 @@ class ApiServiceClass {
 
   private async refreshTokenIfNeeded(): Promise<void> {
     // If a refresh is already in progress, wait for it.
-    // if (this.refreshingPromise) return this.refreshingPromise;
-    // const { tokens } = useAuthStore.getState();
-    // if (!tokens?.refreshToken) {
-    //   // No refresh token available
-    //   throw new Error("Authentication failed");
-    // }
-    // this.refreshingPromise = (async () => {
-    //   try {
-    //     const url = this.buildUrl(endPoints.authTokenRefresh);
-    //     const res = await fetch(url, {
-    //       method: "POST",
-    //       headers: {
-    //         Authorization: "Basic Z==",
-    //         "Content-Type": "application/x-www-form-urlencoded",
-    //         ...this.getHeaders(),
-    //       },
-    //       body: new URLSearchParams({
-    //         grant_type: "refresh_token",
-    //         refresh_token: tokens.refreshToken,
-    //       }),
-    //     });
-    //     await throwIfResNotOk(res);
-    //     const data = (await res.json()) ;
-    //     const updatedTokens = {
-    //       accessToken: data.tokenToken,
-    //       refreshToken: data.refreshToken,
-    //       expiresIn: data.expiresIn,
-    //       tokenType: data.tokenType,
-    //     };
-    //     useAuthStore.getState().refreshTokens(updatedTokens);
-    //   } catch (error) {
-    //     // On refresh failure clear user and rethrow so callers can handle logout
-    //     localStorage.removeItem("auth-storage");
-    //     throw error;
-    //   } finally {
-    //     this.refreshingPromise = null;
-    //   }
-    // })();
-    // return this.refreshingPromise;
+    if (this.refreshingPromise) return this.refreshingPromise;
+
+    const refreshToken = getCookie('refresh_token');
+    if (!refreshToken) {
+      // No refresh token available
+      throw new Error('Authentication failed');
+    }
+
+    this.refreshingPromise = (async () => {
+      try {
+        const url = this.buildUrl(endPoints.authTokenRefresh);
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            refreshToken: refreshToken,
+          }),
+          credentials: 'include',
+        });
+        await throwIfResNotOk(res);
+        const data = (await res.json()) as Tokens;
+        const updatedTokens = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          expiresIn: data.expiresIn,
+          tokenType: data.tokenType,
+        };
+        useAuthStore.getState().refreshTokens(updatedTokens);
+      } catch (error) {
+        // On refresh failure clear user and rethrow so callers can handle logout
+        localStorage.removeItem('auth-storage');
+        throw error;
+      } finally {
+        this.refreshingPromise = null;
+      }
+    })();
+    return this.refreshingPromise;
   }
 
   private makeRequest = async (
@@ -98,11 +100,11 @@ class ApiServiceClass {
     };
 
     if (withAuth) {
-      const { token } = useAuthStore.getState();
-      if (token) {
+      const accessToken = getCookie('access_token');
+      if (accessToken) {
         headers = {
           ...headers,
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         };
       }
     }

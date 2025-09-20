@@ -2,56 +2,71 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { NormalizedUser } from './types';
+import { Tokens, UserInfo } from './types';
 
 interface AuthState {
-  user: NormalizedUser | null;
-  token: string | null;
+  user: UserInfo | null;
+  tokens: Tokens | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   hasHydrated: boolean;
-  login: (token: string, user: NormalizedUser) => void;
-  logout: () => void;
-  setLoading: (loading: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>()(
+interface AuthActions {
+  login: (tokens: Tokens, user: UserInfo) => void;
+  logout: () => void;
+  setLoading: (loading: boolean) => void;
+  refreshTokens: (tokens: Tokens) => void;
+}
+
+type AuthStore = AuthState & AuthActions;
+
+const initialState: AuthState = {
+  user: null,
+  tokens: null,
+  isAuthenticated: false,
+  isLoading: false,
+  hasHydrated: false,
+};
+
+export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
-      hasHydrated: false,
-      login: (token: string, user: NormalizedUser) =>
+      ...initialState,
+      login: (tokens: Tokens, user: UserInfo) => {
+        saveTokensToCookies(tokens);
+
         set({
-          token,
+          tokens,
           user,
           isAuthenticated: true,
           isLoading: false,
-        }),
+        });
+      },
       logout: () => {
         // Clear zustand store
         set({
-          token: null,
+          tokens: null,
           user: null,
           isAuthenticated: false,
           isLoading: false,
         });
 
-        // Clear localStorage
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('auth_token');
-          // Clear cookie by setting expired date
-          document.cookie = 'auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        }
+        clearAuthCookies();
+      },
+      refreshTokens: (tokens: Tokens) => {
+        saveTokensToCookies(tokens);
+
+        set((state) => ({
+          tokens,
+          isAuthenticated: !!state.user, // keep current auth status based on user presence
+        }));
       },
       setLoading: (loading: boolean) => set({ isLoading: loading }),
     }),
     {
       name: 'auth-storage',
       partialize: (state) => ({
-        token: state.token,
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
@@ -67,3 +82,26 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
+const saveTokensToCookies = (tokens: Tokens) => {
+  if (typeof window !== 'undefined') {
+    if (tokens.accessToken) {
+      document.cookie = `access_token=${tokens.accessToken}; Path=/; SameSite=Lax; Secure=${
+        window.location.protocol === 'https:'
+      };`;
+    }
+    if (tokens.refreshToken) {
+      document.cookie = `refresh_token=${tokens.refreshToken}; Path=/; SameSite=Lax; Secure=${
+        window.location.protocol === 'https:'
+      };`;
+    }
+  }
+};
+
+// clear tokens from cookies on logout
+export const clearAuthCookies = () => {
+  if (typeof window !== 'undefined') {
+    document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+};
