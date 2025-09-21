@@ -20,11 +20,10 @@ export default function HeroSection() {
           transition={{ delay: 0.05 }}
           className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6"
         >
-          Get the{' '}
+          Transform Email Overload into{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">
-            gist
+            Actionable Insights
           </span>
-          . Stay productive.
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -32,8 +31,9 @@ export default function HeroSection() {
           transition={{ delay: 0.12 }}
           className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10"
         >
-          Gystify is your AI-powered assistant that distills long emails into quick, clear summaries
-          — so you spend less time reading and more time doing.
+          Gystify&apos;s AI-powered platform analyzes your Gmail messages and creates clear, concise
+          summaries — helping busy professionals cut through email clutter and focus on what matters
+          most.
         </motion.p>
         <motion.div
           className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -46,14 +46,15 @@ export default function HeroSection() {
             className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white"
             onClick={() =>
               toast({
-                title: 'Get Started',
-                description: 'Sign up for a free trial to start using Gystify.',
+                title: 'Welcome to Gystify!',
+                description:
+                  'Get started with AI-powered email summaries. Connect your Gmail and try it free.',
                 duration: 4000,
-                variant: 'destructive',
+                variant: 'default',
               })
             }
           >
-            Start Free Trial
+            Get Started Free - Save 3+ Hours Daily
           </Button>
           <Button
             size="lg"
