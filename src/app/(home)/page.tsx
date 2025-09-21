@@ -1,29 +1,7 @@
 import { HeroSection, FeaturesSection, CTASection, HowItWorksSection } from './sections';
-import {
-  generateMetadata as generateSEOMetadata,
-  generateStructuredData,
-  combineKeywords,
-} from '@/lib/seo';
-import { Metadata } from 'next';
+import { generateStructuredData } from '@/lib/seo';
 
-export const metadata: Metadata = generateSEOMetadata({
-  title: 'AI Email Summarization for Gmail - Transform Email Overload',
-  description:
-    'Transform your Gmail overload into clear, actionable insights with Gystify. AI-powered email summaries help busy professionals cut through clutter and focus on what matters. Free trial available.',
-  keywords: combineKeywords('email', 'ai', 'productivity').concat([
-    'gmail summarization',
-    'email overload solution',
-    'gmail productivity',
-    'email summaries',
-    'gmail AI assistant',
-    'business email management',
-    'email intelligence',
-    'gmail automation',
-  ]),
-  canonical: '/',
-  ogImage: '/og-home.png',
-  twitterImage: '/twitter-home.png',
-});
+// No need for metdata here as the root layout is enough
 
 export default function HomePage() {
   const structuredData = generateStructuredData({
