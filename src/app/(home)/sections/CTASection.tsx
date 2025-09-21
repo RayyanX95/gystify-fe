@@ -11,12 +11,17 @@ export default function CTASection() {
           Ready to Transform Your Email Experience?
         </h2>
         <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-          Join thousands of professionals who have already revolutionized their email workflow with
-          Gystify. Start your free trial today.
+          Stop drowning in email overload. Start your free trial and experience the power of
+          AI-powered email summaries. No credit card required.
         </p>
-        <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white">
-          Get Started for Free
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-indigo-700 text-white">
+            Start Free Trial
+          </Button>
+          <p className="text-sm text-muted-foreground">
+            ✓ Free to try ✓ No credit card ✓ Gmail integration
+          </p>
+        </div>
       </motion.div>
     </section>
   );

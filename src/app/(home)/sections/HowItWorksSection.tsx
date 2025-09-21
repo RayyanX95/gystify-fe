@@ -9,9 +9,12 @@ export default function HowItWorksSection() {
   return (
     <section className="section-layout">
       <motion.div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">How It Works</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          From Email Chaos to Clarity in 3 Simple Steps
+        </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          See how Gystify transforms your emails into actionable summaries in just a few steps.
+          Transform your overwhelming inbox into an organized, actionable workspace with our proven
+          3-step email intelligence process.
         </p>
       </motion.div>
       <motion.div
@@ -23,21 +26,21 @@ export default function HowItWorksSection() {
         {[
           {
             icon: <MailOpen className="h-8 w-8 text-primary" />,
-            title: 'Connect Your Email',
+            title: '1. Connect Your Gmail',
             description:
-              'Securely link your email account with Gystify. We support Gmail, Outlook, and more.',
+              'Securely connect your Gmail account in under 30 seconds with OAuth 2.0 authentication. No passwords stored, ever.',
           },
           {
             icon: <Zap className="h-8 w-8 text-primary" />,
-            title: 'AI Summarizes',
+            title: '2. AI Analyzes & Summarizes',
             description:
-              'Our advanced AI instantly analyzes and summarizes your emails for clarity and action.',
+              'Our AI engine processes your email content and creates clear, concise summaries that highlight the key information and main points.',
           },
           {
             icon: <CheckCircle className="h-8 w-8 text-primary" />,
-            title: 'Review & Act',
+            title: '3. Review & Take Action',
             description:
-              'Get concise summaries and take action faster—reply, archive, or follow up with ease.',
+              'Access your personalized dashboard with clear email summaries that help you quickly understand and respond to important messages.',
           },
         ].map((step, idx) => (
           <Card

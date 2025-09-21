@@ -9,37 +9,39 @@ export default function FeaturesSection() {
   return (
     <section className="section-layout">
       <motion.div className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Why Choose Gystify?</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          Why Choose Gystify for Email Intelligence
+        </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Powerful features designed to streamline your email management and boost your
-          productivity.
+          Powerful AI-driven email summarization designed to help professionals cut through email
+          overload and focus on what matters most.
         </p>
       </motion.div>
       <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
           {
             icon: <Zap className="h-8 w-8 text-primary" />,
-            title: 'AI-Powered',
+            title: 'Smart AI Summarization',
             description:
-              'Advanced AI technology provides accurate and contextual email summaries in seconds.',
+              'Advanced AI technology analyzes your Gmail messages and creates clear, concise summaries that capture the key points and action items.',
           },
           {
             icon: <Clock className="h-8 w-8 text-primary" />,
-            title: 'Save Time',
+            title: 'Save 3+ Hours Daily',
             description:
-              'Reduce email processing time by up to 80% with intelligent summarization.',
+              'Transform lengthy emails into quick, digestible summaries so you can process your inbox faster and focus on important tasks.',
           },
           {
             icon: <Shield className="h-8 w-8 text-primary" />,
             title: 'Secure & Private',
             description:
-              'Enterprise-grade security ensures your email data remains private and protected.',
+              'Your email data is processed securely with industry-standard encryption. We prioritize your privacy and never store sensitive information.',
           },
           {
             icon: <Mail className="h-8 w-8 text-primary" />,
-            title: 'Easy Integration',
+            title: 'Gmail Integration',
             description:
-              'Seamlessly connects with all major email providers including Gmail, Outlook, and more.',
+              'Currently supports Gmail with secure OAuth authentication. Additional email providers coming soon to expand your options.',
           },
         ].map((feature, index) => (
           <motion.div key={index}>

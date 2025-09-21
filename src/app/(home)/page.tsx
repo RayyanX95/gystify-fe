@@ -1,16 +1,25 @@
 import { HeroSection, FeaturesSection, CTASection, HowItWorksSection } from './sections';
 import {
   generateMetadata as generateSEOMetadata,
-  combineKeywords,
   generateStructuredData,
+  combineKeywords,
 } from '@/lib/seo';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = generateSEOMetadata({
-  title: 'AI-Powered Email Intelligence & Productivity Suite',
+  title: 'AI Email Summarization for Gmail - Transform Email Overload',
   description:
-    'Transform your email overload into actionable insights with Gystify. Get AI-powered email summaries, smart prioritization, and automated workflows to boost your productivity by 3x.',
-  keywords: combineKeywords('email', 'ai', 'productivity', 'features'),
+    'Transform your Gmail overload into clear, actionable insights with Gystify. AI-powered email summaries help busy professionals cut through clutter and focus on what matters. Free trial available.',
+  keywords: combineKeywords('email', 'ai', 'productivity').concat([
+    'gmail summarization',
+    'email overload solution',
+    'gmail productivity',
+    'email summaries',
+    'gmail AI assistant',
+    'business email management',
+    'email intelligence',
+    'gmail automation',
+  ]),
   canonical: '/',
   ogImage: '/og-home.png',
   twitterImage: '/twitter-home.png',
@@ -18,12 +27,12 @@ export const metadata: Metadata = generateSEOMetadata({
 
 export default function HomePage() {
   const structuredData = generateStructuredData({
-    type: 'WebApplication',
-    name: 'Gystify - AI Email Intelligence Platform',
+    type: 'SoftwareApplication',
+    name: 'Gystify - AI Email Summarization for Gmail',
     description:
-      'Revolutionary AI-powered email management platform that transforms email overload into actionable insights with smart summaries, priority detection, and automated workflows.',
+      'AI-powered email summarization platform that transforms Gmail overload into clear, actionable insights. Help busy professionals process emails faster with intelligent summaries.',
     applicationCategory: 'ProductivityApplication',
-    operatingSystem: 'Web Browser, iOS, Android',
+    operatingSystem: 'Web Browser',
     offers: {
       price: '0',
       priceCurrency: 'USD',
