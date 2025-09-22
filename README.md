@@ -90,8 +90,8 @@ The application follows a modern, minimalistic design approach with:
 The frontend connects to a NestJS backend API. Configure the API URL in your environment variables:
 
 ```env
-NEXT_PUBLIC_HOSTNAME
-=http://localhost:3001
+NEXT_PUBLIC_API_URL
+=http://localhost:8000/api/v1
 ```
 
 ### Available API Endpoints
