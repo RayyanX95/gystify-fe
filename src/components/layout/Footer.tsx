@@ -4,7 +4,7 @@ import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export function Footer() {
+export const Footer = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
@@ -25,4 +25,4 @@ export function Footer() {
       </div>
     </motion.div>
   );
-}
+};
