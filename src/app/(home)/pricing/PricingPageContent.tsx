@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { PricingCard, PlanComparison, FAQSection } from './_components';
+import { BillingToggle } from '@/components/ui/billing-toggle';
+import { PricingCard, FAQSection } from './_components';
 import { PRICING_PLANS, BillingCycle } from '@/lib/types/subscription';
 import { generateStructuredData } from '@/lib/seo';
 import { useState } from 'react';
@@ -39,7 +40,7 @@ export default function PricingPageContent() {
 
       <div className="bg-gray-50 min-h-screen">
         {/* Hero Section */}
-        <section className="bg-background py-16 lg:py-24">
+        <section className="bg-background my-16 ">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -62,54 +63,32 @@ export default function PricingPageContent() {
                 Start with our free trial and upgrade when you&apos;re ready. All plans include our
                 powerful AI email summarization and Gmail integration.
               </p>
-
-              {/* Billing Toggle */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="flex items-center justify-center gap-4 mb-12"
-              >
-                <span
-                  className={`text-sm font-medium ${
-                    !isYearly ? 'text-foreground' : 'text-muted-foreground'
-                  }`}
-                >
-                  Monthly
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setBillingCycle(isYearly ? BillingCycle.MONTHLY : BillingCycle.YEARLY)
-                  }
-                  className={`relative w-14 h-8 p-0 ${isYearly ? 'bg-primary' : 'bg-muted'}`}
-                >
-                  <div
-                    className={`absolute w-6 h-6 bg-white rounded-full transition-transform duration-200 ${
-                      isYearly ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </Button>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-sm font-medium ${
-                      isYearly ? 'text-foreground' : 'text-muted-foreground'
-                    }`}
-                  >
-                    Yearly
-                  </span>
-                  <Badge variant="secondary" className="text-xs">
-                    Save up to 17%
-                  </Badge>
-                </div>
-              </motion.div>
             </motion.div>
           </div>
         </section>
 
+        <section>
+          {/* Billing Toggle */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex items-center justify-center gap-4 mb-12"
+          >
+            <BillingToggle
+              value={isYearly ? 'yearly' : 'monthly'}
+              onValueChange={(value) =>
+                setBillingCycle(value === 'yearly' ? BillingCycle.YEARLY : BillingCycle.MONTHLY)
+              }
+            />
+            <Badge variant="secondary" className="text-xs">
+              Save up to 17%
+            </Badge>
+          </motion.div>
+        </section>
+
         {/* Pricing Cards */}
-        <section className="py-16">
+        <section className="my-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
               {PRICING_PLANS.map((plan, index) => (
@@ -125,7 +104,7 @@ export default function PricingPageContent() {
         </section>
 
         {/* Trust Indicators */}
-        <section className="py-12 bg-background">
+        <section className="my-12 bg-background">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -152,21 +131,21 @@ export default function PricingPageContent() {
         </section>
 
         {/* Plan Comparison */}
-        <section className="bg-background">
+        {/* <section className="bg-background">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <PlanComparison />
           </div>
-        </section>
+        </section> */}
 
         {/* FAQ Section */}
-        <section className="py-16 bg-gray-50">
+        <section className="my-16 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <FAQSection />
           </div>
         </section>
 
         {/* Final CTA */}
-        <section className="py-16 bg-background">
+        <section className="my-16 bg-background">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
