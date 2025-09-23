@@ -1,6 +1,6 @@
-# Email Summarizer Frontend
+# Gystify Frontend
 
-A modern Next.js 15 frontend application for the Email Summarizer SaaS platform, built with TypeScript, TailwindCSS, and shadcn/ui components.
+A modern Next.js 15 frontend application for the Gystify SaaS platform, built with TypeScript, TailwindCSS, and shadcn/ui components.
 
 ## 🚀 Features
 
@@ -192,4 +192,4 @@ The app implements JWT-based authentication with:
 
 ## 📄 License
 
-This project is part of the Email Summarizer SaaS platform.
+This project is part of the Gystify SaaS platform.

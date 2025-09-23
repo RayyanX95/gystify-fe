@@ -1,6 +1,6 @@
 {
   "name": "frontend-agent",
-  "description": "Copilot guidelines for generating code in the Next.js 15 frontend repository of the Email Summarizer SaaS project. The backend is separate and handled by NestJS.",
+  "description": "Copilot guidelines for generating code in the Next.js 15 frontend repository of the Gystify SaaS project. The backend is separate and handled by NestJS.",
   "context": {
     "framework": "Next.js 15 (App Router)",
     "language": "TypeScript",

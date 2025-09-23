@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { GoogleOAuthService } from '@/lib/googleOauth';
 import { useToast } from '@/lib/hooks/useToast';
@@ -41,8 +41,7 @@ export const GoogleOAuthButton = ({
 
       // Initiate OAuth flow
       googleOAuth.initiateAuth();
-    } catch (error) {
-      console.error('Google OAuth initiation error:', error);
+    } catch {
       toast({
         title: 'Authentication Error',
         description: 'Failed to initiate Google authentication.',

@@ -2,7 +2,12 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Tokens, UserInfo } from './types';
+import { Tokens, UserInfo } from '../types';
+
+interface PendingPlanSelection {
+  tier: string;
+  billingCycle: 'monthly' | 'yearly';
+}
 
 interface AuthState {
   user: UserInfo | null;
@@ -10,6 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   hasHydrated: boolean;
+  pendingPlanSelection: PendingPlanSelection | null;
 }
 
 interface AuthActions {
@@ -17,6 +23,9 @@ interface AuthActions {
   logout: () => void;
   setLoading: (loading: boolean) => void;
   refreshTokens: (tokens: Tokens) => void;
+  setPendingPlan: (plan: PendingPlanSelection) => void;
+  clearPendingPlan: () => void;
+  handlePostLoginRedirect: () => string;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -27,11 +36,12 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   hasHydrated: false,
+  pendingPlanSelection: null,
 };
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
       login: (tokens: Tokens, user: UserInfo) => {
         saveTokensToCookies(tokens);
@@ -63,12 +73,34 @@ export const useAuthStore = create<AuthStore>()(
         }));
       },
       setLoading: (loading: boolean) => set({ isLoading: loading }),
+
+      setPendingPlan: (plan: PendingPlanSelection) => {
+        set({ pendingPlanSelection: plan });
+      },
+
+      clearPendingPlan: () => {
+        set({ pendingPlanSelection: null });
+      },
+
+      handlePostLoginRedirect: (): string => {
+        const { pendingPlanSelection } = get();
+
+        if (pendingPlanSelection) {
+          // Clear the pending plan and redirect to confirmation
+          set({ pendingPlanSelection: null });
+          return `/dashboard/subscription/confirm?tier=${pendingPlanSelection.tier}&billing=${pendingPlanSelection.billingCycle}`;
+        }
+
+        // Default redirect to dashboard
+        return '/dashboard';
+      },
     }),
     {
       name: 'auth-storage',
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
+        pendingPlanSelection: state.pendingPlanSelection,
       }),
       // called when rehydration starts/finishes; set hasHydrated when done
       onRehydrateStorage: () => () => {

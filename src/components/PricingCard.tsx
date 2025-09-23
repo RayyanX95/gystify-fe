@@ -11,8 +11,10 @@ import {
   formatPrice,
   calculateYearlySavings,
 } from '@/lib/types/subscription';
-import { useState } from 'react';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { useSubscriptionStore } from '@/lib/stores/subscriptionStore';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/lib/hooks/useToast';
 
 interface PricingCardProps {
   plan: PlanPricing;
@@ -22,26 +24,70 @@ interface PricingCardProps {
 
 export const PricingCard = ({ plan, billingCycle, index }: PricingCardProps) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const { isAuthenticated, setPendingPlan } = useAuthStore();
+  const { status, startTrial, isLoading } = useSubscriptionStore();
 
   const isYearly = billingCycle === BillingCycle.YEARLY;
   const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
   const savings = calculateYearlySavings(plan.monthlyPrice, plan.yearlyPrice);
+  const isCurrentPlan = status?.tier === plan.tier;
+  const isTrial = plan.tier === 'trial';
+  const isTrialActive = status?.isTrialActive;
+
+  const getButtonText = () => {
+    if (isCurrentPlan) {
+      return 'Current Plan';
+    }
+
+    if (isTrial) {
+      if (isTrialActive) {
+        return 'Trial Active';
+      }
+      return 'Start Free Trial';
+    }
+
+    return isAuthenticated ? 'Select Plan' : 'Get Started';
+  };
+
+  const getButtonVariant = () => {
+    if (isCurrentPlan) return 'outline';
+    if (plan.isPopular) return 'default';
+    return 'outline';
+  };
+
+  const isButtonDisabled = () => {
+    return isLoading || (isCurrentPlan && !isTrial) || (isTrial && isTrialActive);
+  };
 
   const handleSelectPlan = async () => {
-    setIsLoading(true);
-
-    // For trial plan, redirect to register
-    if (plan.tier === 'trial') {
-      router.push('/register');
+    if (!isAuthenticated) {
+      // Store plan selection and redirect to Google SSO
+      setPendingPlan({
+        tier: plan.tier,
+        billingCycle: isYearly ? 'yearly' : 'monthly',
+      });
+      router.push('/login');
       return;
     }
 
-    // For paid plans, you would integrate with your payment processor
-    // For now, redirect to register with plan parameter
-    router.push(`/register?plan=${plan.tier}&billing=${billingCycle}`);
-
-    setIsLoading(false);
+    // User is authenticated
+    if (isTrial) {
+      // Start trial directly
+      const success = await startTrial();
+      if (success) {
+        toast({
+          title: 'Free trial started!',
+          description: 'You can now create email snapshots and summaries.',
+        });
+        router.push('/dashboard');
+      }
+    } else {
+      // Redirect to subscription confirmation page
+      router.push(
+        `/subscription/confirm?tier=${plan.tier}&billing=${isYearly ? 'yearly' : 'monthly'}`
+      );
+    }
   };
 
   return (
@@ -105,15 +151,14 @@ export const PricingCard = ({ plan, billingCycle, index }: PricingCardProps) => 
 
           <Button
             onClick={handleSelectPlan}
-            disabled={isLoading}
+            disabled={isButtonDisabled()}
+            variant={getButtonVariant()}
             className={`w-full ${
-              plan.isPopular
-                ? 'bg-primary hover:bg-primary/90'
-                : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
+              plan.isPopular && !isCurrentPlan ? 'bg-primary hover:bg-primary/90' : ''
             }`}
             size="lg"
           >
-            {isLoading ? 'Loading...' : plan.tier === 'trial' ? 'Start Free Trial' : 'Get Started'}
+            {isLoading ? 'Loading...' : getButtonText()}
           </Button>
 
           {plan.tier === 'trial' && (

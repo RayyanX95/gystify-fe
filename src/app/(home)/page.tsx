@@ -1,4 +1,4 @@
-import { HeroSection, FeaturesSection, CTASection, HowItWorksSection } from './sections';
+import { HeroSection, FeaturesSection, CTASection, HowItWorksSection } from './_components';
 import { generateStructuredData } from '@/lib/seo';
 
 // No need for metadata here as the root layout is enough
