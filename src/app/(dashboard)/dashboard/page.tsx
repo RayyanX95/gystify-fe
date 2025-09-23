@@ -19,6 +19,22 @@ export default function DashboardPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const { data: subscriptionStatus } = useQuery({
+    queryKey: ['subscriptionStatus'],
+    queryFn: () => ApiService.send('GET', 'subscriptionStatus'),
+  });
+
+  console.log('subscriptionStatus', subscriptionStatus);
+
+  const {
+    data: snapshots,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['snapshots'],
+    queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
+  });
+
   const { mutate, isPending } = useMutation({
     mutationKey: ['GenerateNewSnapshot'],
     mutationFn: () => ApiService.send<CreateSnapshotResponseDto>('POST', 'snapshots'),
@@ -34,18 +50,13 @@ export default function DashboardPage() {
       }
       refetch(); // Refetch snapshots after creating a new one
     },
-    onError: () => {
-      // Handle error - maybe show an error toast
+    onError: (res) => {
+      toast({
+        title: res.name,
+        description: res.message || 'Failed to create a new snapshot.',
+        variant: 'destructive',
+      });
     },
-  });
-
-  const {
-    data: snapshots,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ['snapshots'],
-    queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
   });
 
   return (

@@ -1,7 +1,13 @@
 import { HeroSection, FeaturesSection, CTASection, HowItWorksSection } from './sections';
 import { generateStructuredData } from '@/lib/seo';
 
-// No need for metdata here as the root layout is enough
+// No need for metadata here as the root layout is enough
+
+// "Unlike other email tools that charge you upfront,
+// we're so confident you'll love Gystify that we give you
+// 15 free AI snapshots with no credit card required.
+
+// Try it free for 7 days → Experience the value → Then decide."
 
 export default function HomePage() {
   const structuredData = generateStructuredData({
