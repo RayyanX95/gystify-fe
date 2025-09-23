@@ -4,11 +4,12 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BillingToggle } from '@/components/ui/billing-toggle';
-import { PricingCard, FAQSection } from './_components';
+import { FAQSection } from './_components';
 import { PRICING_PLANS, BillingCycle } from '@/lib/types/subscription';
 import { generateStructuredData } from '@/lib/seo';
 import { useState } from 'react';
 import { Check } from 'lucide-react';
+import { PricingCard } from '@/components';
 
 export default function PricingPageContent() {
   const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);

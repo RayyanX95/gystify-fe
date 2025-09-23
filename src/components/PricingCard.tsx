@@ -20,7 +20,7 @@ interface PricingCardProps {
   index: number;
 }
 
-export default function PricingCard({ plan, billingCycle, index }: PricingCardProps) {
+export const PricingCard = ({ plan, billingCycle, index }: PricingCardProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -125,4 +125,4 @@ export default function PricingCard({ plan, billingCycle, index }: PricingCardPr
       </Card>
     </motion.div>
   );
-}
+};
