@@ -42,7 +42,7 @@ export default function ConfirmationPage({ searchParams }: Props) {
         </div>
       }
     >
-      <div className="container max-w-2xl mx-auto p-6">
+      <div className="container mx-auto p-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Complete Your Subscription</h1>
           <p className="text-muted-foreground">
