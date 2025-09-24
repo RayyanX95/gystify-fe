@@ -105,7 +105,7 @@ export default function ConfirmationCard({ tier, billingCycle }: ConfirmationCar
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="grid lg:grid-cols-3 gap-8 items-start  section-layout">
+      <div className="grid lg:grid-cols-3 gap-8 items-start  section-layout py-0 my-0">
         <OrderSummary plan={plan} price={price} isYearly={isYearly} savings={savings} />
 
         <PaymentForm
