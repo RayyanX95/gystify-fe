@@ -11,10 +11,11 @@ export class GoogleOAuthService {
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
         'openid',
-        // 'https://www.googleapis.com/auth/gmail.readonly',
         'https://www.googleapis.com/auth/gmail.modify',
       ],
     };
+
+    console.log('this.config', this.config);
   }
 
   /**
@@ -121,3 +122,5 @@ export class GoogleOAuthService {
     }
   }
 }
+
+// http://localhost:3000/google/callback?state=wmaj0p&code=4/0AVGzR1D5Lnalpf9E6Q00iKbsV6c-2QSY44Ipin5rS5RbKVCldcVAZcNedMcjmfQ5w1X01w&scope=email%20profile%20https://www.googleapis.com/auth/gmail.readonly%20https://www.googleapis.com/auth/gmail.modify%20https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email%20openid&authuser=0&prompt=consent
