@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/lib/authStore';
+import { useAuthStore } from '@/lib/stores/authStore';
 import { GoogleOAuthService } from '@/lib/googleOauth';
 import { useToast } from '@/lib/hooks/useToast';
 import { UserInfo } from '@/lib/types';

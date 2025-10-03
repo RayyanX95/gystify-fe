@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useAuthStore } from '@/lib/authStore';
+import { useAuthStore } from '@/lib/stores/authStore';
 import { LogOut, Settings, User, LayoutGrid } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -102,6 +102,14 @@ export const Header = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
+              <nav className="hidden md:flex items-center space-x-6">
+                <Link
+                  href="/pricing"
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Pricing
+                </Link>
+              </nav>
               <Button
                 variant="ghost"
                 className="text-gray-700 hover:text-indigo-600"

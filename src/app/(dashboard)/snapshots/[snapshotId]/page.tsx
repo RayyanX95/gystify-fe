@@ -2,7 +2,8 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, Button } from '@/components';
+import { Button } from '@/components';
+import { Card, CardContent } from '@/components';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
