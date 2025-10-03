@@ -1,28 +1,59 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Settings, RefreshCcw, Zap } from 'lucide-react';
-import { scrollFadeInUp } from '@/lib/motion';
+// React and Next.js imports
+import { useRouter } from 'next/navigation';
+
+// External dependencies
 import { motion } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+// UI Components
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { LimitReachedPrompt, TrialExpiredPrompt, FeatureLockedPrompt } from '@/components';
+
+// Icons
+import { Mail, Settings, RefreshCcw, Zap } from 'lucide-react';
+
+// Local components and hooks
+import { PriorityIndicator } from '../_components';
+import { useSubscriptionStatus } from '@/lib/hooks/useSubscriptionStatus';
+import { useToast } from '@/lib/hooks/useToast';
+
+// Utilities and types
 import { ApiService } from '@/lib/api/ApiService';
-import { useRouter } from 'next/navigation';
+import { scrollFadeInUp } from '@/lib/motion';
 import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/lib/hooks/useToast';
-import { PriorityIndicator } from '../_components';
 import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
-import { useSubscriptionStatus } from '@/lib/hooks/useSubscriptionStatus';
-import { LimitReachedPrompt } from '@/components';
 
+/**
+ * Dashboard Page Component
+ *
+ * Renders different UI based on user subscription tier:
+ * - Free users: Simple onboarding flow with call-to-action
+ * - Trial/Paid users: Full dashboard with snapshot management and usage stats
+ *
+ * Features:
+ * - Subscription status display
+ * - Snapshot creation and history
+ * - Appropriate upgrade prompts based on user status
+ * - Usage limits and progress tracking
+ */
 export default function DashboardPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Use the subscription hook instead of direct API query
-  const { status, canCreateSnapshot, needsUpgrade, subscriptionTier, hasActiveAccess } =
-    useSubscriptionStatus();
+  // Get comprehensive subscription status and capabilities
+  const {
+    status,
+    canCreateSnapshot,
+    needsUpgrade,
+    subscriptionTier,
+    hasActiveAccess,
+    isTrialExpired,
+    isSubscriptionExpired,
+  } = useSubscriptionStatus();
 
   const {
     data: snapshots,
@@ -43,7 +74,6 @@ export default function DashboardPage() {
           description: data.message || 'No snapshot created.',
           variant: 'info',
         });
-
         return;
       }
       refetch(); // Refetch snapshots after creating a new one
@@ -56,6 +86,45 @@ export default function DashboardPage() {
       });
     },
   });
+
+  /**
+   * Renders the appropriate prompt component based on user subscription status
+   */
+  const renderUserStatusPrompt = () => {
+    // Don't show prompts for free users (they have their own onboarding flow)
+    if (subscriptionTier === 'free') {
+      return null;
+    }
+
+    // Show appropriate prompt based on specific conditions
+    if (isTrialExpired) {
+      return (
+        <div className="mt-4">
+          <TrialExpiredPrompt feature="email processing and snapshots" />
+        </div>
+      );
+    }
+
+    if (isSubscriptionExpired) {
+      return (
+        <div className="mt-4">
+          <FeatureLockedPrompt feature="email processing and snapshots" />
+        </div>
+      );
+    }
+
+    // Show limit reached prompt for users who have reached their usage limits
+    if (needsUpgrade && hasActiveAccess) {
+      return (
+        <div className="mt-4">
+          <LimitReachedPrompt feature="email processing and snapshots" />
+        </div>
+      );
+    }
+
+    // No prompt needed for users with active access and no limits
+    return null;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -155,12 +224,8 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              {/* Upgrade prompts for subscribed users with limits */}
-              {(needsUpgrade || !hasActiveAccess) && (
-                <div className="mt-4">
-                  <LimitReachedPrompt feature="email processing and snapshots" />
-                </div>
-              )}
+              {/* Show appropriate prompts based on user status */}
+              {renderUserStatusPrompt()}
 
               {/* Manage subscription for active users */}
               {hasActiveAccess && !needsUpgrade && (
@@ -191,35 +256,32 @@ export default function DashboardPage() {
 
             <div className="space-y-3">
               {isLoading ? (
-                // Loading skeleton for subscribed users
-                <div className="space-y-3">
-                  <Card className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="h-5 bg-muted animate-pulse rounded w-32 mb-2"></div>
-                          <div className="h-4 bg-muted animate-pulse rounded w-24"></div>
-                        </div>
-                        <div className="text-right">
-                          <div className="h-8 bg-muted animate-pulse rounded w-12 mb-1"></div>
-                          <div className="h-4 bg-muted animate-pulse rounded w-20"></div>
-                        </div>
+                <Card className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between animate-pulse">
+                      <div>
+                        <div className="h-5 bg-muted rounded w-32 mb-2" />
+                        <div className="h-4 bg-muted rounded w-24" />
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                      <div className="text-right">
+                        <div className="h-8 bg-muted rounded w-12 mb-1" />
+                        <div className="h-4 bg-muted rounded w-20" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ) : snapshots && snapshots.length > 0 ? (
-                // Actual snapshots for subscribed users
                 snapshots.map((snapshot, index) => {
                   const { day, time } = formatSnapshotDate(snapshot.createdAt);
+                  const isRecent = index === 0;
 
                   return (
                     <Card
                       key={snapshot.id}
-                      onClick={() => router.push('/snapshots/' + snapshot.id)}
+                      onClick={() => router.push(`/snapshots/${snapshot.id}`)}
                       className={cn(
                         'hover:shadow-md hover:border-primary hover:bg-primary/5 transition-all duration-200 cursor-pointer',
-                        index === 0 ? 'border-2 border-primary/30' : 'border border-transparent'
+                        isRecent ? 'border-2 border-primary/30' : 'border border-transparent'
                       )}
                     >
                       <CardContent className="p-4">
@@ -246,7 +308,7 @@ export default function DashboardPage() {
                                 </p>
                                 <div className="flex items-center gap-2">
                                   {Object.entries(snapshot.priorityCounts)
-                                    .filter(([_, count]) => count > 0)
+                                    .filter(([, count]) => count > 0)
                                     .map(([priority, count]) => (
                                       <PriorityIndicator
                                         key={priority}
@@ -264,7 +326,6 @@ export default function DashboardPage() {
                   );
                 })
               ) : (
-                // Empty state for subscribed users
                 <Card className="hover:shadow-md transition-shadow">
                   <CardContent className="p-4">
                     <div className="text-center text-muted-foreground">
