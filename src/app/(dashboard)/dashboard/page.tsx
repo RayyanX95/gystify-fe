@@ -223,93 +223,6 @@ export default function DashboardPage() {
                   </div>
                 </CardContent>
               </Card>
-          {subscriptionTier === 'free' ? (
-            // Ultra-simplified single-focus experience for free users
-            <div className="max-w-xl mx-auto py-12">
-              {/* Hero Section */}
-              <div className="text-center space-y-6 mb-8">
-                <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/30 rounded-full flex items-center justify-center mx-auto">
-                  <Mail className="w-12 h-12 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-4xl font-bold text-foreground mb-4">Welcome to Gystify!</h2>
-                  <p className="text-xl text-muted-foreground">
-                    Get AI-powered email insights and organized snapshots
-                  </p>
-                </div>
-              </div>
-
-              {/* Single CTA Card */}
-              <Card className="border-2 border-dashed border-primary/30 bg-gradient-to-br from-primary/5 to-blue-50 dark:from-primary/10 dark:to-blue-950/20">
-                <CardContent className="p-8">
-                  <div className="text-center space-y-6">
-                    <div>
-                      <h3 className="text-2xl font-bold text-foreground mb-3">
-                        Ready to Transform Your Inbox?
-                      </h3>
-                      <p className="text-muted-foreground">
-                        14 days free • No credit card required • Cancel anytime
-                      </p>
-                    </div>
-
-                    <div className="space-y-3">
-                      <Button
-                        onClick={() => router.push('/pricing')}
-                        size="lg"
-                        className="w-full bg-primary hover:bg-primary/90 text-white py-4 text-lg font-semibold"
-                      >
-                        <Zap className="mr-2 h-5 w-5" />
-                        Choose Your Plan
-                      </Button>
-
-                      <p className="text-xs text-muted-foreground">
-                        Start with our free trial or select a paid plan
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          ) : (
-            // Regular dashboard for subscribed users
-            <>
-              {/* Subscription Status Card */}
-              <Card className="elevated-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-xl">
-                          {status?.usage?.maxEmailsAllowed || 0}
-                        </span>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">
-                          {subscriptionTier === 'trial' ? 'Trial Emails Left' : 'Emails Available'}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {status?.usage?.emailsSummarizedToday || 0}/
-                          {status?.usage?.maxEmailsAllowed || 0} used today
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex-1 max-w-sm ml-8">
-                      <Button
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 px-6 rounded-lg shadow-md"
-                        onClick={() => mutate()}
-                        disabled={isPending || !canCreateSnapshot}
-                      >
-                        {isPending ? (
-                          <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          <Mail className="mr-2 h-4 w-4" />
-                        )}
-                        Create New Snapshot
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Show appropriate prompts based on user status */}
               {renderUserStatusPrompt()}
@@ -331,15 +244,6 @@ export default function DashboardPage() {
           )}
         </motion.div>
 
-        {/* Recent Snapshots Section - Only for subscribed users */}
-        {subscriptionTier !== 'free' && (
-          <motion.section className="mb-8" {...scrollFadeInUp}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-foreground">Recent Snapshots</h2>
-              <p className="text-sm text-muted-foreground">
-                Snapshots are automatically deleted after 72 hours.
-              </p>
-            </div>
         {/* Recent Snapshots Section - Only for subscribed users */}
         {subscriptionTier !== 'free' && (
           <motion.section className="mb-8" {...scrollFadeInUp}>
