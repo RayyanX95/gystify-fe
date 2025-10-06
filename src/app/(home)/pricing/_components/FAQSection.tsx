@@ -111,10 +111,13 @@ export default function FAQSection() {
       className="py-16"
     >
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-4">Pricing FAQs</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Got questions? We&apos;ve got answers. If you can&apos;t find what you&apos;re looking
-          for, feel free to reach out to our support team.
+          Common questions about pricing and billing. For more detailed information, visit our{' '}
+          <a href="/faq" className="text-primary hover:underline">
+            complete FAQ page
+          </a>{' '}
+          or contact our support team.
         </p>
       </div>
 
