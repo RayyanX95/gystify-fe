@@ -4,9 +4,14 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@/components';
-import { Input } from '@/components';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components';
+import {
+  Button,
+  Input,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  ConfirmationDialog,
+} from '@/components';
 import { useAuthStore } from '@/lib/stores/authStore';
 import { useToast } from '@/lib/hooks/useToast';
 // import { Camera, Upload } from 'lucide-react';
@@ -26,7 +31,7 @@ export function ProfileSettings() {
   const { user, updateUser } = useAuthStore();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState(user?.profilePicture || '');
+  const profileImage = user?.profilePicture || '';
   // const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -236,36 +241,18 @@ export function ProfileSettings() {
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-background rounded-lg p-6 max-w-md w-full">
-            <div className="flex items-center space-x-2 text-destructive mb-4">
-              <AlertTriangle className="h-6 w-6" />
-              <h3 className="text-lg font-semibold">Confirm Account Deletion</h3>
-            </div>
-
-            <p className="text-sm text-muted-foreground mb-6">
-              Are you sure you want to delete your account? This will permanently remove all your
-              data, including email summaries, preferences, and subscription information. This
-              action cannot be undone.
-            </p>
-
-            <div className="flex space-x-3">
-              <Button
-                variant="outline"
-                onClick={() => setIsDeleteModalOpen(false)}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
-              <Button variant="destructive" onClick={handleDeleteAccount} className="flex-1">
-                Delete Account
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        open={isDeleteModalOpen}
+        onOpenChange={setIsDeleteModalOpen}
+        title="Confirm Account Deletion"
+        description="Are you sure you want to delete your account? This will permanently remove all your data, including email summaries, preferences, and subscription information. This action cannot be undone."
+        confirmText="Delete Account"
+        cancelText="Cancel"
+        onConfirm={handleDeleteAccount}
+        variant="destructive"
+        icon={AlertTriangle}
+      />
     </motion.div>
   );
 }

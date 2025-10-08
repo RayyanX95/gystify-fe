@@ -10,6 +10,7 @@ export {
   LimitReachedPrompt,
   FeatureLockedPrompt,
 } from './UpgradePrompt';
+export { ConfirmationDialog } from './ConfirmationDialog';
 
 // Radix UI components
 export * from './ui';
