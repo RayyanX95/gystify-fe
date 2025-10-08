@@ -26,6 +26,7 @@ interface AuthActions {
   setPendingPlan: (plan: PendingPlanSelection) => void;
   clearPendingPlan: () => void;
   handlePostLoginRedirect: () => string;
+  updateUser: (user: UserInfo) => void;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -93,6 +94,10 @@ export const useAuthStore = create<AuthStore>()(
 
         // Default redirect to dashboard
         return '/dashboard';
+      },
+
+      updateUser: (user: UserInfo) => {
+        set({ user });
       },
     }),
     {
