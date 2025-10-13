@@ -5,7 +5,7 @@ import { useSubscriptionStore } from '@/lib/stores/subscriptionStore';
  * Hook for managing subscription status in dashboard components
  * Automatically loads subscription data and provides status helpers
  */
-export function useSubscriptionStatus() {
+export const useSubscriptionStatus = () => {
   const {
     status,
     limits,
@@ -65,4 +65,4 @@ export function useSubscriptionStatus() {
         }
       : null,
   };
-}
+};

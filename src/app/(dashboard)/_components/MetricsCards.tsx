@@ -17,7 +17,7 @@ interface MetricsStats {
 export const MetricsCards = () => {
   const { data } = useQuery({
     queryKey: ['metrics-stats'],
-    queryFn: () => ApiService.send<MetricsStats>('GET', 'metricsStats'),
+    queryFn: () => ApiService.send<MetricsStats>('GET', 'metrics'),
   });
 
   return (
