@@ -225,10 +225,10 @@ export function SubscriptionSettings() {
             </a>
           </Button>
 
-          <Button variant="outline">
+          {/* <Button variant="outline">
             <CreditCard className="h-4 w-4 mr-2" />
             Update Payment Method
-          </Button>
+          </Button> */}
 
           {currentPlan.cancelAtPeriodEnd ? (
             <Button variant="outline" onClick={handleReactivateSubscription} disabled={isUpdating}>
@@ -258,10 +258,10 @@ export function SubscriptionSettings() {
         )}
       </div>
 
-      <Separator />
+      {/* <Separator /> */}
 
       {/* Billing History */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium">Billing History</h3>
           <Button variant="outline" size="sm">
@@ -293,7 +293,7 @@ export function SubscriptionSettings() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </motion.div>
   );
 }

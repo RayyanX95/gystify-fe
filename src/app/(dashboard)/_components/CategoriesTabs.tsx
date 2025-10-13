@@ -69,24 +69,27 @@ export const CategoriesTabs = ({
               <div
                 key={priority}
                 className={cn(
-                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
+                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer gap-4',
                   { 'bg-primary/10': selectedPriority === priority }
                 )}
                 onClick={() => setSelectedPriority(priority)}
               >
-                <span className="text-sm font-medium text-foreground capitalize">{priority}</span>
+                <span className="text-sm font-medium text-foreground capitalize truncate">
+                  {priority}
+                </span>
                 <Badge variant="secondary" className="text-xs">
                   {count}
                 </Badge>
               </div>
             ))}
           </TabsContent>
+
           <TabsContent value="sender" className="space-y-1">
             {map(([name, count]) => (
               <div
                 key={name}
                 className={cn(
-                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer',
+                  'flex items-center justify-between px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer gap-4',
                   { 'bg-primary/10': selectedCategory === name }
                 )}
                 onClick={() => setSelectedCategory(name)}

@@ -1,3 +1,4 @@
+import { endPoints } from './api';
 import { GoogleAuthConfig, GoogleOAuthExchangeRes } from './types';
 
 export class GoogleOAuthService {
@@ -14,8 +15,6 @@ export class GoogleOAuthService {
         'https://www.googleapis.com/auth/gmail.modify',
       ],
     };
-
-    console.log('this.config', this.config);
   }
 
   /**
@@ -58,18 +57,21 @@ export class GoogleOAuthService {
    */
   async exchangeCodeForTokens(code: string, state?: string): Promise<GoogleOAuthExchangeRes> {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/exchange`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include cookies for session management
-        body: JSON.stringify({
-          code,
-          state,
-          redirectUri: this.config.redirectUri,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}${endPoints.authGoogleExchange}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Include cookies for session management
+          body: JSON.stringify({
+            code,
+            state,
+            redirectUri: this.config.redirectUri,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`OAuth exchange failed: ${response.statusText}`);

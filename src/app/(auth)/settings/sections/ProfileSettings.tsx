@@ -17,6 +17,9 @@ import { useToast } from '@/lib/hooks/useToast';
 // import { Camera, Upload } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Trash2 } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { ApiService } from '@/lib/api';
+import { useRouter } from 'next/navigation';
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
@@ -27,8 +30,10 @@ const profileSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function ProfileSettings() {
+  const router = useRouter();
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { user, updateUser } = useAuthStore();
+  const { user, updateUser, logout } = useAuthStore();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const profileImage = user?.profilePicture || '';
@@ -104,22 +109,24 @@ export function ProfileSettings() {
     }
   };
 
-  const handleDeleteAccount = async () => {
-    try {
-      // Here you would make an API call to delete the account
+  const { mutate: deleteProfile, isPending: isDeleting } = useMutation({
+    mutationFn: () => ApiService.send('DELETE', 'authDeleteProfile'),
+    onSuccess: () => {
       toast({
-        title: 'Account deletion initiated',
-        description: "We've sent you an email with further instructions.",
+        title: 'Account deleted',
+        description: 'Your account has been successfully deleted.',
       });
-      setIsDeleteModalOpen(false);
-    } catch {
+      logout();
+      router.push('/');
+    },
+    onError: () => {
       toast({
         title: 'Error',
-        description: 'Failed to initiate account deletion. Please try again.',
+        description: 'Failed to delete account. Please try again.',
         variant: 'destructive',
       });
-    }
-  };
+    },
+  });
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
@@ -249,9 +256,10 @@ export function ProfileSettings() {
         description="Are you sure you want to delete your account? This will permanently remove all your data, including email summaries, preferences, and subscription information. This action cannot be undone."
         confirmText="Delete Account"
         cancelText="Cancel"
-        onConfirm={handleDeleteAccount}
+        onConfirm={deleteProfile}
         variant="destructive"
         icon={AlertTriangle}
+        isLoading={isDeleting}
       />
     </motion.div>
   );

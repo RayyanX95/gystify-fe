@@ -23,6 +23,7 @@ interface ConfirmationDialogProps {
   onCancel?: () => void;
   variant?: 'default' | 'destructive';
   icon?: LucideIcon;
+  isLoading?: boolean;
 }
 
 export function ConfirmationDialog({
@@ -36,6 +37,7 @@ export function ConfirmationDialog({
   onCancel,
   variant = 'default',
   icon: Icon = AlertTriangle,
+  isLoading = false,
 }: ConfirmationDialogProps) {
   const handleCancel = () => {
     onCancel?.();
@@ -73,6 +75,7 @@ export function ConfirmationDialog({
             variant={variant === 'destructive' ? 'destructive' : 'default'}
             onClick={handleConfirm}
             className="flex-1 sm:flex-none"
+            isLoading={isLoading}
           >
             {confirmText}
           </Button>

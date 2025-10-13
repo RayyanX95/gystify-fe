@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { CircularLoader } from './CircularLoader';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
@@ -38,18 +39,39 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, isLoading, children, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+        className="relative"
       >
-        <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+        <Comp
+          className={cn(
+            buttonVariants({ variant, size, className }),
+            isLoading && 'opacity-70 pointer-events-none'
+          )}
+          ref={ref}
+          disabled={isLoading || props.disabled}
+          {...props}
+        >
+          {isLoading ? (
+            <span className="inline-flex items-center">
+              <span className="mr-2">
+                <CircularLoader color="primary" size="sm" />
+              </span>
+              {children}
+            </span>
+          ) : (
+            children
+          )}
+        </Comp>
       </motion.div>
     );
   }

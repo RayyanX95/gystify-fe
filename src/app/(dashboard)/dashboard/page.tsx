@@ -26,6 +26,7 @@ import { scrollFadeInUp } from '@/lib/motion';
 import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
 import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
+import { CircularLoader } from '@/components/ui/CircularLoader';
 
 /**
  * Dashboard Page Component
@@ -53,6 +54,9 @@ export default function DashboardPage() {
     hasActiveAccess,
     isTrialExpired,
     isSubscriptionExpired,
+    refreshStatus,
+    isLoading: statsLoading,
+    refreshLimits,
   } = useSubscriptionStatus();
 
   const {
@@ -76,7 +80,10 @@ export default function DashboardPage() {
         });
         return;
       }
-      refetch(); // Refetch snapshots after creating a new one
+
+      refetch();
+      refreshStatus();
+      refreshLimits();
     },
     onError: (res) => {
       toast({
@@ -200,10 +207,14 @@ export default function DashboardPage() {
                         <h3 className="font-semibold text-foreground">
                           {subscriptionTier === 'trial' ? 'Trial Emails Left' : 'Emails Available'}
                         </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {status?.usage?.emailsSummarizedToday || 0}/
-                          {status?.usage?.maxEmailsAllowed || 0} used today
-                        </p>
+                        {statsLoading ? (
+                          <CircularLoader size="sm" />
+                        ) : (
+                          <p className="text-muted-foreground text-sm">
+                            {status?.usage?.emailsSummarizedToday || 0}/
+                            {status?.usage?.maxEmailsAllowed || 0} used today
+                          </p>
+                        )}
                       </div>
                     </div>
                     <div className="flex-1 max-w-sm ml-8">

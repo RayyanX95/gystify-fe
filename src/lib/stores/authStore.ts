@@ -56,6 +56,7 @@ export const useAuthStore = create<AuthStore>()(
       },
       logout: () => {
         // Clear zustand store
+        // debugger;
         set({
           tokens: null,
           user: null,
