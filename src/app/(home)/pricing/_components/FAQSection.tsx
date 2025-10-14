@@ -111,9 +111,9 @@ export default function FAQSection() {
       className="py-16"
     >
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-foreground mb-4">Pricing FAQs</h2>
+        <h2 className="text-3xl font-bold text-foreground mb-4">Top Pricing FAQs</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Common questions about pricing and billing. For more detailed information, visit our{' '}
+          Most common questions about pricing and billing. For more detailed information, visit our{' '}
           <a href="/faq" className="text-primary hover:underline">
             complete FAQ page
           </a>{' '}
@@ -122,7 +122,7 @@ export default function FAQSection() {
       </div>
 
       <div className="max-w-3xl mx-auto space-y-4">
-        {faqs.map((faq, index) => (
+        {faqs.slice(0, 3).map((faq, index) => (
           <FAQItem
             key={index}
             faq={faq}
