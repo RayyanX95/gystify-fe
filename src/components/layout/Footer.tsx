@@ -1,8 +1,8 @@
 'use client';
 
-import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export const Footer = () => {
   return (
@@ -16,11 +16,11 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           {/* Logo and Brand */}
           <div className="flex flex-col items-center md:items-start">
-            <Link href="/" className="flex items-center space-x-2 mb-2">
-              <Mail className="h-6 w-6 text-primary" />
-              <motion.span whileHover={{ x: 4 }} className="font-bold text-gray-900">
-                <strong className="text-primary">G</strong>ystify
+            <Link href="/" className="flex items-center  text-foreground text-3xl">
+              <motion.span whileHover={{ x: 4 }}>
+                <Image src="/logo.svg" alt="Logo" width={24} height={24} className="mr-1" />
               </motion.span>
+              <span className="text-2xl  text-primary font-bold">Gystify</span>
             </Link>
             <p className="text-sm text-gray-600 text-center md:text-left">
               AI-powered email intelligence
