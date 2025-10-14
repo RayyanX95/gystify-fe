@@ -10,7 +10,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 // UI Components
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { LimitReachedPrompt, TrialExpiredPrompt, FeatureLockedPrompt } from '@/components';
 
 // Icons
 import { Mail, Settings, RefreshCcw, Zap } from 'lucide-react';
@@ -27,6 +26,7 @@ import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
 import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
 import { CircularLoader } from '@/components/ui/CircularLoader';
+import { renderUserStatusPrompt } from './renderUserStatusPrompt';
 
 /**
  * Dashboard Page Component
@@ -93,45 +93,6 @@ export default function DashboardPage() {
       });
     },
   });
-
-  /**
-   * Renders the appropriate prompt component based on user subscription status
-   */
-  const renderUserStatusPrompt = () => {
-    // Don't show prompts for free users (they have their own onboarding flow)
-    if (subscriptionTier === 'free') {
-      return null;
-    }
-
-    // Show appropriate prompt based on specific conditions
-    if (isTrialExpired) {
-      return (
-        <div className="mt-4">
-          <TrialExpiredPrompt feature="email processing and snapshots" />
-        </div>
-      );
-    }
-
-    if (isSubscriptionExpired) {
-      return (
-        <div className="mt-4">
-          <FeatureLockedPrompt feature="email processing and snapshots" />
-        </div>
-      );
-    }
-
-    // Show limit reached prompt for users who have reached their usage limits
-    if (needsUpgrade && hasActiveAccess) {
-      return (
-        <div className="mt-4">
-          <LimitReachedPrompt feature="email processing and snapshots" />
-        </div>
-      );
-    }
-
-    // No prompt needed for users with active access and no limits
-    return null;
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
@@ -236,7 +197,13 @@ export default function DashboardPage() {
               </Card>
 
               {/* Show appropriate prompts based on user status */}
-              {renderUserStatusPrompt()}
+              {renderUserStatusPrompt(
+                isTrialExpired,
+                isSubscriptionExpired,
+                subscriptionTier!,
+                needsUpgrade,
+                hasActiveAccess
+              )}
 
               {/* Manage subscription for active users */}
               {hasActiveAccess && !needsUpgrade && (
