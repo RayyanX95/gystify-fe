@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
 import { CircularLoader } from '@/components/ui/CircularLoader';
 import { renderUserStatusPrompt } from './renderUserStatusPrompt';
+import { ErrorMessage, Skeleton } from '@/components';
 
 /**
  * Dashboard Page Component
@@ -63,6 +64,7 @@ export default function DashboardPage() {
     data: snapshots,
     isLoading,
     refetch,
+    error: snapshotsError,
   } = useQuery({
     queryKey: ['snapshots'],
     queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
@@ -94,10 +96,39 @@ export default function DashboardPage() {
     },
   });
 
+  if (snapshotsError) {
+    return (
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ErrorMessage
+          title="Error Loading Snapshots"
+          message={snapshotsError?.message || 'Failed to load snapshots.'}
+          showIcon
+          onDismiss={() => refetch()}
+        />
+      </main>
+    );
+  }
+
+  if (isLoading || statsLoading) {
+    return (
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Skeleton className="h-8 w-1/3 mb-6" />
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-4">
+                <Skeleton className="h-6  rounded w-1/2 mb-2" />
+                <Skeleton className="h-4  rounded w-1/4" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </main>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Header */}
-
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Header */}

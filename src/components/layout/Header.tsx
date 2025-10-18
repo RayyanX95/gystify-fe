@@ -29,7 +29,6 @@ export const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
   };
 
   // Helper function to get user initials

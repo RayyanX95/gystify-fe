@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, Trash2 } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { ApiService } from '@/lib/api';
-import { useRouter } from 'next/navigation';
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
@@ -30,8 +29,6 @@ const profileSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function ProfileSettings() {
-  const router = useRouter();
-
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { user, updateUser, logout } = useAuthStore();
   const { toast } = useToast();
@@ -117,7 +114,6 @@ export function ProfileSettings() {
         description: 'Your account has been successfully deleted.',
       });
       logout();
-      router.push('/');
     },
     onError: () => {
       toast({

@@ -14,6 +14,7 @@ import { useSubscriptionStatus } from '@/lib/hooks/useSubscriptionStatus';
 
 export default function PricingPageContent() {
   const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);
+
   const { isPaidSubscriber } = useSubscriptionStatus();
 
   const structuredData = generateStructuredData({

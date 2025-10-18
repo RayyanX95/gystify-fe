@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useSubscriptionStore } from '@/lib/stores/subscriptionStore';
+import { useAuthStore } from '../stores/authStore';
 
 /**
  * Hook for managing subscription status in dashboard components
  * Automatically loads subscription data and provides status helpers
  */
 export const useSubscriptionStatus = () => {
+  const { isAuthenticated } = useAuthStore();
   const {
     status,
     limits,
@@ -24,13 +26,15 @@ export const useSubscriptionStatus = () => {
 
   // Load subscription data on mount
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     if (!status) {
       fetchStatus();
     }
     if (!limits) {
       fetchLimits();
     }
-  }, [status, limits, fetchStatus, fetchLimits]);
+  }, [status, limits, fetchStatus, fetchLimits, isAuthenticated]);
 
   return {
     // State
