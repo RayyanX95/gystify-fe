@@ -10,7 +10,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 // UI Components
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { LimitReachedPrompt, TrialExpiredPrompt, FeatureLockedPrompt } from '@/components';
 
 // Icons
 import { Mail, Settings, RefreshCcw, Zap } from 'lucide-react';
@@ -27,6 +26,8 @@ import { formatSnapshotDate } from '@/lib/utils/dateFormat';
 import { cn } from '@/lib/utils';
 import { CreateSnapshotResponseDto, Snapshot } from '@/lib/types/snapshot';
 import { CircularLoader } from '@/components/ui/CircularLoader';
+import { renderUserStatusPrompt } from './renderUserStatusPrompt';
+import { ErrorMessage, Skeleton } from '@/components';
 
 /**
  * Dashboard Page Component
@@ -63,6 +64,7 @@ export default function DashboardPage() {
     data: snapshots,
     isLoading,
     refetch,
+    error: snapshotsError,
   } = useQuery({
     queryKey: ['snapshots'],
     queryFn: () => ApiService.send<Snapshot[]>('GET', 'snapshots'),
@@ -94,49 +96,39 @@ export default function DashboardPage() {
     },
   });
 
-  /**
-   * Renders the appropriate prompt component based on user subscription status
-   */
-  const renderUserStatusPrompt = () => {
-    // Don't show prompts for free users (they have their own onboarding flow)
-    if (subscriptionTier === 'free') {
-      return null;
-    }
+  if (snapshotsError) {
+    return (
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ErrorMessage
+          title="Error Loading Snapshots"
+          message={snapshotsError?.message || 'Failed to load snapshots.'}
+          showIcon
+          onDismiss={() => refetch()}
+        />
+      </main>
+    );
+  }
 
-    // Show appropriate prompt based on specific conditions
-    if (isTrialExpired) {
-      return (
-        <div className="mt-4">
-          <TrialExpiredPrompt feature="email processing and snapshots" />
+  if (isLoading || statsLoading) {
+    return (
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Skeleton className="h-8 w-1/3 mb-6" />
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-4">
+                <Skeleton className="h-6  rounded w-1/2 mb-2" />
+                <Skeleton className="h-4  rounded w-1/4" />
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      );
-    }
-
-    if (isSubscriptionExpired) {
-      return (
-        <div className="mt-4">
-          <FeatureLockedPrompt feature="email processing and snapshots" />
-        </div>
-      );
-    }
-
-    // Show limit reached prompt for users who have reached their usage limits
-    if (needsUpgrade && hasActiveAccess) {
-      return (
-        <div className="mt-4">
-          <LimitReachedPrompt feature="email processing and snapshots" />
-        </div>
-      );
-    }
-
-    // No prompt needed for users with active access and no limits
-    return null;
-  };
+      </main>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Header */}
-
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Header */}
@@ -236,7 +228,13 @@ export default function DashboardPage() {
               </Card>
 
               {/* Show appropriate prompts based on user status */}
-              {renderUserStatusPrompt()}
+              {renderUserStatusPrompt(
+                isTrialExpired,
+                isSubscriptionExpired,
+                subscriptionTier!,
+                needsUpgrade,
+                hasActiveAccess
+              )}
 
               {/* Manage subscription for active users */}
               {hasActiveAccess && !needsUpgrade && (

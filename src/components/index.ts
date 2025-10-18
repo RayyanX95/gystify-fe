@@ -11,6 +11,7 @@ export {
   FeatureLockedPrompt,
 } from './UpgradePrompt';
 export { ConfirmationDialog } from './ConfirmationDialog';
+export { ErrorMessage } from './ErrorMessage';
 
 // Radix UI components
 export * from './ui';

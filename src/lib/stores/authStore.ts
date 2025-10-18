@@ -65,6 +65,8 @@ export const useAuthStore = create<AuthStore>()(
         });
 
         clearAuthCookies();
+
+        window.location.href = '/';
       },
       refreshTokens: (tokens: Tokens) => {
         saveTokensToCookies(tokens);

@@ -29,7 +29,6 @@ export const Header = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
   };
 
   // Helper function to get user initials
@@ -49,7 +48,6 @@ export const Header = () => {
           <motion.span whileHover={{ x: 4 }}>
             <Image src="/logo.svg" alt="Logo" width={40} height={40} className="mr-1" />
           </motion.span>
-
           <span className="text-3xl  text-primary font-bold">Gystify</span>
         </Link>
         {hasHydrated ? (
